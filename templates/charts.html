@@ -1,0 +1,203 @@
+﻿<html>
+<head>
+    <style>
+
+    .google-visualization-controls-label {
+            font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+            width: 40px;
+          }
+    </style>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    <!--Load the CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui-1.9.0.custom.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/720.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"></link>
+
+    <!--Load the Javascript -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+    // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart', 'controls']});
+
+    // Callback that creates and populates a data table,
+    // instantiates the chart, passes in the data and draws it.
+    function drawChart(data_to_display) {
+
+        // Create the data table.
+        var data_formatted = new google.visualization.DataTable();
+        data_formatted.addColumn('string', 'Origin');
+        data_formatted.addColumn('string', 'Destination');
+        data_formatted.addColumn('string', 'O&D');
+        data_formatted.addColumn('number', 'Popularity');
+        for (i = 0; i < data_to_display.length -1; i++) {
+              data_formatted.addRows([data_to_display.data[i]]);
+            };
+
+        var myView = new google.visualization.DataView(data_formatted);
+        myView.setRows([0,1,2,3,4,5,6,7,8,9]);
+
+
+        var dashboard = new google.visualization.Dashboard(
+                document.getElementById('dashboard_div'));
+
+            // Create 2 filters, passing some options
+        var fromFilter = new google.visualization.ControlWrapper({
+              'controlType': 'StringFilter',
+              'containerId': 'filter_div',
+              'options': {
+                'filterColumnLabel': "Origin",
+                'ui': {'allowMultiple' :true,
+                      'allowNone': true}
+              }
+            });
+        var toFilter = new google.visualization.ControlWrapper({
+              'controlType': 'StringFilter',
+              'containerId': 'filter_div2',
+              'options': {
+                'filterColumnLabel': "Destination",
+                'ui': {'allowMultiple' :true,
+                      'allowNone': true}
+              }
+            });
+            // Create a chart, passing some options
+        var myChart = new google.visualization.ChartWrapper({
+              'chartType': 'BarChart',
+              'containerId': 'chart_div',
+              // The  chart will use the columns '2' and '3' - note:index start at 0
+              'view': {'columns': [2,3]},
+              'options': {
+
+                'vAxis': {title: 'Popularity index',
+                          textStyle: {color: 'black', fontName: 'Arial',fontSize: 10},
+                          titleTextStyle: {color: 'black', fontName: 'Arial',fontSize: 14}
+                        },
+                'legend': {'position': 'none'},
+              }
+            });
+
+            // Establish dependencies, declaring that 'filter' drives 'Chart',
+            // so that the  chart will only display entries that are let through
+            // given the filter
+            // Can also bind filters so that destination is filter for the origin selected
+            dashboard.bind(fromFilter, myChart);
+            dashboard.bind(fromFilter, toFilter);
+            dashboard.bind(toFilter, myChart);
+
+            // Draw the dashboard.
+            dashboard.draw(myView);
+
+            //retrieve 10 values every time the filters change
+            google.visualization.events.addListener(fromFilter, 'statechange', function() {
+            var new_view = new google.visualization.DataView(data_formatted);
+            value_filtered = fromFilter.getState();
+            console.log(value_filtered.value)
+            if (value_filtered.value>'AAA') {
+            new_view.setRows(new_view.getFilteredRows([{column: 0, value: value_filtered.value}]));
+            }
+            var filtered_view = new google.visualization.DataView(new_view);
+            lastRowIndex = filtered_view.getNumberOfRows()-1
+            filtered_view.hideRows(10,lastRowIndex);
+            dashboard.draw(filtered_view);
+            });
+
+            google.visualization.events.addListener(toFilter, 'statechange', function() {
+            var new_view = new google.visualization.DataView(data_formatted);
+            value_filtered = toFilter.getState();
+            if (value_filtered.value>'AAA') {
+            new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.value}]));
+            }
+            var filtered_view = new google.visualization.DataView(new_view);
+            lastRowIndex = filtered_view.getNumberOfRows()-1
+            filtered_view.hideRows(10,lastRowIndex);
+            dashboard.draw(filtered_view);
+            });
+
+          };
+
+
+
+    $(document).ready(function (drawchart) {
+        // prepare the URL to call
+        var url_to_call = './popularity';
+
+        // loading image until the chart is done
+        $('.loading_image').show();
+        // call howbusy API and pass the data to the drawchart function
+        $.ajax({
+            type: 'GET',
+            url: url_to_call,
+            dataType: "json",
+            crossDomain: true,
+            success: function (api_results) {
+                drawChart(api_results);
+            },
+            complete: function(){
+                $('.loading_image').hide();
+            },
+            error: function (request, status, error) {
+                alert(error);
+            }
+        });
+
+    });
+
+    </script>
+
+</head>
+
+<body>
+  <!-- HTML -->
+    <div class="ta-c p-10 bs-black wrap-ref-program white-box">
+  					<p class="fs-32 bold">  Travel Insight </p>
+  					<p class="fs-24 bold">  data goodness </p>
+
+  	    <div class="container_12 ta-c mb-10 mt-30 ">
+  				<div class="dib">
+  					<div class="grid_3 ta-c">
+  						<div class="p-5">
+  							<i class="fa fa-glass fa-4x purple"></i>
+  							<p class="grey fs-14 bold"> this is what you can get </p>
+  						</div>
+  					</div>
+
+            <div class="grid_3 ta-c">
+  						<div class="p-5">
+  							<i class="fa fa-circle fa-4x purple"></i>
+  							<p class="grey fs-14 bold"> this is what it looks like </p>
+  						</div>
+  					</div>
+
+						<div class="grid_3 ta-c">
+							<div class="p-5">
+								<i class="fa fa-money fa-4x purple"></i>
+								<p class="grey fs-14 bold">check this</p>
+							</div>
+						</div>
+					</div>
+	       </div>
+
+         <div class="container_12 ta-c mb-10 mt-30 ">
+           <div class="grid_12 ta-c white">
+             <!--Div that will hold the dashboard-->
+             <div id="dashboard_div" class="white">
+               <!--Divs that will hold each control and chart-->
+               <div id="filter_div"></div>
+               <div id="filter_div2"></div>
+               <div id="chart_div"></div>
+             </div>
+           </div>
+           <div class="grid_12 ta-c">
+             <a href="www.google.com" class="ui-green link-button mb-50 p-10" style="font-size:1em;"> click here </a>
+           </div>
+         </div>
+     </div>
+
+</body>
+</html>
