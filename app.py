@@ -80,7 +80,7 @@ def render_page():
 def hello():
     today_flag = datetime.date.today()
 
-    return "today is " + str(today_flag)
+    return "today is " + str(today_flag) + "  => your installation works"
 
 @app.route('/<path:filename>', methods=['GET'])
 def display_static():
