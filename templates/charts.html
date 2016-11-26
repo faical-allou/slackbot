@@ -10,7 +10,16 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
     <!--Load the CSS -->
+<<<<<<< HEAD
     <link src="./css/layout.css"/>
+=======
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui-1.9.0.custom.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/720.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"></link>
+>>>>>>> 687f99298674e18d2b6c316bcb5dfe74e45cea98
 
     <!--Load the Javascript -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -68,8 +77,12 @@
               // The  chart will use the columns '2' and '3' - note:index start at 0
               'view': {'columns': [2,3]},
               'options': {
+<<<<<<< HEAD
                 'width': 300,
                 'height': 300,
+=======
+
+>>>>>>> 687f99298674e18d2b6c316bcb5dfe74e45cea98
                 'vAxis': {title: 'Popularity index',
                           textStyle: {color: 'black', fontName: 'Arial',fontSize: 10},
                           titleTextStyle: {color: 'black', fontName: 'Arial',fontSize: 14}
@@ -149,6 +162,7 @@
 </head>
 
 <body>
+<<<<<<< HEAD
   <!--Div that will hold the dashboard-->
   <div id="dashboard_div">
     <!--Divs that will hold each control and chart-->
@@ -157,5 +171,53 @@
 
     <div id="chart_div"></div>
   </div>
+=======
+  <!-- HTML -->
+    <div class="ta-c p-10 bs-black wrap-ref-program white-box">
+  					<p class="fs-32 bold">  Travel Insight </p>
+  					<p class="fs-24 bold">  data goodness </p>
+
+  	    <div class="container_12 ta-c mb-10 mt-30 ">
+  				<div class="dib">
+  					<div class="grid_3 ta-c">
+  						<div class="p-5">
+  							<i class="fa fa-glass fa-4x purple"></i>
+  							<p class="grey fs-14 bold"> this is what you can get </p>
+  						</div>
+  					</div>
+
+            <div class="grid_3 ta-c">
+  						<div class="p-5">
+  							<i class="fa fa-circle fa-4x purple"></i>
+  							<p class="grey fs-14 bold"> this is what it looks like </p>
+  						</div>
+  					</div>
+
+						<div class="grid_3 ta-c">
+							<div class="p-5">
+								<i class="fa fa-money fa-4x purple"></i>
+								<p class="grey fs-14 bold">check this</p>
+							</div>
+						</div>
+					</div>
+	       </div>
+
+         <div class="container_12 ta-c mb-10 mt-30 ">
+           <div class="grid_12 ta-c white">
+             <!--Div that will hold the dashboard-->
+             <div id="dashboard_div" class="white">
+               <!--Divs that will hold each control and chart-->
+               <div id="filter_div"></div>
+               <div id="filter_div2"></div>
+               <div id="chart_div"></div>
+             </div>
+           </div>
+           <div class="grid_12 ta-c">
+             <a href="www.google.com" class="ui-green link-button mb-50 p-10" style="font-size:1em;"> click here </a>
+           </div>
+         </div>
+     </div>
+
+>>>>>>> 687f99298674e18d2b6c316bcb5dfe74e45cea98
 </body>
 </html>

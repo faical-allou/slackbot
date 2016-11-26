@@ -17,9 +17,15 @@ wsgi_app = app.wsgi_app
 def getpopularitytable():
 
     #Define our connection string to localhost
+<<<<<<< HEAD
     #conn_string = "host='localhost' port='5432' dbname='postgres' user='postgres' password='satf..'"
     #Define our connection string to heroku basic database
     conn_string = "host='ec2-54-235-125-135.compute-1.amazonaws.com' port='5432' dbname='d4sjjjfm3g35dc' user='swobzoejynjhpk' password='aJS-yO6EBUg6DgzVQSFwp3Ac1v'"
+=======
+    conn_string = "host='localhost' port='5432' dbname='postgres' user='postgres' password='satf..'"
+    #Define our connection string to heroku basic database
+    #conn_string = "host='ec2-54-235-125-135.compute-1.amazonaws.com' port='5432' dbname='d4sjjjfm3g35dc' user='swobzoejynjhpk' password='aJS-yO6EBUg6DgzVQSFwp3Ac1v'"
+>>>>>>> 687f99298674e18d2b6c316bcb5dfe74e45cea98
     #Connection string to redshift
     #conn_string = "host='travelinsights-redshiftcluster-1vmmqnro7byz7.cbkwytfo7n8s.eu-west-1.redshift.amazonaws.com' port='5439' dbname='b2baggrarch' user='awsuser' password='asnou32mvdoQEsd!!24fgs6yhuU'"
 
@@ -33,7 +39,11 @@ def getpopularitytable():
     else:
         print ("Connected!")
         cursor = conn.cursor()
+<<<<<<< HEAD
         query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
+=======
+        query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits \
+>>>>>>> 687f99298674e18d2b6c316bcb5dfe74e45cea98
         WHERE origincitycode > 'AAA' and destinationcitycode > 'AAA' ORDER BY seats DESC LIMIT 10000"
         cursor.execute(query)
 
