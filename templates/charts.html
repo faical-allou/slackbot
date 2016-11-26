@@ -73,11 +73,10 @@
               // The  chart will use the columns '2' and '3' - note:index start at 0
               'view': {'columns': [2,3]},
               'options': {
-
+                'backgroundColor': { fill:'transparent' },
                 'vAxis': {title: 'Popularity index',
                           textStyle: {color: 'black', fontName: 'Arial',fontSize: 10},
-                          titleTextStyle: {color: 'black', fontName: 'Arial',fontSize: 14}
-                        },
+                          titleTextStyle: {color: 'black', fontName: 'Arial',fontSize: 14}},
                 'legend': {'position': 'none'},
               }
             });
@@ -154,8 +153,10 @@
 
 <body>
   <!-- HTML -->
-    <div class="ta-c p-10 bs-black wrap-ref-program white-box">
-  					<p class="fs-32 bold">  Travel Insight </p>
+    <div class="ta-c background_body ">
+      <div class="white-box">
+
+  					<p class="fs-32 bold ">  Travel Insight </p>
   					<p class="fs-24 bold">  data goodness </p>
 
   	    <div class="container_12 ta-c mb-10 mt-30 ">
@@ -184,9 +185,9 @@
 	       </div>
 
          <div class="container_12 ta-c mb-10 mt-30 ">
-           <div class="grid_12 ta-c white">
+           <div class="grid_12 ta-c black">
              <!--Div that will hold the dashboard-->
-             <div id="dashboard_div" class="white">
+             <div id="dashboard_div">
                <!--Divs that will hold each control and chart-->
                <div id="filter_div"></div>
                <div id="filter_div2"></div>
@@ -197,6 +198,7 @@
              <a href="www.google.com" class="ui-green link-button mb-50 p-10" style="font-size:1em;"> click here </a>
            </div>
          </div>
+       </div>
      </div>
 
 </body>

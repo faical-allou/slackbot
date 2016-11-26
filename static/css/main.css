@@ -307,7 +307,7 @@ sign up
 #signup-steps ul > li:last-child{margin-left:0;right:0;left:auto;}
 #signup-steps .active{background:#1a1a1a;color:#fff;}
 
-.background_body{height:auto; background-size: cover; min-height:300px;width: 100%;overflow:hidden; background-image: url(img/shibuya.jpg)}
+.background_body{height:auto; background-size: cover; min-height:300px;width: 100%;overflow:hidden; background-image: url(img/shibuya.jpg);}
 
 .signup-list-ref{list-style:square;color:#8e2c86;}
 .signup-list-ref > li{padding:10px 0;}
@@ -2087,7 +2087,7 @@ a.underline:hover{text-decoration:underline;}
 /* =============================================================================
    white-box
    ========================================================================== */
-.white-box {background-color:rgba(255,255,255,0.7); z-index:2 }
+.white-box {background-color:rgba(255,255,255,0.7); z-index: 2 }
 
 
 /* =============================================================================
