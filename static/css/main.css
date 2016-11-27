@@ -20,7 +20,7 @@ textarea {
 }
 
 body {
-	background:#f5f5f5;
+	background:#1b1524;
 	font-size: 1em;
 	line-height: 1.4;
 	height:100%;
@@ -124,7 +124,7 @@ servor-message
 }
 
 
-.background_body{height:auto; background-size: cover; min-height:300px;width: 100%;overflow:hidden; background-image: url(img/shibuya.jpg);}
+.background_body{height:auto; background-size: cover; min-height:600px;width: 100%;}
 
 /* ==========================================================================
 Helper classes
@@ -290,11 +290,11 @@ Helper classes
 /*color*/
 .black{color:#000;}
 .grey{color:#111;}
-.grey-2{color:#aaa;}
+.grey-2{color:#ddd;}
 .white{color:#fff;}
 .blue{color:#0053a6;}
 .sky-blue{color:#5be2ed;}
-.dark-blue{color:#251d31;}
+.dark-blue{color:#1b1524;}
 .red{color:#cf3d36;}
 .purple{color:#8e2c86;}
 .green{color:#3a6730;}
@@ -369,13 +369,10 @@ Helper classes
 .bg-orange{background-color:#f7931e;}
 .bg-yellow{background-color:#ffc900;}
 .bg-blue{background-color:#096bd2;}
+.bg-sky-blue{background-color:#5be2ed;}
+.bg-dark-blue{background-color:#1b1524;}
+.bg-image{overflow:hidden; background-image: url(img/shibuya.jpg);}
 
-
-.red{color:#cf3d36;}
-.purple{color:#8e2c86;}
-.green{color:#3a6730;}
-.orange{color:#f7931e;}
-.yellow{color:#ffc900;}
 
 
 /*border color*/

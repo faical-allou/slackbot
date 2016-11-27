@@ -46,7 +46,8 @@
               'containerId': 'filter_div',
               'options': {
                 'filterColumnLabel': "Origin",
-                'ui': { 'allowMultiple' : true,
+                'ui': { 'label': 'Specify origin',
+                        'allowMultiple' : true,
                         'allowNone': true}
               }
             });
@@ -55,7 +56,8 @@
               'containerId': 'filter_div2',
               'options': {
                 'filterColumnLabel': "Destination",
-                'ui': { 'allowMultiple' : true,
+                'ui': { 'label': 'Specify destination',
+                        'allowMultiple' : true,
                         'allowNone': true}
               }
             });
@@ -70,10 +72,20 @@
                 'height':400,
                 'colors': ['#00b2d6'],
                 'backgroundColor': { fill:'#1b1524' },
-                'vAxis': {title: 'Popularity index',
-                          textStyle: {color: 'grey', fontName: 'Arial',fontSize: 12},
-                          titleTextStyle: {color: 'black', fontName: 'Arial',fontSize: 14}},
-                'legend': {'position': 'none'},
+                'title' : 'Most popular O&D ',
+                'titleTextStyle' : { color: '#ddd',
+                                      fontName: 'Arial',
+                                      fontSize: 18,
+                                      bold: true,},
+                'vAxis': {title: 'O&D',
+                          textStyle: {color: '#ddd', fontName: 'Arial',fontSize: 12},
+                          titleTextStyle: {color: '#ddd', fontName: 'Arial',fontSize: 14}},
+                'hAxis': {title: 'Popularity Index',
+                          textStyle: {color: '#ddd', fontName: 'Arial',fontSize: 12},
+                          titleTextStyle: {color: '#ddd', fontName: 'Arial',fontSize: 14}},
+                'legend': {position: 'none'},
+            //  animation doesn't work with dataview - bug
+            //    'animation': {startup: true, duration: 500 ,easing: 'inAndOut'},
               }
             });
 
@@ -123,7 +135,7 @@
         var url_to_call = './popularity';
 
         // loading image until the chart is done
-        $('.loading_image').show();
+        $('#loading_image').show();
         // call howbusy API and pass the data to the drawchart function
         $.ajax({
             type: 'GET',
@@ -134,7 +146,7 @@
                 drawChart(api_results);
             },
             complete: function(){
-                $('.loading_image').hide();
+                $('#loading_image').hide();
             },
             error: function (request, status, error) {
                 alert(error);
@@ -149,51 +161,55 @@
 
 <body>
   <!-- HTML -->
-    <div class="ta-c background_body ">
-      <div class="white-box">
-
-  					<div class="fs-32 pt-30 bold">  Travel Trends </div>
-  					<div class="fs-24 bold">  What are they searching for? </div>
-
-  	    <div class="container_12 ta-c mt-30 ">
+    <div class="ta-c bg-dark-blue mb-30 grey-2">
+        <div class="bg-image grey ">
+  					<div class="fs-32 pt-30 bold white-box">  Travel Trends </div>
+  					<div class="fs-24 bold pb-30 white-box">  What are they searching for? </div>
+        </div>
+  	    <div class="container_12 ta-c pt-30 bg-white grey">
   				<div class="dib">
   					<div class="grid_3 ta-c">
   						<div class="p-5">
-  							<i class="fa fa-users fa-4x dark-blue"></i>
-  							<p class="grey fs-14 bold"> Based on 50M+ UMVs </p>
+  							<i class="fa fa-users fa-4x sky-blue"></i>
+  							<p class=" fs-14 bold"> Based on 50M+ UMVs </p>
   						</div>
   					</div>
 
             <div class="grid_3 ta-c">
   						<div class="p-5">
-  							<i class="fa fa-calendar fa-4x dark-blue"></i>
-  							<p class="grey fs-14 bold"> In the last 12months </p>
+  							<i class="fa fa-calendar fa-4x sky-blue"></i>
+  							<p class=" fs-14 bold"> In the last 12months </p>
   						</div>
   					</div>
 
 						<div class="grid_3 ta-c">
 							<div class="p-5">
-								<i class="fa fa-star fa-4x dark-blue"></i>
-								<p class="grey fs-14 bold">The most popular routes are</p>
+								<i class="fa fa-star fa-4x sky-blue"></i>
+								<p class=" fs-14 bold">The most popular routes are: </p>
 							</div>
 						</div>
 					</div>
 	       </div>
 
-         <div class="container_12 ta-c mt-30 fs-14">
-           <div class="grid_12 ta-c">
+         <div class="container_12 ta-c fs-14 pb-30">
+           <!--Div that holds the animated gif until the chart loads-->
+           <div id="loading_image" class="grid_12 pb-30">
+               <img src="{{ url_for('static', filename='loading.gif') }}"></img>
+           </div>
+
+           <div class="grid_12 ta-c bg-dark-blue" >
              <!--Div that will hold the dashboard-->
-             <div id="dashboard_div">
+             <div id="dashboard_div" class="bg-dark-blue">
                <!--Divs that will hold each control and chart-->
+               <div id="chart_div"></div>
                <div id="filter_div" class="ta-l"></div>
                <div id="filter_div2" class="ta-l"></div>
 
-               <div id="chart_div"></div>
              </div>
            </div>
          </div>
-       </div>
-     </div>
+
+    </div>
 
 </body>
 </html>
