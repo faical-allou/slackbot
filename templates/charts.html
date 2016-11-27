@@ -162,10 +162,11 @@
 <body>
   <!-- HTML -->
     <div class="ta-c bg-grey mb-30 grey-2">
-        <div class="container_12 bg-image grey ">
+        <div class="bg-image grey ">
   					<div class="fs-32 pt-30 bold white-box">  Travel Trends </div>
   					<div class="fs-24 bold pb-30 white-box">  What are they searching for? </div>
         </div>
+        <div class="bg-white">
   	    <div class="container_12 ta-c pt-30 bg-white grey">
   				<div class="dib">
   					<div class="grid_3 ta-c">
@@ -189,13 +190,14 @@
 							</div>
 						</div>
 					</div>
+          <!--Div that holds the animated gif until the chart loads-->
+          <div id="loading_image" class="grid_12 pb-30">
+            <img src="{{ url_for('static', filename='loading.gif') }}"></img>
+          </div>
 	       </div>
-
+       </div>
+        <div class="bg-dark-blue">
          <div class="container_12 ta-c fs-14 pb-30">
-           <!--Div that holds the animated gif until the chart loads-->
-           <div id="loading_image" class="grid_12 pb-30">
-               <img src="{{ url_for('static', filename='loading.gif') }}"></img>
-           </div>
 
            <div class="container_12 ta-c bg-dark-blue" >
              <!--Div that will hold the dashboard-->
@@ -208,7 +210,7 @@
              </div>
            </div>
          </div>
-
+        </div>
     </div>
 
 </body>
