@@ -571,3 +571,30 @@ a.underline:hover{text-decoration:underline;}
    white-box
    ========================================================================== */
 .white-box {background-color:rgba(255,255,255,0.7); z-index: 2 }
+
+/*
+ * Centering the body content
+ */
+
+
+.menu {
+	width: 100%;
+  float: right;
+  padding-right: 100px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.menu li {
+  display: inline;
+}
+.menu li + li {
+  margin-left: 35px;
+	margin-right: 35px;
+}
+.menu li a {
+  text-decoration: none;
+}
+.menu li a {color:#FFF;}      /* unvisited link */
+.menu li a:visited {color:#FFF;}  /* visited link */
+.menu li a:hover {color:#FFF;}  /* mouse over link */
+.menu li a:active {color:#FFF;}  /* selected link */

@@ -1,16 +1,21 @@
 <html>
+<header>
+<!--Load the CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/customgooglechart.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui-1.9.0.custom.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/720.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.min.css') }}">
+<header>
+
   <body>
-    <header>
-      <div >
-        <h1 class="logo">traveltrends logo</h1>
-        <strong><nav>
-          <ul class="menu">
-            <li><a href="{{ url_for('pax') }}">Passengers view</a></li>
-            <li><a href="{{ url_for('airlines') }}">Airlines view</a></li>
+      <div class="menu p-f ta-r bold bg-dark-blue">
+          <ul >
+            <li><a href=./pax>Passengers view</a></li>
+            <li><a href="./airlines">Airlines view</a></li>
           </ul>
-        </nav></strong>
       </div>
-    </header>
     <div >
       {% block content %}
       {% endblock %}
