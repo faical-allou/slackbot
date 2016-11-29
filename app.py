@@ -70,10 +70,10 @@ def popularity():
     return resp
 
 
-@app.route('/traveltrends', methods=['GET'])
+@app.route('/pax', methods=['GET'])
 def render_page():
     #Renders the chart page
-        return render_template("charts.html", title="Here's how busy the city/beach is" )
+        return render_template("pax.html", title="Here's how busy the city/beach is" )
 
 
 @app.route('/')

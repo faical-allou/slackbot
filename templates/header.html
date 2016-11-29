@@ -1,0 +1,19 @@
+<html>
+  <body>
+    <header>
+      <div >
+        <h1 class="logo">traveltrends logo</h1>
+        <strong><nav>
+          <ul class="menu">
+            <li><a href="{{ url_for('pax') }}">Passengers view</a></li>
+            <li><a href="{{ url_for('airlines') }}">Airlines view</a></li>
+          </ul>
+        </nav></strong>
+      </div>
+    </header>
+    <div >
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>
