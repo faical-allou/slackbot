@@ -1,12 +1,5 @@
 {% extends "header.html" %}
 {% block content %}
-<head>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
-    <!--Load the Javascript -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
     <script type="text/javascript">
 
     // Load the Visualization API and the corechart package.
@@ -24,7 +17,7 @@
         data_formatted.addColumn('string', 'Airline code');
         data_formatted.addColumn('number', 'Day of the week');
         data_formatted.addColumn('string', 'First found');
-        data_formatted.addColumn('string', 'First Flight');
+        data_formatted.addColumn('string', 'Earliest flight');
         for (i = 0; i < data_to_display.length -1; i++) {
               data_formatted.addRows([data_to_display.data[i]]);
             };
@@ -32,28 +25,29 @@
         var myView = new google.visualization.DataView(data_formatted);
         myView.setRows([0,1,2,3,4,5,6,7,8,9]);
 
-
         var dashboard = new google.visualization.Dashboard(
                 document.getElementById('dashboard_div'));
 
             // Create 2 filters, passing some options
         var fromFilter = new google.visualization.ControlWrapper({
-              'controlType': 'StringFilter',
+              'controlType': 'CategoryFilter',
               'containerId': 'filter_div',
               'options': {
+                'values': data_formatted.getDistinctValues(1),
                 'filterColumnLabel': "Origin",
                 'ui': { 'label': 'Specify origin',
-                        'allowMultiple' : true,
+                        'allowMultiple' : false,
                         'allowNone': true}
               }
             });
         var toFilter = new google.visualization.ControlWrapper({
-              'controlType': 'StringFilter',
+              'controlType': 'CategoryFilter',
               'containerId': 'filter_div2',
               'options': {
+                'values': data_formatted.getDistinctValues(2),
                 'filterColumnLabel': "Destination",
                 'ui': { 'label': 'Specify destination',
-                        'allowMultiple' : true,
+                        'allowMultiple' : false,
                         'allowNone': true}
               }
             });
@@ -84,38 +78,34 @@
             // given the filter
             // Can also bind filters so that destination is filter for the origin selected
             dashboard.bind(fromFilter, myChart);
-            dashboard.bind(fromFilter, toFilter);
             dashboard.bind(toFilter, myChart);
 
             // Draw the dashboard.
             dashboard.draw(myView);
 
             //retrieve 10 values every time the filters change
-            google.visualization.events.addListener(fromFilter, 'statechange', function() {
+            google.visualization.events.addListener(fromFilter, 'statechange',
+            function() {
             var new_view = new google.visualization.DataView(data_formatted);
             value_filtered = fromFilter.getState();
-            console.log(value_filtered.value)
-            if (value_filtered.value>'AAA') {
-            new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.value}]));
-            }
+            console.log(value_filtered.selectedValues[0])
+            new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.selectedValues[0]}]));
             var filtered_view = new google.visualization.DataView(new_view);
             lastRowIndex = filtered_view.getNumberOfRows()-1
-            filtered_view.hideRows(10,lastRowIndex);
+            filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
             dashboard.draw(filtered_view);
             });
 
-            google.visualization.events.addListener(toFilter, 'statechange', function() {
+            google.visualization.events.addListener(toFilter, 'statechange',
+            function() {
             var new_view = new google.visualization.DataView(data_formatted);
-            value_filtered = toFilter.getState();
-            if (value_filtered.value>'AAA') {
-            new_view.setRows(new_view.getFilteredRows([{column: 2, value: value_filtered.value}]));
-            }
+            value_filtered = fromFilter.getState();
+            new_view.setRows(new_view.getFilteredRows([{column: 2, value: value_filtered.selectedValues[0]}]));
             var filtered_view = new google.visualization.DataView(new_view);
             lastRowIndex = filtered_view.getNumberOfRows()-1
-            filtered_view.hideRows(10,lastRowIndex);
+            filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
             dashboard.draw(filtered_view);
             });
-
           };
 
 
@@ -147,9 +137,6 @@
 
     </script>
 
-</head>
-
-<body>
   <!-- HTML -->
     <div class="ta-c bg-white mb-30 grey-2">
         <div class="bg-image grey ">
@@ -218,5 +205,4 @@
             </div>
           </div>
 
-</body>
 {% endblock %}

@@ -11,3 +11,5 @@ html, body {
               min-width: 130px;
             }
 .google-visualization-controls-stringfilter INPUT {width: 50px;}
+
+.goog-menu-vertical {display: none !important}
