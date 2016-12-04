@@ -13,3 +13,7 @@ html, body {
 .google-visualization-controls-stringfilter INPUT {width: 50px;}
 
 .goog-menu-vertical {display: none !important}
+
+.goog-combobox INPUT {width: 50px !important}
+.goog-combobox-active INPUT {width: 50px !important}
+.google-visualization-table .gradient {background-image: none !important}
