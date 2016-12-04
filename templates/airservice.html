@@ -18,10 +18,13 @@
 
         // Create the data table.
         var data_formatted = new google.visualization.DataTable();
+        data_formatted.addColumn('string', 'ID');
         data_formatted.addColumn('string', 'Origin');
         data_formatted.addColumn('string', 'Destination');
-        data_formatted.addColumn('string', 'O&D');
-        data_formatted.addColumn('number', 'Popularity');
+        data_formatted.addColumn('string', 'Airline code');
+        data_formatted.addColumn('number', 'Day of the week');
+        data_formatted.addColumn('string', 'First found');
+        data_formatted.addColumn('string', 'First Flight');
         for (i = 0; i < data_to_display.length -1; i++) {
               data_formatted.addRows([data_to_display.data[i]]);
             };
@@ -56,11 +59,11 @@
             });
             // Create a chart, passing some options
         var myChart = new google.visualization.ChartWrapper({
-              'chartType': 'BarChart',
+              'chartType': 'Table',
               'containerId': 'chart_div',
 
               // The  chart will use the columns '2' and '3' - note:index start at 0
-              'view': {'columns': [2,3]},
+              'view': {'columns': [1,2,3,4,5,6]},
               'options': {
                 'height':400,
                 'colors': ['#00b2d6'],
@@ -70,12 +73,6 @@
                                       fontName: 'Arial',
                                       fontSize: 18,
                                       bold: true,},
-                'vAxis': {title: 'O&D',
-                          textStyle: {color: '#ddd', fontName: 'Arial',fontSize: 12},
-                          titleTextStyle: {color: '#ddd', fontName: 'Arial',fontSize: 14}},
-                'hAxis': {title: 'Popularity Index',
-                          textStyle: {color: '#ddd', fontName: 'Arial',fontSize: 12},
-                          titleTextStyle: {color: '#ddd', fontName: 'Arial',fontSize: 14}},
                 'legend': {position: 'none'},
             //  animation doesn't work with dataview - bug
             //    'animation': {startup: true, duration: 500 ,easing: 'inAndOut'},
@@ -99,7 +96,7 @@
             value_filtered = fromFilter.getState();
             console.log(value_filtered.value)
             if (value_filtered.value>'AAA') {
-            new_view.setRows(new_view.getFilteredRows([{column: 0, value: value_filtered.value}]));
+            new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.value}]));
             }
             var filtered_view = new google.visualization.DataView(new_view);
             lastRowIndex = filtered_view.getNumberOfRows()-1
@@ -111,7 +108,7 @@
             var new_view = new google.visualization.DataView(data_formatted);
             value_filtered = toFilter.getState();
             if (value_filtered.value>'AAA') {
-            new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.value}]));
+            new_view.setRows(new_view.getFilteredRows([{column: 2, value: value_filtered.value}]));
             }
             var filtered_view = new google.visualization.DataView(new_view);
             lastRowIndex = filtered_view.getNumberOfRows()-1
@@ -125,7 +122,7 @@
 
     $(document).ready(function (drawchart) {
         // prepare the URL to call
-        var url_to_call = './popularity_data';
+        var url_to_call = './newflights_data';
 
         // loading image until the chart is done
         $('#loading_image').show();
@@ -172,14 +169,14 @@
             <div class="grid_3 ta-c">
   						<div class="p-5">
   							<i class="fa fa-calendar fa-4x sky-blue"></i>
-  							<p class=" fs-14 bold"> In the last 12 months </p>
+  							<p class=" fs-14 bold"> since January 2015 </p>
   						</div>
   					</div>
 
 						<div class="grid_3 ta-c">
 							<div class="p-5">
-								<i class="fa fa-star fa-4x sky-blue"></i>
-								<p class=" fs-14 bold">The most popular routes are: </p>
+								<i class="fa fa-plane fa-4x sky-blue"></i>
+								<p class=" fs-14 bold">The last 10 new routes users found </p>
 							</div>
 						</div>
 					</div>

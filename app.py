@@ -14,7 +14,7 @@ app = Flask(__name__, static_folder='static')
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 
-def getpopularitytable():
+def getconnection():
 
     #Define our connection string to localhost
     #conn_string = "host='localhost' port='5432' dbname='postgres' user='postgres' password='satf..'"
@@ -22,7 +22,6 @@ def getpopularitytable():
     conn_string = "host='ec2-54-235-125-135.compute-1.amazonaws.com' port='5432' dbname='d4sjjjfm3g35dc' user='swobzoejynjhpk' password='aJS-yO6EBUg6DgzVQSFwp3Ac1v'"
     #Connection string to redshift
     #conn_string = "host='travelinsights-redshiftcluster-1vmmqnro7byz7.cbkwytfo7n8s.eu-west-1.redshift.amazonaws.com' port='5439' dbname='b2baggrarch' user='awsuser' password='asnou32mvdoQEsd!!24fgs6yhuU'"
-
  	#connect
     try:
         conn = psycopg2.connect(conn_string)
@@ -32,31 +31,38 @@ def getpopularitytable():
         print (e.diag.message_detail)
     else:
         print ("Connected!")
-        cursor = conn.cursor()
-        query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
-        WHERE origincitycode > 'AAA' and destinationcitycode > 'AAA' ORDER BY seats DESC LIMIT 10000"
-        cursor.execute(query)
 
-        rows = [('a','b','c', 1)]
-        rowarray_list = []
+    return conn
 
-        while len(rows) > 0:
+def getpopularitytable():
 
-            rows = cursor.fetchmany(500)
-            # Convert query to row arrays
-            for row in rows:
-                rows_to_convert = (row[0], row[1], row[2], row[3])
-                t = list(rows_to_convert)
-                rowarray_list.append(t)
+    connection = getconnection()
+    cursor = connection.cursor()
 
-        j = json.dumps(rowarray_list)
+    query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
+    WHERE origincitycode > 'AAA' and destinationcitycode > 'AAA' ORDER BY seats DESC LIMIT 10000"
+    cursor.execute(query)
 
-    conn.close()
+    rows = [('a','b','c', 1)]
+    rowarray_list = []
+
+    while len(rows) > 0:
+
+        rows = cursor.fetchmany(500)
+        # Convert query to row arrays
+        for row in rows:
+            rows_to_convert = (row[0], row[1], row[2], row[3])
+            t = list(rows_to_convert)
+            rowarray_list.append(t)
+
+    j = json.dumps(rowarray_list)
+
+    connection.close()
     return rowarray_list
 
 
-@app.route('/popularity', methods=['GET'])
-def popularity():
+@app.route('/popularity_data', methods=['GET'])
+def popularity_data():
 
     popular = getpopularitytable()
 
@@ -69,11 +75,54 @@ def popularity():
 
     return resp
 
+def getnewflightstable():
+
+    connection = getconnection()
+    cursor = connection.cursor()
+
+    query = "SELECT concat(originairport, destinationairport,  carriercode, weekday_mon_1), originairport, destinationairport,  carriercode, weekday_mon_1, to_char(first_exit, 'YYYY-MM-DD'), to_char(first_flight, 'YYYY-MM-DD') FROM ptbexits_airservice \
+    ORDER BY first_flight DESC LIMIT 100000"
+    cursor.execute(query)
+
+    rows = [('a','b','c', 'd', 'e', 'f', 'g')]
+    rowarray_list = []
+
+    while len(rows) > 0:
+
+        rows = cursor.fetchmany(500)
+        # Convert query to row arrays
+        for row in rows:
+            rows_to_convert = (row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+            t = list(rows_to_convert)
+            rowarray_list.append(t)
+
+    j = json.dumps(rowarray_list)
+
+    connection.close()
+    return rowarray_list
+
+@app.route('/newflights_data', methods=['GET'])
+def airservice():
+
+    newflights = getnewflightstable()
+
+    resp = jsonify(data=newflights, length = len(newflights))
+
+    return resp
+
+
+
 
 @app.route('/pax', methods=['GET'])
-def render_page():
-    #Renders the chart page
+def render_pax():
+    #Renders the passenger chart page
         return render_template("pax.html", title="What are they searching for" )
+
+@app.route('/airservice', methods=['GET'])
+def render_service():
+    #Renders the passenger chart page
+        return render_template("airservice.html", title="What are they searching for" )
+
 
 
 @app.route('/')
@@ -90,6 +139,10 @@ def display_static():
 def load_js(filename):
     return send_from_directory('js', filename)
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 if __name__ == '__main__':
