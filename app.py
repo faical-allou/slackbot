@@ -81,7 +81,7 @@ def getnewflightstable():
     cursor = connection.cursor()
 
     query = "SELECT concat(originairport, destinationairport,  carriercode, weekday_mon_1), originairport, destinationairport,  carriercode, weekday_mon_1, to_char(first_exit, 'YYYY-MM-DD'), to_char(first_flight, 'YYYY-MM-DD') FROM ptbexits_airservice \
-    ORDER BY first_flight DESC LIMIT 10000"
+    ORDER BY first_exit DESC LIMIT 10000"
     cursor.execute(query)
 
     rows = [('a','b','c', 'd', 'e', 'f', 'g')]

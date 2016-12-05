@@ -20,7 +20,7 @@ textarea {
 }
 
 body {
-	background:#ddd;
+	background:#1b1524;
 	font-size: 1em;
 	line-height: 1.4;
 	height:100%;
@@ -290,7 +290,7 @@ Helper classes
 /*color*/
 .black{color:#000;}
 .grey{color:#111;}
-.light-grey{color:#ddd;}
+.light-grey{color:#DFDCE3;}
 .white{color:#fff;}
 .blue{color:#0053a6;}
 .sky-blue{color:#5be2ed;}
@@ -583,7 +583,15 @@ a.underline:hover{text-decoration:underline;}
   padding-right: 100px;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	text-align: right;
+	font-size: 13px;
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+	font-weight: 600;
+	position: fixed;
+	background-color:rgba(255,255,255,0.2);
+	color: #DFDCE3;
 }
+
 .menu li {
   display: inline;
 }
@@ -594,7 +602,7 @@ a.underline:hover{text-decoration:underline;}
 .menu li a {
   text-decoration: none;
 }
-.menu li a {color:#FFF;}      /* unvisited link */
-.menu li a:visited {color:#FFF;}  /* visited link */
-.menu li a:hover {color:#FFF;}  /* mouse over link */
-.menu li a:active {color:#FFF;}  /* selected link */
+.menu li a {color:#372f45;}      /* unvisited link */
+.menu li a:visited {color:#372f45;}  /* visited link */
+.menu li a:hover {color:#00B2D6;}  /* mouse over link */
+.menu li a:active {color:#372f45;}  /* selected link */
