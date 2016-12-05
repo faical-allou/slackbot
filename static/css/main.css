@@ -371,7 +371,7 @@ Helper classes
 .bg-blue{background-color:#096bd2;}
 .bg-sky-blue{background-color:#5be2ed;}
 .bg-dark-blue{background-color:#1b1524;}
-.bg-image{overflow:hidden; background-image: url(img/shibuya.jpg);}
+.bg-image{background-size: 100%; background-image: url(img/shibuya.jpg);}
 
 
 
