@@ -80,19 +80,20 @@ def getnewflightstable():
     connection = getconnection()
     cursor = connection.cursor()
 
-    query = "SELECT concat(originairport, destinationairport,  carriercode, weekday_mon_1), originairport, destinationairport,  carriercode, weekday_mon_1, to_char(first_exit, 'YYYY-MM-DD'), to_char(first_flight, 'YYYY-MM-DD') FROM ptbexits_airservice \
+    query = "SELECT concat(originairport, destinationairport,  carriercode, weekday_mon_1), originairport, destinationairport,  carriercode, weekday_mon_1, to_char(first_exit, 'YYYY-MM-DD'), to_char(first_flight, 'YYYY-MM-DD'), to_char(last_flight, 'YYYY-MM-DD')  FROM ptbexits_airservice \
     ORDER BY first_exit DESC LIMIT 10000"
     cursor.execute(query)
 
-    rows = [('a','b','c', 'd', 'e', 'f', 'g')]
+    rows = [('a','b','c', 'd', 'e', 'f', 'g', 'h')]
     rowarray_list = []
 
     while len(rows) > 0:
 
         rows = cursor.fetchmany(500)
+
         # Convert query to row arrays
         for row in rows:
-            rows_to_convert = (row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+            rows_to_convert = (row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
             t = list(rows_to_convert)
             rowarray_list.append(t)
 
@@ -105,6 +106,9 @@ def getnewflightstable():
 def airservice():
 
     newflights = getnewflightstable()
+
+    for k in range(0,len(newflights)-1):
+        newflights[k][0] = newflights[k][1] + "-" + newflights[k][2]+ " by " + newflights[k][3] + " on "+ newflights[k][4]
 
     resp = jsonify(data=newflights, length = len(newflights))
 

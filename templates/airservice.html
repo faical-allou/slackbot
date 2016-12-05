@@ -16,10 +16,22 @@
         data_formatted.addColumn('string', 'Destination');
         data_formatted.addColumn('string', 'Airline code');
         data_formatted.addColumn('string', 'Day of the week');
-        data_formatted.addColumn('string', 'First found');
-        data_formatted.addColumn('string', 'Earliest flight');
+        data_formatted.addColumn('date', 'First found');
+        data_formatted.addColumn('date', 'Earliest flight');
+        data_formatted.addColumn('date', 'Last flight');
+
         for (i = 0; i < data_to_display.length -1; i++) {
-              data_formatted.addRows([data_to_display.data[i]]);
+
+              data_formatted.addRows([
+                [data_to_display.data[i][0],
+                data_to_display.data[i][1],
+                data_to_display.data[i][2],
+                data_to_display.data[i][3],
+                data_to_display.data[i][4],
+                new Date(data_to_display.data[i][5]),
+                new Date(data_to_display.data[i][6]),
+                new Date(data_to_display.data[i][7])
+              ]]);
             };
 
         var myView = new google.visualization.DataView(data_formatted);
@@ -64,24 +76,18 @@
 
             // Create a chart, passing some options
         var myChart = new google.visualization.ChartWrapper({
-              'chartType': 'Table',
+              'chartType': 'Timeline',
               'containerId': 'chart_div',
 
-              // The  chart will use the columns '2' and '3' - note:index start at 0
-              'view': {'columns': [1,2,3,4,5,6]},
+              // The  chart will only use the columns listed - note:index start at 0
+              'view': {'columns': [0,3,6,7]},
+
               'options': {
-                'cssClassNames' : customtablecss,
-                'height':400,
+                'height':480,
+                'width':700,
                 'colors': ['#00b2d6'],
-                'backgroundColor': { fill:'#1b1524' },
-                'title' : 'Most popular O&D ',
-                'titleTextStyle' : { color: '#DFDCE3',
-                                      fontName: 'Arial',
-                                      fontSize: 18,
-                                      bold: true,},
-                'legend': {position: 'none'},
-            //  animation doesn't work with dataview - bug
-            //    'animation': {startup: true, duration: 500 ,easing: 'inAndOut'},
+                'backgroundColor': { fill:'#DFDCE3' },
+                'timeline':{rowLabelStyle:{color:'#1b1524', fontSize: 10 }, },
               }
             });
 
@@ -181,19 +187,19 @@
           </div>
 	       </div>
        </div>
-        <div class="bg-dark-blue">
-         <div class="container_12 ta-c fs-14 pb-30">
+        <div class="bg-light-grey">
 
-           <div class="container_12 ta-c bg-dark-blue" >
+           <div class="container_12 ta-c" >
              <!--Div that will hold the dashboard-->
-             <div id="dashboard_div" class="bg-dark-blue ">
+             <div id="dashboard_div">
                <!--Divs that will hold each control and chart-->
-               <div id="chart_div" class="m-30"></div>
-               <div id="filter_div" class="grid_6 ta-l pb-30"></div>
-               <div id="filter_div2" class="grid_6 ta-l pb-30"></div>
-        </div>
-    </div>
-       </div>
+               <div id="chart_div" class="m-30 "></div>
+
+                 <div id="filter_div" class="grid_6 ta-l pb-30"></div>
+                 <div id="filter_div2" class="grid_6 ta-l pb-30"></div>
+
+              </div>
+            </div>
 
 
 {% endblock %}

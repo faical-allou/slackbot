@@ -16,11 +16,11 @@ button,
 input,
 select,
 textarea {
-	color: #1a1a1a;
+	color: #272133;
 }
 
 body {
-	background:#1b1524;
+	background:#272133;
 	font-size: 1em;
 	line-height: 1.4;
 	height:100%;
@@ -294,7 +294,7 @@ Helper classes
 .white{color:#fff;}
 .blue{color:#0053a6;}
 .sky-blue{color:#5be2ed;}
-.dark-blue{color:#1b1524;}
+.dark-blue{color:#272133;}
 .red{color:#cf3d36;}
 .purple{color:#8e2c86;}
 .green{color:#3a6730;}
@@ -360,7 +360,7 @@ Helper classes
 /*bg color*/
 .bg-white{background-color:#fff;}
 .bg-grey-1{background-color:#f5f5f5;}
-.bg-light-grey{background-color:#eaeaea;}
+.bg-light-grey{background-color:#DFDCE3;}
 .bg-black{background-color:#1a1a1a;}
 .bg-black2{background-color:#000000;}
 .bg-purple{background-color:#8e2c86;}
@@ -370,7 +370,7 @@ Helper classes
 .bg-yellow{background-color:#ffc900;}
 .bg-blue{background-color:#096bd2;}
 .bg-sky-blue{background-color:#5be2ed;}
-.bg-dark-blue{background-color:#1b1524;}
+.bg-dark-blue{background-color:#272133;}
 .bg-image{background-size: 100%; background-image: url(img/shibuya.jpg);}
 
 
