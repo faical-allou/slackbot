@@ -106,7 +106,6 @@
             function() {
             var new_view = new google.visualization.DataView(data_formatted);
             value_filtered = fromFilter.getState();
-            console.log(value_filtered.selectedValues[0])
             new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.selectedValues[0]}]));
             var filtered_view = new google.visualization.DataView(new_view);
             lastRowIndex = filtered_view.getNumberOfRows()-1
@@ -117,7 +116,7 @@
             google.visualization.events.addListener(toFilter, 'statechange',
             function() {
             var new_view = new google.visualization.DataView(data_formatted);
-            value_filtered = fromFilter.getState();
+            value_filtered = toFilter.getState();
             new_view.setRows(new_view.getFilteredRows([{column: 2, value: value_filtered.selectedValues[0]}]));
             var filtered_view = new google.visualization.DataView(new_view);
             lastRowIndex = filtered_view.getNumberOfRows()-1
