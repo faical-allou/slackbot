@@ -11,8 +11,9 @@
 
 .goog-menu-vertical {display: none !important}
 
-.goog-combobox INPUT {width: 100px !important; height: 25px !important;}
-.goog-combobox-active INPUT {width: 100px !important; height: 25px !important}
+.goog-combobox {width: 100px !important; height: 25px !important; border: none}
+.goog-combobox input {width: 100px !important; height: 25px !important; border: 1px solid #b5b6b5}
+.goog-combobox-active input {width: 100px !important; height: 25px !important}
 .goog-combobox-button { display: none}
 
 .google-visualization-table .gradient {background-image: none !important}
