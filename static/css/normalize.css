@@ -81,7 +81,7 @@ button,
 input,
 select,
 textarea {
-    font-family:Arial,Verdana,sans-serif;
+    font-family:Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 /*
@@ -100,7 +100,7 @@ body {
  * Addresses `outline` inconsistency between Chrome and other browsers.
  */
 a{text-decoration:none;}
- 
+
 a:focus {
     outline: 0;
 }
@@ -291,12 +291,12 @@ sub {
 dl,
 menu,
 ol,
-ul { 
+ul {
 	margin:0;
 	padding:0;
 }
 
-dd {    
+dd {
 }
 
 /*
@@ -305,7 +305,7 @@ dd {
 
 menu,
 ol,
-ul {	
+ul {
 	list-style:none;
 }
 

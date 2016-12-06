@@ -584,8 +584,8 @@ a.underline:hover{text-decoration:underline;}
 	padding-top: 10px;
 	padding-bottom: 10px;
 	text-align: right;
-	font-size: 13px;
-	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+	font-size: 18px;
+	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-weight: 600;
 	position: fixed;
 	background-color:rgba(255,255,255,0.2);
@@ -606,3 +606,6 @@ a.underline:hover{text-decoration:underline;}
 .menu li a:visited {color:#372f45;}  /* visited link */
 .menu li a:hover {color:#00B2D6;}  /* mouse over link */
 .menu li a:active {color:#372f45;}  /* selected link */
+
+
+.text-icon { font-size: 18; font-weight: 600  }

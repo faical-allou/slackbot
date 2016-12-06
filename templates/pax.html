@@ -1,6 +1,5 @@
 {% extends "header.html" %}
 {% block content %}
-<head>
     <script type="text/javascript">
 
     // Load the Visualization API and the corechart package.
@@ -56,20 +55,20 @@
               // The  chart will use the columns '2' and '3' - note:index start at 0
               'view': {'columns': [2,3]},
               'options': {
-                'height':400,
+                'height':600,
                 'colors': ['#00b2d6'],
                 'backgroundColor': { fill:'#DFDCE3' },
                 'title' : 'Most popular O&D ',
                 'titleTextStyle' : { color: '#272133',
-                                      fontName: 'Arial',
+                                      fontName: "Helvetica",
                                       fontSize: 18,
                                       bold: true,},
                 'vAxis': {title: 'O&D',
-                          textStyle: {color: '#272133', fontName: 'Arial',fontSize: 14},
-                          titleTextStyle: {color: '#272133', fontName: 'Arial',fontSize: 16}},
+                          textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
+                          titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18}},
                 'hAxis': {title: 'Popularity Index',
-                          textStyle: {color: '#272133', fontName: 'Arial',fontSize: 14},
-                          titleTextStyle: {color: '#272133', fontName: 'Arial',fontSize: 16}},
+                          textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
+                          titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18}},
                 'legend': {position: 'none'},
             //  animation doesn't work with dataview - bug
             //    'animation': {startup: true, duration: 500 ,easing: 'inAndOut'},
@@ -144,32 +143,29 @@
 
     </script>
 
-</head>
-
-<body>
   <!-- HTML -->
 
         <div class="bg-white">
   	    <div class="container_12 ta-c pt-30 bg-white grey">
   				<div class="dib">
-  					<div class="grid_3 ta-c">
+  					<div class="grid_4 ta-c">
   						<div class="p-5">
   							<i class="fa fa-users fa-4x sky-blue"></i>
-  							<p class=" fs-14 bold"> Based on 50M+ UMVs </p>
+  							<p class=" text-icon "> Based on 50M+ UMVs </p>
   						</div>
   					</div>
 
-            <div class="grid_3 ta-c">
+            <div class="grid_4 ta-c">
   						<div class="p-5">
   							<i class="fa fa-calendar fa-4x sky-blue"></i>
-  							<p class=" fs-14 bold"> In the last 12 months </p>
+  							<p class=" text-icon "> In the last 12 months </p>
   						</div>
   					</div>
 
-						<div class="grid_3 ta-c">
+						<div class="grid_4 ta-c">
 							<div class="p-5">
 								<i class="fa fa-star fa-4x sky-blue"></i>
-								<p class=" fs-14 bold">The most popular routes are: </p>
+								<p class=" text-icon ">The most popular routes are: </p>
 							</div>
 						</div>
 					</div>
@@ -180,18 +176,30 @@
 	       </div>
        </div>
         <div class="bg-light-grey">
-         <div class="container_12 ta-c fs-14 pb-30">
+         <div class="container_12 ta-c fs-18 pb-30 pt-30">
 
-           <div class="container_12 ta-c " >
              <!--Div that will hold the dashboard-->
              <div id="dashboard_div" >
                <!--Divs that will hold each control and chart-->
                <div id="chart_div"></div>
                <div id="filter_div" class="grid_6 ta-l pb-30"></div>
                <div id="filter_div2" class="grid_6 ta-l pb-30"></div>
+             </div>
+          </div>
+
+          <div class="container_12 pt-30 pb-30 ">
+            <div class="dib">
+              <div class="grid_2">
+                <div class="p-5">
+                  <i class="fa fa-info-circle fa-5x dark-blue"></i>
+                </div>
+              </div>
+              <div class="grid_10">
+                <div class="p-5">
+                  <span class=" fs-18 "> The most popular O&D are calcultaed based on the number of redirects captured during the last 12 months (search dates); the popularity index enables comparison between O&D  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
-       </div>
-
-
 {% endblock %}

@@ -1,16 +1,18 @@
 
 .google-visualization-controls-label {
-        font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+        font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
         width: 200px;
         color: #272133;
       }
 .google-visualization-controls-label LABEL {
               min-width: 130px;
             }
-.google-visualization-controls-stringfilter INPUT {width: 50px;}
+.google-visualization-controls-stringfilter INPUT {width: 80px;}
 
 .goog-menu-vertical {display: none !important}
 
-.goog-combobox INPUT {width: 50px !important}
-.goog-combobox-active INPUT {width: 50px !important}
+.goog-combobox INPUT {width: 80px !important; height: 25px !important;}
+.goog-combobox-active INPUT {width: 80px !important; height: 25px !important}
+.goog-combobox-button { height: 25px !important; display: none}
+
 .google-visualization-table .gradient {background-image: none !important}

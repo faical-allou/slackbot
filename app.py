@@ -108,7 +108,7 @@ def airservice():
     newflights = getnewflightstable()
 
     for k in range(0,len(newflights)-1):
-        newflights[k][0] = newflights[k][1] + "-" + newflights[k][2]+ " by " + newflights[k][3] + " on "+ newflights[k][4]
+        newflights[k][0] = newflights[k][1] + "-" + newflights[k][2]+ "\n" + " by " + newflights[k][3] + " on "+ newflights[k][4]
 
     resp = jsonify(data=newflights, length = len(newflights))
 

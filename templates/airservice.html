@@ -63,16 +63,6 @@
                         'allowNone': true}
               }
             });
-            // set customcss classes to the table
-            var customtablecss = {
-              'headerRow': 'bg-dark-blue light-grey',
-              'tableRow': '',
-              'oddTableRow': '',
-              'selectedTableRow': 'bg-sky-blue grey',
-              'hoverTableRow': 'bg-sky-blue grey',
-              'headerCell': '',
-              'tableCell': '',
-              'rowNumberCell': ''};
 
             // Create a chart, passing some options
         var myChart = new google.visualization.ChartWrapper({
@@ -83,11 +73,12 @@
               'view': {'columns': [0,3,6,7]},
 
               'options': {
-                'height':480,
+                'height':600,
                 'width':700,
                 'colors': ['#00b2d6'],
                 'backgroundColor': { fill:'#DFDCE3' },
-                'timeline':{rowLabelStyle:{color:'#1b1524', fontSize: 10 }, },
+                'timeline':{rowLabelStyle:{fontName:"Helvetica", color:'#1b1524', fontSize: 16 },
+                            barLabelStyle:{fontSize: 16} },
               }
             });
 
@@ -159,24 +150,24 @@
         <div class="bg-white">
   	    <div class="container_12 ta-c pt-30 bg-white grey">
   				<div class="dib">
-  					<div class="grid_3 ta-c">
+  					<div class="grid_4 ta-c">
   						<div class="p-5">
   							<i class="fa fa-users fa-4x sky-blue"></i>
-  							<p class=" fs-14 bold"> Based on 50M+ UMVs </p>
+  							<p class=" text-icon "> Based on 50M+ UMVs </p>
   						</div>
   					</div>
 
-            <div class="grid_3 ta-c">
+            <div class="grid_4 ta-c">
   						<div class="p-5">
   							<i class="fa fa-calendar fa-4x sky-blue"></i>
-  							<p class=" fs-14 bold"> since January 2015 </p>
+  							<p class=" text-icon "> since January 2015 </p>
   						</div>
   					</div>
 
-						<div class="grid_3 ta-c">
+						<div class="grid_4 ta-c">
 							<div class="p-5">
 								<i class="fa fa-plane fa-4x sky-blue"></i>
-								<p class=" fs-14 bold">The last 10 new routes are:</p>
+								<p class=" text-icon ">The last 10 new routes are:</p>
 							</div>
 						</div>
 					</div>
@@ -186,19 +177,38 @@
           </div>
 	       </div>
        </div>
-        <div class="bg-light-grey">
 
-           <div class="container_12 ta-c" >
-             <!--Div that will hold the dashboard-->
-             <div id="dashboard_div">
-               <!--Divs that will hold each control and chart-->
-               <div id="chart_div" class="m-30 "></div>
+       <div class="bg-light-grey">
+        <div class="container_12 ta-c fs-18 pb-30 pt-30">
 
-                 <div id="filter_div" class="grid_6 ta-l pb-30"></div>
-                 <div id="filter_div2" class="grid_6 ta-l pb-30"></div>
-
-              </div>
+            <!--Div that will hold the dashboard-->
+            <div id="dashboard_div" >
+              <!--Divs that will hold each control and chart-->
+              <div id="chart_div"></div>
+              <div id="filter_div" class="grid_6 ta-l pb-30"></div>
+              <div id="filter_div2" class="grid_6 ta-l pb-30"></div>
             </div>
+         </div>
 
+         <div class="container_12 pt-30 pb-30 ">
+           <div class="dib">
+             <div class="grid_2">
+               <div class="p-5">
+                 <i class="fa fa-info-circle fa-5x dark-blue"></i>
+               </div>
+             </div>
+             <div class="grid_10">
+               <div class="p-5">
+                 <span class=" fs-18 ">
+                   Flights are only shown when they gather a certain number of redirects. <br/>
+                   The bars show the timeframe between the earliest exit (travel date) captured
+                   and the last one and may not mean the flight is discontinued. <br/>
+                   Flights are ordered by date of discovery (first exit date), the latest ones on top.
+                 </span>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
 
 {% endblock %}
