@@ -43,6 +43,22 @@ def airservice():
 
     return resp
 
+@app.route('/itineraries_data', methods=['GET'])
+def itineraries_data():
+
+    itin = extractdata.getitintable()
+    lastupdate = extractdata.getlasttimeupdate('ptbexits_itineraries')
+    #Converting to float and normalize the table (adding 1 to the sum to return 0 when empty)
+    sum_itin = sum(row[12] for row in itin)+1
+    for k in range(0,len(itin)-1):
+
+        itin[k][12] = itin[k][12]*10000/sum_itin
+
+    resp = jsonify(data=itin, update = lastupdate, length = len(itin))
+
+    return resp
+
+
 @app.route('/pax', methods=['GET'])
 def render_pax():
     #Renders the passenger chart page

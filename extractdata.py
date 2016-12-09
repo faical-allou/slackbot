@@ -1,5 +1,5 @@
 import psycopg2
-import json
+import simplejson
 import collections
 import datetime
 
@@ -57,7 +57,7 @@ class extractdata:
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
-        j = json.dumps(rowarray_list)
+        j = simplejson.dumps(rowarray_list)
 
         connection.close()
         return rowarray_list
@@ -86,11 +86,36 @@ class extractdata:
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
-        j = json.dumps(rowarray_list)
+        j = simplejson.dumps(rowarray_list)
 
         connection.close()
         return rowarray_list
 
+    def getitintable(self):
+
+        connection = self.getconnection()
+        cursor = connection.cursor()
+
+        query = "SELECT *  FROM ptbexits_itineraries \
+        LIMIT 100"
+        cursor.execute(query)
+
+        rows = [('a',1,2, 'd',1, 2, 'g', 1, 2, 'j', 1,2, 3)]
+        rowarray_list = []
+
+        while len(rows) > 0:
+
+            rows = cursor.fetchmany(500)
+
+            # Convert query to row arrays
+            for row in rows:
+                rows_to_convert = (row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12])
+                t = list(rows_to_convert)
+                rowarray_list.append(t)
+
+        j = simplejson.dumps(rowarray_list)
+        connection.close()
+        return rowarray_list
 
 def __init__(self):
         print ("in init")
