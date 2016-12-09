@@ -20,13 +20,13 @@ extractdata = extractdata()
 def popularity_data():
 
     popular = extractdata.getpopularitytable()
-
-    #'normalize the table (adding 1 to the sum to return 0 when empty)
+    lastupdate = extractdata.getlasttimeupdate('ptbexits_popular')
+    #normalize the table (adding 1 to the sum to return 0 when empty)
     sum_popular = sum(row[3] for row in popular)+1
     for k in range(0,len(popular)-1):
         popular[k][3] = popular[k][3]*10000/sum_popular
 
-    resp = jsonify(data=popular, length = len(popular))
+    resp = jsonify(data=popular, update = lastupdate, length = len(popular))
 
     return resp
 
@@ -34,11 +34,12 @@ def popularity_data():
 def airservice():
 
     newflights = extractdata.getnewflightstable()
-
+    lastupdate = extractdata.getlasttimeupdate('ptbexits_airservice')
+    # formatting the row label
     for k in range(0,len(newflights)-1):
         newflights[k][0] = newflights[k][1] + "-" + newflights[k][2]+ "\n" + " by " + newflights[k][3] + " on "+ newflights[k][4]
 
-    resp = jsonify(data=newflights, length = len(newflights))
+    resp = jsonify(data=newflights, update = lastupdate, length = len(newflights))
 
     return resp
 

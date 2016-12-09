@@ -25,6 +25,17 @@ class extractdata:
         return conn
 
 
+    def getlasttimeupdate(self, table_name):
+
+        connection = self.getconnection()
+        cursor = connection.cursor()
+
+        query = "SELECT to_char(max(dates),'YYYY-MM-DD') FROM log_updates WHERE tables = '"+table_name+"'"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        connection.close()
+        return results[0][0]
+
     def getpopularitytable(self):
 
         connection = self.getconnection()
@@ -50,6 +61,7 @@ class extractdata:
 
         connection.close()
         return rowarray_list
+
 
 
     def getnewflightstable(self):

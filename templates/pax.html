@@ -130,6 +130,8 @@
             crossDomain: true,
             success: function (api_results) {
                 drawChart(api_results);
+                update_time = new Date(api_results.update);
+                document.getElementById("update_time").innerHTML = update_time.toDateString() ;
             },
             complete: function(){
                 $('#loading_image').hide();
@@ -185,6 +187,8 @@
                <div id="filter_div" class="grid_6 ta-l pb-30"></div>
                <div id="filter_div2" class="grid_6 ta-l pb-30"></div>
              </div>
+             <span class=" text-icon "> Last updated on: </span>
+             <span id="update_time" class=" text-icon"> - </span>
           </div>
 
           <div class="container_12 pt-30 pb-30 ">
