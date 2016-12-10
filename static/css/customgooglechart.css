@@ -17,3 +17,5 @@
 .goog-combobox-button { display: none}
 
 .google-visualization-table .gradient {background-image: none !important}
+
+#map {width: 700px; height: 400px }

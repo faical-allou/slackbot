@@ -97,7 +97,7 @@ class extractdata:
         cursor = connection.cursor()
 
         query = "SELECT *  FROM ptbexits_itineraries \
-        LIMIT 100"
+        LIMIT 100000"
         cursor.execute(query)
 
         rows = [('a',1,2, 'd',1, 2, 'g', 1, 2, 'j', 1,2, 3)]

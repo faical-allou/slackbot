@@ -69,6 +69,11 @@ def render_service():
     #Renders the passenger chart page
         return render_template("airservice.html", title="What are they searching for" )
 
+@app.route('/itineraries', methods=['GET'])
+def render_itineraries():
+    #Renders the passenger chart page
+        return render_template("itineraries.html", title="What are they searching for" )
+
 @app.route('/')
 def hello():
     today_flag = datetime.date.today()

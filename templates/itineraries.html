@@ -1,0 +1,143 @@
+{% extends "header.html" %}
+{% block content %}
+
+    <script>
+
+      function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 0, lng: 0},
+          zoom: 2
+        });
+      };
+
+      function draw_map() {
+        var filter = document.getElementById("ODinput");
+        var od = filter.value;
+        var origin = od.substring(0,3);
+        var destination = od.substring(4,7);
+        if (origin > 'AAA' && destination > 'AAA'){
+            var itintable = result_table.filter(function (table) {
+                  return table[0] == origin &&
+                         table[3] == destination ;
+                });
+            for (i = 0; i < itintable.length; i++){
+            var flightPlanCoordinates = [];
+              if (itintable[i][7] == null) {
+                  itintable[i][7] =  itintable[i][1];
+                  itintable[i][8] = itintable[i][2];
+                  itintable[i][10] =  itintable[i][1];
+                  itintable[i][11] = itintable[i][2] }
+                else { if (itintable[i][10] == null) {
+                  itintable[i][10] =  itintable[i][7];
+                  itintable[i][11] = itintable[i][8]
+                };};
+              flightPlanCoordinates = [
+                {lat:itintable[i][1],lng:itintable[i][2]},
+                {lat:itintable[i][7],lng:itintable[i][8]},
+                {lat:itintable[i][10],lng:itintable[i][11]},
+                {lat:itintable[i][4],lng:itintable[i][5]}
+              ];
+            var flightPath = new google.maps.Polyline({
+              path: flightPlanCoordinates,
+              geodesic: true,
+              strokeColor: '#FF0000',
+              strokeOpacity: 1.0,
+              strokeWeight: 2
+            });
+            flightPath.setMap(map);
+            };
+        };
+        };
+
+
+    $(document).ready(function () {
+        // prepare the URL to call
+        var url_to_call = './itineraries_data';
+
+        // loading image until the chart is done
+        $('#loading_image').show();
+        // call API and pass the data to the drawchart function
+
+        $.ajax({
+            type: 'GET',
+            url: url_to_call,
+            dataType: "json",
+            crossDomain: true,
+            success: function (api_results){
+              draw_map();
+              result_table = api_results.data;
+              update_time = new Date(api_results.update);
+              document.getElementById("update_time").innerHTML = update_time.toDateString() ;
+            },
+            complete: function(){
+                $('#loading_image').hide();
+            },
+            error: function (request, status, error) {
+                console.log(error);
+            }
+        });
+
+    });
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk&callback=initMap" async defer></script>
+
+  <!-- HTML -->
+
+        <div class="bg-white">
+  	    <div class="container_12 ta-c pt-30 bg-white grey">
+  				<div class="dib">
+  					<div class="grid_4 ta-c">
+  						<div class="p-5">
+  							<i class="fa fa-users fa-4x sky-blue"></i>
+  							<p class=" text-icon "> Based on 50M+ UMVs </p>
+  						</div>
+  					</div>
+
+            <div class="grid_4 ta-c">
+  						<div class="p-5">
+  							<i class="fa fa-calendar fa-4x sky-blue"></i>
+  							<p class=" text-icon "> In the last 12 months </p>
+  						</div>
+  					</div>
+
+						<div class="grid_4 ta-c">
+							<div class="p-5">
+								<i class="fa fa-star fa-4x sky-blue"></i>
+								<p class=" text-icon ">The most popular routes are: </p>
+							</div>
+						</div>
+					</div>
+          <!--Div that holds the animated gif until the chart loads-->
+          <div id="loading_image" class="grid_12 pb-30">
+            <img src="{{ url_for('static', filename='loading.gif') }}"></img>
+          </div>
+	       </div>
+       </div>
+        <div class="bg-light-grey">
+         <div class="container_12 ta-c fs-18 pb-30 pt-30">
+            <div id="map" class="mb-30"></div>
+            <div>
+            <input id="ODinput" type="text">
+            <input type="button" value="draw itineraries" onClick="draw_map()">
+            <input type="button" value="clear" onClick="initMap()">
+            </div>
+             <span class="text-icon"> Last updated on: </span>
+             <span id="update_time" class=" text-icon"> - </span>
+          </div>
+
+          <div class="container_12 pt-30 pb-30 ">
+            <div class="dib">
+              <div class="grid_2">
+                <div class="p-5">
+                  <i class="fa fa-info-circle fa-5x dark-blue"></i>
+                </div>
+              </div>
+              <div class="grid_10">
+                <div class="p-5">
+                  <span class=" fs-16 "> The most popular O&Ds are calculated based on the number of redirects captured during the last 12 months (search dates). <br/>The popularity index enables comparison between O&D  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}
