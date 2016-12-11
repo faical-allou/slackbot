@@ -49,30 +49,29 @@ def itineraries_data():
     itin = extractdata.getitintable()
     lastupdate = extractdata.getlasttimeupdate('ptbexits_itineraries')
     #Converting to float and normalize the table (adding 1 to the sum to return 0 when empty)
-    sum_itin = sum(row[12] for row in itin)+1
+    max_itin = max(row[12] for row in itin)+1
     for k in range(0,len(itin)-1):
-
-        itin[k][12] = itin[k][12]*10000/sum_itin
+        itin[k][12] = max(itin[k][12]*100/max_itin,1)
 
     resp = jsonify(data=itin, update = lastupdate, length = len(itin))
 
     return resp
 
 
-@app.route('/pax', methods=['GET'])
+@app.route('/popularity_view', methods=['GET'])
 def render_pax():
     #Renders the passenger chart page
-        return render_template("pax.html", title="What are they searching for" )
+        return render_template("popularity_view.html", title="What are they searching for" )
 
-@app.route('/airservice', methods=['GET'])
+@app.route('/newflights_view', methods=['GET'])
 def render_service():
     #Renders the passenger chart page
-        return render_template("airservice.html", title="What are they searching for" )
+        return render_template("newflights_view.html", title="What are they searching for" )
 
-@app.route('/itineraries', methods=['GET'])
+@app.route('/itineraries_view', methods=['GET'])
 def render_itineraries():
     #Renders the passenger chart page
-        return render_template("itineraries.html", title="What are they searching for" )
+        return render_template("itineraries_view.html", title="What are they searching for" )
 
 @app.route('/')
 def hello():

@@ -588,17 +588,15 @@ a.underline:hover{text-decoration:underline;}
 	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-weight: 600;
 	position: fixed;
-	background-color:rgba(255,255,255,0.2);
+	background-color:rgba(255,255,255,0.8);
 	color: #DFDCE3;
 	z-index: 1000;
 }
 
 .menu li {
-  display: inline;
-}
-.menu li + li {
-  margin-left: 35px;
-	margin-right: 35px;
+	display: inline;
+  margin-left: 15px;
+	margin-right: 15px;
 }
 .menu li a {
   text-decoration: none;
@@ -610,3 +608,20 @@ a.underline:hover{text-decoration:underline;}
 
 
 .text-icon { font-size: 18; font-weight: 600  }
+
+.button-style{
+	border : solid 2px #ffffff;
+	border-radius : 11px;
+	moz-border-radius : 11px;
+	font-size : 15px;
+	color : #272133;
+	padding : 3px 11px;
+	background-color : #dfdce3;
+}
+.button-style:hover {
+    background-color : #5be2ed;
+		color : #FFFFFF;
+}
+.button-style:focus {
+  outline: none;
+}
