@@ -92,6 +92,13 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+@app.errorhandler(404)
+def pageNotFound(error):
+    return render_template("500.html", title="Sorry!" )
+
+@app.errorhandler(500)
+def erroronpage(error):
+    return render_template("500.html", title="Sorry!" )
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 80.
