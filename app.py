@@ -25,7 +25,7 @@ def popularity_data():
     sum_popular = sum(row[3] for row in popular)+1
     for k in range(0,len(popular)-1):
         popular[k][3] = popular[k][3]*10000/sum_popular
-
+    print(popular)
     resp = jsonify(data=popular, update = lastupdate, length = len(popular))
 
     return resp
