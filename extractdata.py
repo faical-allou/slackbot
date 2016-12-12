@@ -42,7 +42,8 @@ class extractdata:
         cursor = connection.cursor()
 
         query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
-        WHERE origincitycode > 'AAA' and destinationcitycode > 'AAA' ORDER BY seats DESC LIMIT 10000"
+        WHERE origincitycode > 'AAA' and destinationcitycode > 'AAA' \
+        ORDER BY seats DESC LIMIT 100000"
         cursor.execute(query)
 
         rows = [('a','b','c', 1)]
@@ -70,7 +71,7 @@ class extractdata:
         cursor = connection.cursor()
 
         query = "SELECT concat(originairport, destinationairport,  carriercode, weekday_mon_1), originairport, destinationairport,  carriercode, weekday_mon_1, to_char(first_exit, 'YYYY-MM-DD'), to_char(first_flight, 'YYYY-MM-DD'), to_char(last_flight, 'YYYY-MM-DD')  FROM ptbexits_airservice \
-        ORDER BY first_exit DESC LIMIT 10000"
+        ORDER BY first_exit DESC LIMIT 100000"
         cursor.execute(query)
 
         rows = [('a','b','c', 'd', 'e', 'f', 'g', 'h')]
@@ -97,7 +98,7 @@ class extractdata:
         cursor = connection.cursor()
 
         query = "SELECT *  FROM ptbexits_itineraries \
-        LIMIT 10000"
+        LIMIT 100000"
         cursor.execute(query)
 
         rows = [('a',1,2, 'd',1, 2, 'g', 1, 2, 'j', 1,2, 3)]
