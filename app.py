@@ -57,6 +57,66 @@ def itineraries_data():
 
     return resp
 
+@app.route('/airport_data', methods=['GET'])
+def airport_data():
+
+    airports = extractdata.getairporttable()
+    lastupdate = extractdata.getlasttimeupdate('ptbexits_airport')
+    #Converting to float normalize the table (adding 1 to the sum to return 0 when empty)
+    # and formatting for easy consumption by the chart
+    # getting the list of airports to consider, the final table is based on airport
+    transpose = list(zip(*airports))
+    transposelist = list(transpose[0])
+    transposelist1 = list(transpose[1])
+    transposelist.extend(transposelist1)
+    airport_list = list(set(transposelist))
+
+    # getting size of the large table from the database to iterate on
+    airport_size = len(airports)
+
+    max_time = max(row[4] for row in airports)+1
+
+    # initializing the hub table that wil be returned with first column as ID AIrport/timeofday
+    # also building an index table to retrieve the right row to fill in when iterating later
+    hub = [[]]
+    hub_col0 = []
+
+    for i in range(0,len(airport_list)):
+        for j in range(0,24):
+            hub.append([airport_list[i] + str(j).zfill(2), airport_list[i], str(j).zfill(2),0,0,0,0])
+            hub_col0.append(airport_list[i] + str(j).zfill(2))
+
+    # filling the hub table by iterating on the airport table and normalizing as we go
+    for k in range(0,airport_size-1):
+        airports[k][4] = max(airports[k][4]*100000/max_time,1)
+
+        # hub table structure is ID/airport/timeofday/paxlocalarrival/paxlocaldeparture/paxconnectarrival/paxconnectdeparture
+        # when it is a departure we switch one column to the left and we use negative number
+        arrivalflag = 0
+
+        if airports[k][0] == 'xxx' :
+            airport_to_fill = airports[k][1]
+            arrivalflag = 1
+        else:
+            airport_to_fill = airports[k][0]
+            airports[k][4] = -1*airports[k][4]
+
+        #reading from hub_col0 to find the row to fill in the hub table
+        index0 = hub_col0.index(airport_to_fill + airports[k][2])
+
+        if 'local' in airports[k][3]:
+            hub[index0][3+arrivalflag] = hub[index0][3+arrivalflag] + float(airports[k][4])
+        else: hub[index0][5+arrivalflag] = hub[index0][5+arrivalflag] + float(airports[k][4])
+
+    # removing the first row (empty)
+    hub.pop(0)
+
+    #calculating size of hub table for the json
+    datasize = len(hub)
+    resp = jsonify(data=hub, update = lastupdate, length = datasize)
+
+    return resp
+
 
 @app.route('/popularity_view', methods=['GET'])
 def render_pax():
@@ -72,6 +132,11 @@ def render_service():
 def render_itineraries():
     #Renders the passenger chart page
         return render_template("itineraries_view.html", title="What are they searching for" )
+
+@app.route('/airport_view', methods=['GET'])
+def render_airport():
+    #Renders the passenger chart page
+        return render_template("airport_view.html", title="What are they searching for" )
 
 @app.route('/')
 def hello():
