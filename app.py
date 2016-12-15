@@ -74,11 +74,11 @@ def airport_data():
     # getting size of the large table from the database to iterate on
     airport_size = len(airports)
 
-    max_time = max(row[4] for row in airports)+1
+    peak = max(row[4] for row in airports)+1
 
     # initializing the hub table that wil be returned with first column as ID AIrport/timeofday
     # also building an index table to retrieve the right row to fill in when iterating later
-    hub = [[]]
+    hub = [['id','ap','time',0,0,0,0]]
     hub_col0 = []
 
     for i in range(0,len(airport_list)):
@@ -88,7 +88,7 @@ def airport_data():
 
     # filling the hub table by iterating on the airport table and normalizing as we go
     for k in range(0,airport_size-1):
-        airports[k][4] = max(airports[k][4]*100000/max_time,1)
+        airports[k][4] = max(airports[k][4]*100000/peak,1)
 
         # hub table structure is ID/airport/timeofday/paxlocalarrival/paxlocaldeparture/paxconnectarrival/paxconnectdeparture
         # when it is a departure we switch one column to the left and we use negative number
@@ -96,10 +96,10 @@ def airport_data():
 
         if airports[k][0] == 'xxx' :
             airport_to_fill = airports[k][1]
-            arrivalflag = 1
         else:
             airport_to_fill = airports[k][0]
             airports[k][4] = -1*airports[k][4]
+            arrivalflag = 1
 
         #reading from hub_col0 to find the row to fill in the hub table
         index0 = hub_col0.index(airport_to_fill + airports[k][2])

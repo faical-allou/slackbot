@@ -33,9 +33,10 @@
                 data_to_display.data[i][3],
                 data_to_display.data[i][4],
                 data_to_display.data[i][5],
-                data_to_display.data[i][6],
+                data_to_display.data[i][6]
               ]]);
             };
+        console.log(data_formatted.getDistinctValues(1));
 
         var dashboard = new google.visualization.Dashboard(
                 document.getElementById('dashboard_div'));
@@ -59,7 +60,7 @@
               'containerId': 'chart_div',
 
               // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
-              'view': {'columns': [2,5,6,3,4,]},
+              'view': {'columns': [2,5,6,3,4]},
 
               'options': {
                 'series': {
@@ -73,16 +74,19 @@
                 'isStacked': true,
                 'colors': ['#00b2d6'],
                 'backgroundColor': { fill:'#DFDCE3' },
-                }
+                'legend': {position: 'none'},
+                'haxis': {title: 'Pax Index',
+                          textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
+                          titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18}},
+                },
+                'chartArea' : {width:'600px',height:'100%'},
             });
 
             // Establish dependencies, declaring that 'filter' drives 'Chart',
             // so that the  chart will only display entries that are let through
             // given the filter
-            // Can also bind filters so that destination is filter for the origin selected
             dashboard.bind(fromFilter, myChart);
 
-            // Draw the dashboard.
             dashboard.draw(data_formatted);
 
           };
@@ -155,10 +159,11 @@
         <div class="container_12 ta-c fs-18 pb-30 pt-30">
 
             <!--Div that will hold the dashboard-->
+            <div id="airport_selected" ></div>
             <div id="dashboard_div" >
               <!--Divs that will hold each control and chart-->
               <div id="chart_div"></div>
-              <div id="filter_div" class="grid_6 ta-l pb-30"></div>
+              <div id="filter_div" class="grid_12 ta-l pb-30"></div>
             </div>
             <span class=" text-icon "> Last updated on: </span>
             <span id="update_time" class=" text-icon"> - </span>
@@ -174,10 +179,8 @@
              <div class="grid_10">
                <div class="p-5">
                  <span class=" fs-16 ">
-                   Flights are only shown when they gather a certain number of redirects. <br/>
-                   The bars show the timeframe between the earliest exit (travel date) captured
-                   and the last one and may not mean the flight is discontinued. <br/>
-                   Flights are ordered by date of discovery (first exit date), the latest ones on top.
+                   Arriving passengers are above the line departures below.
+                   Only major airports are shown
                  </span>
                </div>
              </div>
