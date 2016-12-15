@@ -58,15 +58,15 @@
               'chartType': 'ColumnChart',
               'containerId': 'chart_div',
 
-              // The  chart will only use the columns listed - note:index start at 0
-              'view': {'columns': [2,3,4,5,6]},
+              // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
+              'view': {'columns': [2,5,6,3,4,]},
 
               'options': {
                 'series': {
-                          0 : {color: '#FFFFFF' },
-                          1 : {color: '#000000' },
-                          2 : {color: '#111111' },
-                          3 : {color: '#444444' },
+                          0 : {color: '#00B2D6' },
+                          1 : {color: '#00B2D6' },
+                          2 : {color: '#272133' },
+                          3 : {color: '#272133' },
                         },
                 'height':600,
                 'width':700,
@@ -139,8 +139,8 @@
 
 						<div class="grid_4 ta-c">
 							<div class="p-5">
-								<i class="fa fa-plane fa-4x sky-blue"></i>
-								<p class=" text-icon ">The last 10 new routes are:</p>
+								<i class="fa fa-bar-chart fa-4x sky-blue"></i>
+								<p class=" text-icon ">The busiest times are the airports are:</p>
 							</div>
 						</div>
 					</div>
