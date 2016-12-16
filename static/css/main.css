@@ -578,8 +578,6 @@ a.underline:hover{text-decoration:underline;}
  * Centering the body content
  */
 
-.headerimage {height: 150px}
-
 .menu {
 	width: 100%;
   float: right;
@@ -591,7 +589,7 @@ a.underline:hover{text-decoration:underline;}
 	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-weight: 600;
 	position: fixed;
-	background-color:rgba(255,255,255,0.8);
+	background-color:rgba(255,255,255,0.2);
 	color: #DFDCE3;
 	z-index: 1000;
 }
