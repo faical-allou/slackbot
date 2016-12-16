@@ -18,17 +18,19 @@
         data_formatted.addColumn('string', 'ID');
         data_formatted.addColumn('string', 'Airport');
         data_formatted.addColumn('string', 'Time of the day');
-        data_formatted.addColumn('number', 'Pax local arrival');
-        data_formatted.addColumn('number', 'Pax local departure');
-        data_formatted.addColumn('number', 'Pax connecting arrival');
-        data_formatted.addColumn('number', 'Pax connecting departure');
+        data_formatted.addColumn('number', 'Index local arrival');
+        data_formatted.addColumn('number', 'Index local departure');
+        data_formatted.addColumn('number', 'Index connecting arrival');
+        data_formatted.addColumn('number', 'Index connecting departure');
 
         for (i = 0; i < data_to_display.length -1; i++) {
+          var timeofday = data_to_display.data[i][2];
+          var timeofdayh = timeofday.concat("h");
 
-              data_formatted.addRows([
+                data_formatted.addRows([
                 [data_to_display.data[i][0],
                 data_to_display.data[i][1],
-                data_to_display.data[i][2],
+                timeofdayh,
                 data_to_display.data[i][3],
                 data_to_display.data[i][4],
                 data_to_display.data[i][5],
@@ -82,7 +84,6 @@
                           titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
                           gridlines: {count: 4}},
                 'vAxis': {viewWindowMode: 'maximized',
-                          title: 'Pax Index',
                           textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
                           titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
                           gridlines: {count: 0}},
