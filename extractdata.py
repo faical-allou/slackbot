@@ -126,7 +126,7 @@ class extractdata:
         query = "SELECT * \
         FROM ptbexits_airport \
         WHERE originairport > 'AAA' and destinationairport > 'AAA' and sum_seats > 1000\
-        ORDER BY sum_seats DESC LIMIT 10000"
+        ORDER BY sum_seats DESC"
         cursor.execute(query)
 
         rows = [('a','b','c', 1)]
