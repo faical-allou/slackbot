@@ -22,59 +22,58 @@
         var od = filter.value;
         var origin = od.substring(0,3);
         var destination = od.substring(4,7);
-        console.log(od)
+
         if (origin > 'AAA' && destination > 'AAA'){
             var itintable = result_table.filter(function (table) {
                   return table[0] == origin &&
-                         table[3] == destination ;
+                         table[4] == destination ;
                 });
-            //calculate the relative strokewidth - array is order by sum seat desc
-            console.log(itintable);
-            var maxpopularity = itintable[0][12];
+
+            var maxpopularity = itintable[0][14];
             //drawing the lines
             for (i = 0; i < Math.min(itintable.length,5); i++){
             var flightPlanCoordinates = [];
               // filling up the null values with the previous stop/origin (itineraries with less than 2 stops)
-              if (itintable[i][7] == null) {
-                  itintable[i][7] =  itintable[i][1];
-                  itintable[i][8] = itintable[i][2];
-                  itintable[i][10] =  itintable[i][1];
-                  itintable[i][11] = itintable[i][2] }
-                else { if (itintable[i][10] == null) {
-                  itintable[i][10] =  itintable[i][7];
-                  itintable[i][11] = itintable[i][8]
+              if (itintable[i][9] == null) {
+                  itintable[i][9] =  itintable[i][2];
+                  itintable[i][10] = itintable[i][3];
+                  itintable[i][12] =  itintable[i][2];
+                  itintable[i][13] = itintable[i][3] }
+                else { if (itintable[i][12] == null) {
+                  itintable[i][12] =  itintable[i][6];
+                  itintable[i][13] = itintable[i][7]
                 };};
               flightPlanCoordinates = [
-                {lat:itintable[i][1],lng:itintable[i][2]},
-                {lat:itintable[i][7],lng:itintable[i][8]},
-                {lat:itintable[i][10],lng:itintable[i][11]},
-                {lat:itintable[i][4],lng:itintable[i][5]}
+                {lat:itintable[i][2],lng:itintable[i][3]},
+                {lat:itintable[i][9],lng:itintable[i][10]},
+                {lat:itintable[i][12],lng:itintable[i][13]},
+                {lat:itintable[i][6],lng:itintable[i][7]}
               ];
             var flightPath = new google.maps.Polyline({
               path: flightPlanCoordinates,
               geodesic: true,
               strokeColor: '#5be2ed',
               strokeOpacity: 1.0,
-              strokeWeight: 5*itintable[i][12]/maxpopularity
+              strokeWeight: 5*itintable[i][14]/maxpopularity
             });
             flightPath.setMap(map);
 
             // adding markers to show airports
             var marker_from = new google.maps.Marker({
-              position: {lat:itintable[i][1],lng:itintable[i][2]},
-              label: itintable[i][0]
+              position: {lat:itintable[i][2],lng:itintable[i][3]},
+              label: itintable[i][1]
               });
             var marker_to = new google.maps.Marker({
-              position: {lat:itintable[i][4],lng:itintable[i][5]},
-              label: itintable[i][3]
+              position: {lat:itintable[i][6],lng:itintable[i][7]},
+              label: itintable[i][5]
               });
             var marker_stop1 = new google.maps.Marker({
-              position: {lat:itintable[i][7],lng:itintable[i][8]},
-              label: itintable[i][6]
+              position: {lat:itintable[i][9],lng:itintable[i][10]},
+              label: itintable[i][8]
               });
             var marker_stop2 = new google.maps.Marker({
-              position: {lat:itintable[i][10],lng:itintable[i][11]},
-              label: itintable[i][9]
+              position: {lat:itintable[i][12],lng:itintable[i][13]},
+              label: itintable[i][11]
               });
             // To add the marker to the map, call setMap();
             marker_from.setMap(map);
@@ -169,7 +168,7 @@
            <div id="map_wrapper">
               <div id="map" class="mb-30"></div>
               <div>
-                <input id="ODinput" type="text" value="AAA-BBB Airport" onfocus='if (this.value=="AAA-BBB Airport") {this.value="";}'>
+                <input id="ODinput" type="text" value="AAA-BBB city codes" onfocus='if (this.value=="AAA-BBB city codes") {this.value="";}'>
                 <input type="button" class="button-style" value="draw itineraries" onClick="draw_map()">
                 <input type="button" class="button-style mb-10" value="clear" onClick="initMap()">
               </div>

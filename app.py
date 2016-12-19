@@ -49,9 +49,9 @@ def itineraries_data():
     itin = extractdata.getitintable()
     lastupdate = extractdata.getlasttimeupdate('ptbexits_itineraries')
     #Converting to float and normalize the table (adding 1 to the sum to return 0 when empty)
-    max_itin = max(row[12] for row in itin)+1
+    max_itin = max(row[14] for row in itin)+1
     for k in range(0,len(itin)-1):
-        itin[k][12] = max(itin[k][12]*100/max_itin,1)
+        itin[k][14] = max(itin[k][14]*100/max_itin,1)
 
     resp = jsonify(data=itin, update = lastupdate, length = len(itin))
 
