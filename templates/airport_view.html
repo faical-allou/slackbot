@@ -121,7 +121,6 @@
                 {'column': 8, 'aggregation': google.visualization.data.sum, 'type': 'number'}
               ]
             );
-            console.log(agg_table.getValue(0, 2));
             var data_for_pie = google.visualization.arrayToDataTable(
               [['Type', 'Index'],['Local', agg_table.getValue(0, 1)],['Connecting', agg_table.getValue(0, 2)]], false);
 
