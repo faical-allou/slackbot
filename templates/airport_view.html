@@ -14,7 +14,7 @@
     function drawChart(data_to_display) {
 
         // Create the data table.
-        var data_formatted = new google.visualization.DataTable();
+        data_formatted = new google.visualization.DataTable();
         data_formatted.addColumn('string', 'ID');
         data_formatted.addColumn('string', 'Airport');
         data_formatted.addColumn('string', 'Time of the day');
@@ -22,6 +22,8 @@
         data_formatted.addColumn('number', 'Index local departure');
         data_formatted.addColumn('number', 'Index connecting arrival');
         data_formatted.addColumn('number', 'Index connecting departure');
+        data_formatted.addColumn('number', 'Local');
+        data_formatted.addColumn('number', 'Connecting');
 
         for (i = 0; i < data_to_display.length -1; i++) {
           var timeofday = data_to_display.data[i][2];
@@ -34,15 +36,17 @@
                 data_to_display.data[i][3],
                 data_to_display.data[i][4],
                 data_to_display.data[i][5],
-                data_to_display.data[i][6]
+                data_to_display.data[i][6],
+                data_to_display.data[i][3]-data_to_display.data[i][4],
+                data_to_display.data[i][5]-data_to_display.data[i][6]
               ]]);
             };
 
-        var dashboard = new google.visualization.Dashboard(
+        dashboard = new google.visualization.Dashboard(
                 document.getElementById('dashboard_div'));
 
-            // Create 2 filters, passing some options
-        var airportFilter = new google.visualization.ControlWrapper({
+            // Create a filters, passing some options
+        airportFilter = new google.visualization.ControlWrapper({
               'controlType': 'CategoryFilter',
               'containerId': 'filter_div',
               'options': {
@@ -56,10 +60,10 @@
             });
 
             // Create a chart, passing some options
-        var myChart = new google.visualization.ChartWrapper({
+        myChart = new google.visualization.ChartWrapper({
               'chartType': 'ColumnChart',
               'containerId': 'chart_div',
-
+              'dataTable': data_formatted,
               // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
               'view': {'columns': [2,5,6,3,4]},
 
@@ -97,9 +101,50 @@
             // given the filter
             dashboard.bind(airportFilter, myChart);
             dashboard.draw(data_formatted);
+
             airportFilter.setState({'selectedValues': ['LHR']});
+            drawpie();
+            //filter the data for every change
+            google.visualization.events.addListener(airportFilter, 'statechange', drawpie);
           };
 
+          function drawpie() {
+            var new_view = new google.visualization.DataView(data_formatted);
+            value_filtered = airportFilter.getState();
+            new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.selectedValues[0]}]));
+            var filtered_view = new google.visualization.DataView(new_view);
+            var agg_table = google.visualization.data.group(
+              new_view,
+              [1],
+              [
+                {'column': 7, 'aggregation': google.visualization.data.sum, 'type': 'number'},
+                {'column': 8, 'aggregation': google.visualization.data.sum, 'type': 'number'}
+              ]
+            );
+            console.log(agg_table.getValue(0, 2));
+            var data_for_pie = google.visualization.arrayToDataTable(
+              [['Type', 'Index'],['Local', agg_table.getValue(0, 1)],['Connecting', agg_table.getValue(0, 2)]], false);
+
+              var mypieChart = new google.visualization.ChartWrapper({
+                'chartType': 'PieChart',
+                'containerId': 'piechart_div',
+                'dataTable' : data_for_pie,
+                'options': {
+                  'fontSize': 14,
+                  'height':200,
+                  'width':200,
+                  'slices': {
+                            0 : {color: '#272133' },
+                            1 : {color: '#00B2D6' },
+                          },
+                  'colors': ['#00b2d6'],
+                  'backgroundColor': { fill:'#DFDCE3' },
+                  'legend': {position: 'none'},
+
+                },
+                });
+                mypieChart.draw();
+              };
 
 
     $(document).ready(function () {
@@ -165,18 +210,16 @@
        </div>
 
        <div class="bg-light-grey">
-        <div class="container_12 ta-c fs-18 pb-30">
+         <!--Div that will hold the dashboard-->
+        <div id="dashboard_div" class="container_12 ta-c fs-18 pb-30">
 
-            <!--Div that will hold the dashboard-->
-            <div id="airport_selected" ></div>
-            <div id="dashboard_div" >
               <!--Divs that will hold each control and chart-->
-              <div id="chart_div" class='p-50'></div>
-              <div id="filter_div" class="grid_12 ta-l pb-30"></div>
-            </div>
-            <span class=" text-icon "> Last updated on: </span>
-            <span id="update_time" class=" text-icon"> - </span>
-         </div>
+              <div id="piechart_div" class='grid_4 pb-30 pt-100'></div>
+              <div id="chart_div" class='grid_8 pb-30 pt-30'></div>
+              <div id="filter_div" class="grid_12 ta-c pb-30"></div>
+              <span class="text-icon ta-c"> Last updated on: </span>
+              <span id="update_time" class=" text-icon"> - </span>
+        </div>
 
          <div class="container_12 pt-30 pb-30 dark-blue">
            <div class="dib">
