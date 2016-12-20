@@ -97,7 +97,7 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT *  FROM ptbexits_itineraries ORDER BY sum_seats DESC LIMIT 50000"
+        query = "SELECT *  FROM ptbexits_itineraries ORDER BY sum_seats DESC LIMIT 100000"
 
         cursor.execute(query)
 
@@ -126,7 +126,7 @@ class extractdata:
         query = "SELECT * \
         FROM ptbexits_airport \
         WHERE originairport > 'AAA' and destinationairport > 'AAA' and sum_seats > 1000\
-        ORDER BY sum_seats DESC LIMIT 10000"
+        ORDER BY sum_seats DESC LIMIT 100000"
         cursor.execute(query)
 
         rows = [('a','b','c', 1)]
