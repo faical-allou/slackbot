@@ -28,8 +28,8 @@
                   return table[0] == origin &&
                          table[4] == destination ;
                 });
-
-            var maxpopularity = itintable[0][14];
+            console.log(itintable, result_table);
+            var maxpopularity = Math.max(itintable[0][14], itintable[1][14],itintable[2][14],itintable[3][14],itintable[4][14])
             //drawing the lines
             for (i = 0; i < Math.min(itintable.length,5); i++){
             var flightPlanCoordinates = [];
