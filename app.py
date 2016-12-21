@@ -62,10 +62,10 @@ def itineraries_data(fromcity, tocity):
 
     return resp
 
-@app.route('/airport_data', methods=['GET'])
-def airport_data():
-
-    airports = extractdata.getairporttable()
+@app.route('/airport_data/<airport>', methods=['GET'])
+def airport_data(airport):
+    if len(airport) < 3: airport = 'xxx'
+    airports = extractdata.getairporttable(airport)
     lastupdate = extractdata.getlasttimeupdate('ptbexits_airport')
     #Converting to float normalize the table (adding 1 to the sum to return 0 when empty)
     # and formatting for easy consumption by the chart
@@ -75,6 +75,7 @@ def airport_data():
     transposelist1 = list(transpose[1])
     transposelist.extend(transposelist1)
     airport_list = list(set(transposelist))
+    airport_list.remove('xxx')
 
     # getting size of the large table from the database to iterate on
     airport_size = len(airports)

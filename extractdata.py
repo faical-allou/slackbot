@@ -118,15 +118,14 @@ class extractdata:
         connection.close()
         return rowarray_list
 
-    def getairporttable(self):
+    def getairporttable(self,airport):
 
         connection = self.getconnection()
         cursor = connection.cursor()
 
         query = "SELECT * \
         FROM ptbexits_airport \
-        WHERE originairport > 'AAA' and destinationairport > 'AAA' and sum_seats > 1000\
-        ORDER BY sum_seats DESC LIMIT 100000"
+        WHERE originairport ='" + airport + "' or destinationairport ='" + airport + "' "
         cursor.execute(query)
 
         rows = [('a','b','c', 1)]

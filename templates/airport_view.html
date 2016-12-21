@@ -5,126 +5,113 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script type="text/javascript">
+    $('#loading_extra').hide();
 
     // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart', 'controls']});
-
     // Callback that creates and populates a data table,
     // instantiates the chart, passes in the data and draws it.
-    function drawChart(data_to_display) {
+    function drawChart(airport) {
+      var filter = document.getElementById("airportinput");
+      if (isNaN(airport)) {
+      airport = filter.value.substring(0,3);
+    };
 
-        // Create the data table.
-        data_formatted = new google.visualization.DataTable();
-        data_formatted.addColumn('string', 'ID');
-        data_formatted.addColumn('string', 'Airport');
-        data_formatted.addColumn('string', 'Time of the day');
-        data_formatted.addColumn('number', 'Index local arrival');
-        data_formatted.addColumn('number', 'Index local departure');
-        data_formatted.addColumn('number', 'Index connecting arrival');
-        data_formatted.addColumn('number', 'Index connecting departure');
-        data_formatted.addColumn('number', 'Local');
-        data_formatted.addColumn('number', 'Connecting');
+      var url_to_call = './airport_data/'+airport;
 
-        for (i = 0; i < data_to_display.length -1; i++) {
-          var timeofday = data_to_display.data[i][2];
-          var timeofdayh = timeofday.concat("h");
+      // loading image until the chart is done
+      $('#loading_extra').show();
+      // call API and pass the data to the drawchart function
+      $.ajax({
+          type: 'GET',
+          url: url_to_call,
+          dataType: "json",
+          crossDomain: true,
+          success: function (data_to_display) {
 
-                data_formatted.addRows([
-                [data_to_display.data[i][0],
-                data_to_display.data[i][1],
-                timeofdayh,
-                data_to_display.data[i][3],
-                data_to_display.data[i][4],
-                data_to_display.data[i][5],
-                data_to_display.data[i][6],
-                data_to_display.data[i][3]-data_to_display.data[i][4],
-                data_to_display.data[i][5]-data_to_display.data[i][6]
-              ]]);
-            };
+          // Create the data table.
+          data_formatted = new google.visualization.DataTable();
+          data_formatted.addColumn('string', 'ID');
+          data_formatted.addColumn('string', 'Airport');
+          data_formatted.addColumn('string', 'Time of the day');
+          data_formatted.addColumn('number', 'Index local arrival');
+          data_formatted.addColumn('number', 'Index local departure');
+          data_formatted.addColumn('number', 'Index connecting arrival');
+          data_formatted.addColumn('number', 'Index connecting departure');
+          data_formatted.addColumn('number', 'Local');
+          data_formatted.addColumn('number', 'Connecting');
 
-        dashboard = new google.visualization.Dashboard(
-                document.getElementById('dashboard_div'));
+          for (i = 0; i < data_to_display.length -1; i++) {
+            var timeofday = data_to_display.data[i][2];
+            var timeofdayh = timeofday.concat("h");
 
-            // Create a filters, passing some options
-        airportFilter = new google.visualization.ControlWrapper({
-              'controlType': 'CategoryFilter',
-              'containerId': 'filter_div',
-              'options': {
-                'values': data_formatted.getDistinctValues(1),
-                'filterColumnLabel': "Airport",
-                'ui': { 'label': 'Specify airport',
-                        'allowMultiple' : false,
-                        'allowNone': true},
-                'state': {'selectValues': ['LHR']},
-              }
-            });
+                  data_formatted.addRows([
+                  [data_to_display.data[i][0],
+                  data_to_display.data[i][1],
+                  timeofdayh,
+                  data_to_display.data[i][3],
+                  data_to_display.data[i][4],
+                  data_to_display.data[i][5],
+                  data_to_display.data[i][6],
+                  data_to_display.data[i][3]-data_to_display.data[i][4],
+                  data_to_display.data[i][5]-data_to_display.data[i][6]
+                ]]);
+              };
 
-            // Create a chart, passing some options
-        myChart = new google.visualization.ChartWrapper({
-              'chartType': 'ColumnChart',
-              'containerId': 'chart_div',
-              'dataTable': data_formatted,
-              // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
-              'view': {'columns': [2,5,6,3,4]},
+              // Create a chart, passing some options
+          myChart = new google.visualization.ChartWrapper({
+                'chartType': 'ColumnChart',
+                'containerId': 'chart_div',
+                'dataTable': data_formatted,
+                // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
+                'view': {'columns': [2,5,6,3,4]},
 
-              'options': {
-                'theme': 'maximized',
-                'series': {
-                          0 : {color: '#00B2D6' },
-                          1 : {color: '#00B2D6' },
-                          2 : {color: '#272133' },
-                          3 : {color: '#272133' },
-                        },
-                'height':400,
-                'width':'100%',
-                'isStacked': true,
-                'colors': ['#00b2d6'],
-                'backgroundColor': { fill:'#DFDCE3' },
-                'legend': {position: 'none'},
-                'hAxis': {title: 'Time of the day',
-                          baselineColor: '#DFDCE3',
-                          maxAlternation: 1,
-                          textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                          titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                          gridlines: {count: 4}},
-                'vAxis': {viewWindowMode: 'maximized',
-                          textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                          titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                          gridlines: {count: 0}},
-                },
+                'options': {
+                  'theme': 'maximized',
+                  'series': {
+                            0 : {color: '#00B2D6' },
+                            1 : {color: '#00B2D6' },
+                            2 : {color: '#272133' },
+                            3 : {color: '#272133' },
+                          },
+                  'height':400,
+                  'width':'100%',
+                  'isStacked': true,
+                  'colors': ['#00b2d6'],
+                  'backgroundColor': { fill:'#DFDCE3' },
+                  'legend': {position: 'none'},
+                  'hAxis': {title: 'Time of the day',
+                            baselineColor: '#DFDCE3',
+                            maxAlternation: 1,
+                            textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
+                            titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
+                            gridlines: {count: 4}},
+                  'vAxis': {viewWindowMode: 'maximized',
+                            textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
+                            titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
+                            gridlines: {count: 0}},
+                  },
 
-                'chartArea' : {width:'600px',height:'100%'},
-            });
+                  'chartArea' : {width:'600px',height:'100%'},
+              });
 
-            // Establish dependencies, declaring that 'filter' drives 'Chart',
-            // so that the  chart will only display entries that are let through
-            // given the filter
-            dashboard.bind(airportFilter, myChart);
-            dashboard.draw(data_formatted);
+              // Establish dependencies, declaring that 'filter' drives 'Chart',
+              // so that the  chart will only display entries that are let through
+              // given the filter
 
-            airportFilter.setState({'selectedValues': ['LHR']});
-            drawpie();
-            //filter the data for every change
-            google.visualization.events.addListener(airportFilter, 'statechange', drawpie);
-          };
-
-          function drawpie() {
-            var new_view = new google.visualization.DataView(data_formatted);
-            value_filtered = airportFilter.getState();
-            new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.selectedValues[0]}]));
-            var filtered_view = new google.visualization.DataView(new_view);
+            var filtered_view = new google.visualization.DataView(data_formatted);
             var agg_table = google.visualization.data.group(
-              new_view,
-              [1],
-              [
-                {'column': 7, 'aggregation': google.visualization.data.sum, 'type': 'number'},
-                {'column': 8, 'aggregation': google.visualization.data.sum, 'type': 'number'}
-              ]
-            );
+                data_formatted,
+                [1],
+                [
+                  {'column': 7, 'aggregation': google.visualization.data.sum, 'type': 'number'},
+                  {'column': 8, 'aggregation': google.visualization.data.sum, 'type': 'number'}
+                ]
+              );
             var data_for_pie = google.visualization.arrayToDataTable(
-              [['Type', 'Index'],['Local', agg_table.getValue(0, 1)],['Connecting', agg_table.getValue(0, 2)]], false);
+                [['Type', 'Index'],['Local', agg_table.getValue(0, 1)],['Connecting', agg_table.getValue(0, 2)]], false);
 
-              var mypieChart = new google.visualization.ChartWrapper({
+            myPieChart = new google.visualization.ChartWrapper({
                 'chartType': 'PieChart',
                 'containerId': 'piechart_div',
                 'dataTable' : data_for_pie,
@@ -139,19 +126,26 @@
                   'colors': ['#00b2d6'],
                   'backgroundColor': { fill:'#DFDCE3' },
                   'legend': {position: 'none'},
-
                 },
                 });
-                mypieChart.draw();
-              };
+            },
+            complete: function(){
+              myPieChart.draw();
+              myChart.draw();
+              $('#loading_extra').hide();
+            }
+            });
+          };
 
 
     $(document).ready(function () {
         // prepare the URL to call
-        var url_to_call = './airport_data';
+        var url_to_call = './airport_data/LHR';
 
         // loading image until the chart is done
         $('#loading_image').show();
+
+
         // call API and pass the data to the drawchart function
         $.ajax({
             type: 'GET',
@@ -159,11 +153,11 @@
             dataType: "json",
             crossDomain: true,
             success: function (api_results) {
-                drawChart(api_results);
                 update_time = new Date(api_results.update);
                 document.getElementById("update_time").innerHTML = update_time.toDateString() ;
             },
             complete: function(){
+                drawChart('LHR');
                 $('#loading_image').hide();
             },
             error: function (request, status, error) {
@@ -212,11 +206,16 @@
         <div class="container_12 ta-c fs-18 pb-30">
 
           <!--Div that will hold the dashboard-->
-          <div id="dashboard_div" >
+          <div >
               <!--Divs that will hold each control and chart-->
               <div id="piechart_div" class='grid_4 pb-30 pt-30'></div>
               <div id="chart_div" class='grid_8 pb-30 pt-30'></div>
-              <div id="filter_div" class="grid_12 ta-c pb-30"></div>
+          </div>
+          <div class='container_12 ta-c mb-10'>
+            <div class='grid_4'> &nbsp </div>
+            <input id="airportinput" class='grid_3' type="text" value="LHR" onFocus='this.value=""'>
+            <input type="button" class="grid_3 button-style" value="draw hub graph" onClick="drawChart()">
+            <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
           </div>
 
               <span class="text-icon"> Last updated on: </span>
