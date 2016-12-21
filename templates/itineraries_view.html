@@ -4,6 +4,7 @@
 
     <script>
 
+
       function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 10, lng: 0},
@@ -18,7 +19,7 @@
       };
 
       function draw_map() {
-        $('#loading_image').show();
+        $('#loading_extra').show();
 
         var filter = document.getElementById("ODinput");
         var od = filter.value;
@@ -35,7 +36,7 @@
               result_table = api_results.data;
             },
             complete: function(){
-            $('#loading_image').hide();
+            $('#loading_extra').hide();
             if (origin > 'AAA' && destination > 'AAA'){
             var itintable = result_table.filter(function (table) {
                   return table[0] == origin &&
@@ -135,6 +136,7 @@
             },
             complete: function(){
                 $('#loading_image').hide();
+                $('#loading_extra').hide();
                 $('#map_wrapper').show();
                 initMap();
             },
@@ -183,10 +185,12 @@
          <div class="container_12 ta-c fs-18 pb-30 pt-30">
            <div id="map_wrapper">
               <div id="map" class="mb-30"></div>
-              <div>
-                <input id="ODinput" type="text" value="AAA-BBB city codes" onfocus='if (this.value=="AAA-BBB city codes") {this.value="";}'>
-                <input type="button" class="button-style" value="draw itineraries" onClick="draw_map()">
-                <input type="button" class="button-style mb-10" value="clear" onClick="initMap()">
+              <div class='container_12 ta-c mb-10'>
+                <div class='grid_2'> &nbsp </div>
+                <input id="ODinput" class='grid_4' type="text" value="AAA-BBB city codes" onfocus='if (this.value=="AAA-BBB city codes") {this.value="";}'>
+                <input type="button" class="grid_3 button-style" value="draw itineraries" onClick="draw_map()">
+                <input type="button" class="grid_2 button-style mb-10" value="clear" onClick="initMap()">
+                <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
            </div>
            <span class="text-icon"> Last updated on: </span>
