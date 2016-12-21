@@ -9,6 +9,7 @@ import os
 import json
 import collections
 import datetime
+import sys
 from extractdata import *
 app = Flask(__name__, static_folder='static')
 
@@ -43,13 +44,17 @@ def airservice():
 
     return resp
 
-@app.route('/itineraries_data', methods=['GET'])
-def itineraries_data():
+@app.route('/itineraries_data/<fromcity>/<tocity>', methods=['GET'])
+def itineraries_data(fromcity, tocity):
+    itin = extractdata.getitintable(fromcity, tocity)
 
-    itin = extractdata.getitintable()
     lastupdate = extractdata.getlasttimeupdate('ptbexits_itineraries')
     #Converting to float and normalize the table (adding 1 to the sum to return 0 when empty)
-    max_itin = max(row[14] for row in itin)+1
+    if len(itin) == 0:
+        max_itin = 1
+    else:
+        max_itin = max(row[14] for row in itin)+1
+
     for k in range(0,len(itin)):
         itin[k][14] = max(itin[k][14]*100/max_itin,1)
 

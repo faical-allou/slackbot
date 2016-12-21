@@ -92,12 +92,12 @@ class extractdata:
         connection.close()
         return rowarray_list
 
-    def getitintable(self):
+    def getitintable(self,fromcity,tocity):
 
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT *  FROM ptbexits_itineraries ORDER BY sum_seats DESC LIMIT 100000"
+        query = "SELECT * FROM ptbexits_itineraries WHERE origincitycode ='" + fromcity + "' AND destinationcitycode ='" + tocity + "' ORDER BY sum_seats DESC"
 
         cursor.execute(query)
 

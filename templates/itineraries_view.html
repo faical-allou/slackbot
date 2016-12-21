@@ -22,8 +22,18 @@
         var od = filter.value;
         var origin = od.substring(0,3);
         var destination = od.substring(4,7);
+        var url_to_call = './itineraries_data/'+origin+'/'+destination
 
-        if (origin > 'AAA' && destination > 'AAA'){
+        $.ajax({
+            type: 'GET',
+            url: url_to_call,
+            dataType: "json",
+            crossDomain: true,
+            success: function (api_results){
+              result_table = api_results.data;
+            },
+            complete: function(){
+            if (origin > 'AAA' && destination > 'AAA'){
             var itintable = result_table.filter(function (table) {
                   return table[0] == origin &&
                          table[4] == destination ;
@@ -39,10 +49,11 @@
                   itintable[i][10] = itintable[i][3];
                   itintable[i][12] =  itintable[i][2];
                   itintable[i][13] = itintable[i][3] }
-                else { if (itintable[i][12] == null) {
+                else {
+                  if (itintable[i][12] == null) {
                   itintable[i][12] =  itintable[i][6];
-                  itintable[i][13] = itintable[i][7]
-                };};
+                  itintable[i][13] = itintable[i][7]};
+                };
               flightPlanCoordinates = [
                 {lat:itintable[i][2],lng:itintable[i][3]},
                 {lat:itintable[i][9],lng:itintable[i][10]},
@@ -90,21 +101,24 @@
             bounds.extend(marker_stop2.position);
             //now fit the map to the newly inclusive bounds
             map.fitBounds(bounds);
+          };};},
+          error: function (request, status, error) {
+            console.log(error);
+          }
+        });
 
             };
-        };
-        };
 
 
     $(document).ready(function () {
         // prepare the URL to call
-        var url_to_call = './itineraries_data';
+        var url_to_call = './itineraries_data/LON/SYD';
 
         // loading image until the chart is done
         $('#map_wrapper').hide();
         $('#loading_image').show();
 
-        // call API and pass the data to the drawchart function
+        // call API and pass the update date to the div
 
         $.ajax({
             type: 'GET',
@@ -112,7 +126,7 @@
             dataType: "json",
             crossDomain: true,
             success: function (api_results){
-              draw_map();
+              initMap();
               result_table = api_results.data;
               update_time = new Date(api_results.update);
               document.getElementById("update_time").innerHTML = update_time.toDateString() ;
