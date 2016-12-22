@@ -567,6 +567,7 @@ a.underline:hover{text-decoration:underline;}
    vertical align
    ========================================================================== */
 .va-t{vertical-align:top;}
+.va-m{vertical-align:middle;}
 
 /* =============================================================================
    z-index
@@ -612,6 +613,7 @@ a.underline:hover{text-decoration:underline;}
 .menu li a:hover {color:#00B2D6;}  /* mouse over link */
 .menu li a:active {color:#372f45;}  /* selected link */
 
+.menu li:first-child {margin-top: 0px; float:left;}
 
 .text-icon { font-size: 18; font-weight: 600  }
 

@@ -146,7 +146,12 @@ def render_airport():
 
 @app.route('/')
 def render_home():
-    return render_template("home_view.html", title="What are they searching for" )
+    return render_template("home.html", title="What are they searching for" )
+
+@app.route('/home')
+def render_homepage():
+    return render_template("home.html", title="What are they searching for" )
+
 
 @app.route('/<path:filename>', methods=['GET'])
 def display_static():
