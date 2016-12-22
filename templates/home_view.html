@@ -1,0 +1,56 @@
+{% extends "header.html" %}
+{% block content %}
+
+
+  <!-- HTML -->
+
+        <div class="bg-white">
+  	    <div class="container_12 ta-c pt-30 bg-white grey">
+  				<div class="dib">
+            <a href="./popularity_view">
+    					<div class="grid_6 ta-c home-link " >
+    							<i class="fa fa-star fa-5x sky-blue"></i>
+    							<p class=" text-icon p-5 grey"> Popular O&D </p>
+    					</div>
+            </a>
+            <a href="./airservice_view">
+              <div class="grid_6 ta-c home-link " >
+                  <i class="fa fa-plane fa-5x sky-blue"></i>
+                  <p class=" text-icon p-5 grey"> New Flights </p>
+              </div>
+            </a>
+            <a href="./itineraries_view">
+              <div class="grid_6 ta-c home-link " >
+                <i class="fa fa-map-signs fa-5x sky-blue"></i>
+                <p class=" text-icon p-5 grey"> Connections </p>
+              </div>
+            </a>
+            <a href="./airport_view">
+              <div class="grid_6 ta-c home-link " >
+                <i class="fa fa-bar-chart fa-5x sky-blue"></i>
+                <p class=" text-icon p-5 grey"> Hub Graph </p>
+              </div>
+            </a>
+
+					</div>
+
+
+         <div class="container_12 pt-30 pb-30 dark-blue">
+           <div class="dib">
+             <div class="grid_2">
+               <div class="p-5">
+                 <i class="fa fa-info-circle fa-5x "></i>
+               </div>
+             </div>
+             <div class="grid_10 ta-l">
+                 <span class=" fs-14 ">
+                   Data is based on Skyscanner Travel Insight, indexed for the purpose of each visualization and updated at occasionnally.
+                   While Skyscanner has a worldwide coverage, some areas are better covered than others which may skew the results. </br>
+                   Information on this site may not be accurate or current and no warranty of fitness for any purpose is made or implied. </br>
+                 </span>
+             </div>
+           </div>
+         </div>
+
+
+{% endblock %}
