@@ -16,6 +16,7 @@ button,
 input,
 select,
 textarea {
+	font-size: 18px;
 	color: #272133;
 }
 
