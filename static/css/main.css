@@ -630,3 +630,10 @@ a.underline:hover{text-decoration:underline;}
 .button-style:focus {
   outline: none;
 }
+
+.home-link {padding-top: 30px; padding-bottom: 30px;}
+.home-link:hover { box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) }
+.home-link a {color:#372f45;}      /* unvisited link */
+.home-link a:visited {color:#372f45;}  /* visited link */
+.home-link a:hover {color:#00B2D6;}  /* mouse over link */
+.home-link a:active {color:#372f45;}

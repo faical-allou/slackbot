@@ -145,10 +145,8 @@ def render_airport():
         return render_template("airport_view.html", title="What are they searching for" )
 
 @app.route('/')
-def hello():
-    today_flag = datetime.date.today()
-
-    return "today is " + str(today_flag) + "  => your installation works"
+def render_home():
+    return render_template("home_view.html", title="What are they searching for" )
 
 @app.route('/<path:filename>', methods=['GET'])
 def display_static():
