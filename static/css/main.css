@@ -640,3 +640,5 @@ a.underline:hover{text-decoration:underline;}
 .home-link a:visited {color:#372f45;}  /* visited link */
 .home-link a:hover {color:#00B2D6;}  /* mouse over link */
 .home-link a:active {color:#372f45;}
+
+.info-section { padding-top:30px; padding-bottom: 30px; text-align: left}
