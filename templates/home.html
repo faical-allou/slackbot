@@ -1,32 +1,31 @@
 {% extends "header.html" %}
 {% block content %}
 
-
   <!-- HTML -->
 
       <div class="bg-white">
-  	    <div class="container_12 ta-c pt-30 bg-white grey">
+  	    <div class="container_12 pt-30 bg-white">
   				<div class="dib">
             <a href="./popularity_view">
-    					<div class="grid_6 ta-c home-link " >
+    					<div class="grid_6 home-link " >
     							<i class="fa fa-star fa-5x sky-blue"></i>
     							<p class=" text-icon p-5 grey"> Popular O&D </p>
     					</div>
             </a>
             <a href="./newflights_view">
-              <div class="grid_6 ta-c home-link " >
+              <div class="grid_6 home-link " >
                   <i class="fa fa-plane fa-5x sky-blue"></i>
                   <p class=" text-icon p-5 grey"> New Flights </p>
               </div>
             </a>
             <a href="./itineraries_view">
-              <div class="grid_6 ta-c home-link " >
+              <div class="grid_6 home-link " >
                 <i class="fa fa-map-signs fa-5x sky-blue"></i>
                 <p class=" text-icon p-5 grey"> Connections </p>
               </div>
             </a>
             <a href="./airport_view">
-              <div class="grid_6 ta-c home-link " >
+              <div class="grid_6 home-link " >
                 <i class="fa fa-bar-chart fa-5x sky-blue"></i>
                 <p class=" text-icon p-5 grey"> Hub Graph </p>
               </div>
@@ -47,7 +46,11 @@
              </div>
            </div>
          </div>
-
-        </div>
+         <div class="dn">
+           <img src="{{ url_for('static', filename='loading.gif') }}"></img>
+           <img src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
+         </div>
       </div>
+    </div>
+
 {% endblock %}
