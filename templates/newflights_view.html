@@ -25,7 +25,6 @@
         data_formatted.addColumn('date', 'Last flight');
 
         for (i = 0; i < data_to_display.length -1; i++) {
-
               data_formatted.addRows([
                 [data_to_display.data[i][0],
                 data_to_display.data[i][1],
@@ -36,14 +35,11 @@
                 new Date(data_to_display.data[i][6]),
                 new Date(data_to_display.data[i][7])
               ]]);
-            };
-
+        };
         var myView = new google.visualization.DataView(data_formatted);
         myView.setRows([0,1,2,3,4,5,6,7,8,9]);
-
         var dashboard = new google.visualization.Dashboard(
                 document.getElementById('dashboard_div'));
-
             // Create 2 filters, passing some options
         var fromFilter = new google.visualization.ControlWrapper({
               'controlType': 'CategoryFilter',
@@ -67,7 +63,6 @@
                         'allowNone': true}
               }
             });
-
             // Create a chart, passing some options
         var myChart = new google.visualization.ChartWrapper({
               'chartType': 'Timeline',
@@ -84,43 +79,38 @@
                 'timeline':{rowLabelStyle:{fontName:"Helvetica", color:'#1b1524', fontSize: 16 },
                             barLabelStyle:{fontSize: 16} },
               }
-            });
+        });
+        // Establish dependencies, declaring that 'filter' drives 'Chart',
+        // so that the  chart will only display entries that are let through
+        // given the filter
+        // Can also bind filters so that destination is filter for the origin selected
+        dashboard.bind(fromFilter, myChart);
+        dashboard.bind(toFilter, myChart);
 
-            // Establish dependencies, declaring that 'filter' drives 'Chart',
-            // so that the  chart will only display entries that are let through
-            // given the filter
-            // Can also bind filters so that destination is filter for the origin selected
-            dashboard.bind(fromFilter, myChart);
-            dashboard.bind(toFilter, myChart);
+        // Draw the dashboard.
+        dashboard.draw(myView);
 
-            // Draw the dashboard.
-            dashboard.draw(myView);
+        //retrieve 10 values every time the filters change
+        google.visualization.events.addListener(fromFilter, 'statechange', function() {
+          var new_view = new google.visualization.DataView(data_formatted);
+          value_filtered = fromFilter.getState();
+          new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.selectedValues[0]}]));
+          var filtered_view = new google.visualization.DataView(new_view);
+          lastRowIndex = filtered_view.getNumberOfRows()-1
+          filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
+          dashboard.draw(filtered_view);
+        });
 
-            //retrieve 10 values every time the filters change
-            google.visualization.events.addListener(fromFilter, 'statechange',
-            function() {
-            var new_view = new google.visualization.DataView(data_formatted);
-            value_filtered = fromFilter.getState();
-            new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.selectedValues[0]}]));
-            var filtered_view = new google.visualization.DataView(new_view);
-            lastRowIndex = filtered_view.getNumberOfRows()-1
-            filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
-            dashboard.draw(filtered_view);
-            });
-
-            google.visualization.events.addListener(toFilter, 'statechange',
-            function() {
-            var new_view = new google.visualization.DataView(data_formatted);
-            value_filtered = toFilter.getState();
-            new_view.setRows(new_view.getFilteredRows([{column: 2, value: value_filtered.selectedValues[0]}]));
-            var filtered_view = new google.visualization.DataView(new_view);
-            lastRowIndex = filtered_view.getNumberOfRows()-1
-            filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
-            dashboard.draw(filtered_view);
-            });
-          };
-
-
+        google.visualization.events.addListener(toFilter, 'statechange', function() {
+          var new_view = new google.visualization.DataView(data_formatted);
+          value_filtered = toFilter.getState();
+          new_view.setRows(new_view.getFilteredRows([{column: 2, value: value_filtered.selectedValues[0]}]));
+          var filtered_view = new google.visualization.DataView(new_view);
+          lastRowIndex = filtered_view.getNumberOfRows()-1
+          filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
+          dashboard.draw(filtered_view);
+        });
+    };
 
     $(document).ready(function (drawchart) {
         // prepare the URL to call

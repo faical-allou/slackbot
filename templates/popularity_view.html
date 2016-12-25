@@ -21,16 +21,14 @@
         data_formatted.addColumn('number', 'Popularity');
         for (i = 0; i < data_to_display.length -1; i++) {
               data_formatted.addRows([data_to_display.data[i]]);
-            };
+        };
 
         var myView = new google.visualization.DataView(data_formatted);
         myView.setRows([0,1,2,3,4,5,6,7,8,9]);
 
+        var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
 
-        var dashboard = new google.visualization.Dashboard(
-                document.getElementById('dashboard_div'));
-
-            // Create 2 filters, passing some options
+        // Create 2 filters, passing some options
         var fromFilter = new google.visualization.ControlWrapper({
               'controlType': 'StringFilter',
               'containerId': 'filter_div',
@@ -40,7 +38,7 @@
                         'allowMultiple' : true,
                         'allowNone': true}
               }
-            });
+        });
         var toFilter = new google.visualization.ControlWrapper({
               'controlType': 'StringFilter',
               'containerId': 'filter_div2',
@@ -50,12 +48,11 @@
                         'allowMultiple' : true,
                         'allowNone': true}
               }
-            });
+        });
             // Create a chart, passing some options
         var myChart = new google.visualization.ChartWrapper({
               'chartType': 'BarChart',
               'containerId': 'chart_div',
-
               // The  chart will use the columns '2' and '3' - note:index start at 0
               'view': {'columns': [2,3]},
               'options': {
@@ -75,7 +72,6 @@
                           titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18}},
                 'legend': {position: 'none'},
             //  animation doesn't work with dataview - bug
-            //    'animation': {startup: true, duration: 500 ,easing: 'inAndOut'},
               }
             });
 
@@ -92,33 +88,30 @@
 
             //retrieve 10 values every time the filters change
             google.visualization.events.addListener(fromFilter, 'statechange', function() {
-            var new_view = new google.visualization.DataView(data_formatted);
-            value_filtered = fromFilter.getState();
-            console.log(value_filtered.value)
-            if (value_filtered.value>'AAA') {
-            new_view.setRows(new_view.getFilteredRows([{column: 0, value: value_filtered.value}]));
-            }
-            var filtered_view = new google.visualization.DataView(new_view);
-            lastRowIndex = filtered_view.getNumberOfRows()-1
-            filtered_view.hideRows(10,lastRowIndex);
-            dashboard.draw(filtered_view);
+              var new_view = new google.visualization.DataView(data_formatted);
+              value_filtered = fromFilter.getState();
+              console.log(value_filtered.value)
+              if (value_filtered.value>'AAA') {
+              new_view.setRows(new_view.getFilteredRows([{column: 0, value: value_filtered.value}]));
+              }
+              var filtered_view = new google.visualization.DataView(new_view);
+              lastRowIndex = filtered_view.getNumberOfRows()-1
+              filtered_view.hideRows(10,lastRowIndex);
+              dashboard.draw(filtered_view);
             });
 
             google.visualization.events.addListener(toFilter, 'statechange', function() {
-            var new_view = new google.visualization.DataView(data_formatted);
-            value_filtered = toFilter.getState();
-            if (value_filtered.value>'AAA') {
-            new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.value}]));
-            }
-            var filtered_view = new google.visualization.DataView(new_view);
-            lastRowIndex = filtered_view.getNumberOfRows()-1
-            filtered_view.hideRows(10,lastRowIndex);
-            dashboard.draw(filtered_view);
+              var new_view = new google.visualization.DataView(data_formatted);
+              value_filtered = toFilter.getState();
+              if (value_filtered.value>'AAA') {
+              new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.value}]));
+              }
+              var filtered_view = new google.visualization.DataView(new_view);
+              lastRowIndex = filtered_view.getNumberOfRows()-1
+              filtered_view.hideRows(10,lastRowIndex);
+              dashboard.draw(filtered_view);
             });
-
-          };
-
-
+    };
 
     $(document).ready(function (drawchart) {
         // prepare the URL to call
@@ -144,7 +137,6 @@
                 console.log(error);
             }
         });
-
     });
 
     </script>

@@ -3,10 +3,8 @@
 
 
     <script>
-
-
       function initMap() {
-      map = new google.maps.Map(document.getElementById('map'), {
+        map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 10, lng: 0},
           zoom: 2,
           gestureHandling: 'cooperative',
@@ -36,75 +34,78 @@
               result_table = api_results.data;
             },
             complete: function(){
-            $('#loading_extra').hide();
-            if (origin > 'AAA' && destination > 'AAA'){
-            var itintable = result_table.filter(function (table) {
-                  return table[0] == origin &&
-                         table[4] == destination ;
-                });
-            var maxpopularity = Math.max(itintable[0][14], itintable[1][14],itintable[2][14],itintable[3][14],itintable[4][14])
-            //drawing the lines
-            for (i = 0; i < Math.min(itintable.length,5); i++){
-            var flightPlanCoordinates = [];
-              // filling up the null values with the previous stop/origin (itineraries with less than 2 stops)
-              if (itintable[i][9] == null) {
-                  itintable[i][9] =  itintable[i][2];
-                  itintable[i][10] = itintable[i][3];
-                  itintable[i][12] =  itintable[i][2];
-                  itintable[i][13] = itintable[i][3] }
-                else {
-                  if (itintable[i][12] == null) {
-                  itintable[i][12] =  itintable[i][6];
-                  itintable[i][13] = itintable[i][7]};
+              $('#loading_extra').hide();
+              if (origin > 'AAA' && destination > 'AAA'){
+                var itintable = result_table.filter(function (table) {
+                      return table[0] == origin &&
+                             table[4] == destination ;
+                    });
+                var maxpopularity = Math.max(itintable[0][14], itintable[1][14],itintable[2][14],itintable[3][14],itintable[4][14])
+                //drawing the lines
+                for (i = 0; i < Math.min(itintable.length,5); i++){
+                  var flightPlanCoordinates = [];
+                    // filling up the null values with the previous stop/origin (itineraries with less than 2 stops)
+                    if (itintable[i][9] == null) {
+                        itintable[i][9] =  itintable[i][2];
+                        itintable[i][10] = itintable[i][3];
+                        itintable[i][12] =  itintable[i][2];
+                        itintable[i][13] = itintable[i][3] }
+                      else {
+                        if (itintable[i][12] == null) {
+                        itintable[i][12] =  itintable[i][6];
+                        itintable[i][13] = itintable[i][7]};
+                      };
+                    flightPlanCoordinates = [
+                      {lat:itintable[i][2],lng:itintable[i][3]},
+                      {lat:itintable[i][9],lng:itintable[i][10]},
+                      {lat:itintable[i][12],lng:itintable[i][13]},
+                      {lat:itintable[i][6],lng:itintable[i][7]}
+                    ];
+                  var flightPath = new google.maps.Polyline({
+                    path: flightPlanCoordinates,
+                    geodesic: true,
+                    strokeColor: '#5be2ed',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 5*itintable[i][14]/maxpopularity
+                  });
+                  flightPath.setMap(map);
+
+                  // adding markers to show airports
+                  var marker_from = new google.maps.Marker({
+                    position: {lat:itintable[i][2],lng:itintable[i][3]},
+                    label: itintable[i][1]
+                    });
+                  var marker_to = new google.maps.Marker({
+                    position: {lat:itintable[i][6],lng:itintable[i][7]},
+                    label: itintable[i][5]
+                    });
+                  var marker_stop1 = new google.maps.Marker({
+                    position: {lat:itintable[i][9],lng:itintable[i][10]},
+                    label: itintable[i][8]
+                    });
+                  var marker_stop2 = new google.maps.Marker({
+                    position: {lat:itintable[i][12],lng:itintable[i][13]},
+                    label: itintable[i][11]
+                    });
+                  // To add the marker to the map, call setMap();
+                  marker_from.setMap(map);
+                  marker_to.setMap(map);
+                  marker_stop1.setMap(map);
+                  marker_stop2.setMap(map);
+
+                  //create empty LatLngBounds object to center the map and include all markers
+                  var bounds = new google.maps.LatLngBounds();
+                  //extend the bounds to include each marker's position
+                  bounds.extend(marker_from.position);
+                  bounds.extend(marker_to.position);
+                  bounds.extend(marker_stop1.position);
+                  bounds.extend(marker_stop2.position);
+                  //now fit the map to the newly inclusive bounds
+                  map.fitBounds(bounds);
                 };
-              flightPlanCoordinates = [
-                {lat:itintable[i][2],lng:itintable[i][3]},
-                {lat:itintable[i][9],lng:itintable[i][10]},
-                {lat:itintable[i][12],lng:itintable[i][13]},
-                {lat:itintable[i][6],lng:itintable[i][7]}
-              ];
-            var flightPath = new google.maps.Polyline({
-              path: flightPlanCoordinates,
-              geodesic: true,
-              strokeColor: '#5be2ed',
-              strokeOpacity: 1.0,
-              strokeWeight: 5*itintable[i][14]/maxpopularity
-            });
-            flightPath.setMap(map);
+              };
+            },
 
-            // adding markers to show airports
-            var marker_from = new google.maps.Marker({
-              position: {lat:itintable[i][2],lng:itintable[i][3]},
-              label: itintable[i][1]
-              });
-            var marker_to = new google.maps.Marker({
-              position: {lat:itintable[i][6],lng:itintable[i][7]},
-              label: itintable[i][5]
-              });
-            var marker_stop1 = new google.maps.Marker({
-              position: {lat:itintable[i][9],lng:itintable[i][10]},
-              label: itintable[i][8]
-              });
-            var marker_stop2 = new google.maps.Marker({
-              position: {lat:itintable[i][12],lng:itintable[i][13]},
-              label: itintable[i][11]
-              });
-            // To add the marker to the map, call setMap();
-            marker_from.setMap(map);
-            marker_to.setMap(map);
-            marker_stop1.setMap(map);
-            marker_stop2.setMap(map);
-
-            //create empty LatLngBounds object to center the map and include all markers
-            var bounds = new google.maps.LatLngBounds();
-            //extend the bounds to include each marker's position
-            bounds.extend(marker_from.position);
-            bounds.extend(marker_to.position);
-            bounds.extend(marker_stop1.position);
-            bounds.extend(marker_stop2.position);
-            //now fit the map to the newly inclusive bounds
-            map.fitBounds(bounds);
-          };};},
           error: function (request, status, error) {
             console.log(error);
           }
@@ -144,8 +145,8 @@
                 console.log(error);
             }
         });
-
-    });
+    }
+  );
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk&callback=initMap" async defer></script>
 
