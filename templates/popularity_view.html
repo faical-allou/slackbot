@@ -33,9 +33,9 @@
               'controlType': 'CategoryFilter',
               'containerId': 'filter_div',
               'options': {
-                'values': data_formatted.getDistinctValues(0),
                 'filterColumnLabel': "Origin",
-                'ui': { 'label': 'Specify origin city',
+                'ui': { 'label': 'Filter origin city',
+                        'caption': 'e.g. TYO',
                         'allowMultiple' : false,
                         'allowNone': true,}
               }
@@ -44,9 +44,9 @@
               'controlType': 'CategoryFilter',
               'containerId': 'filter_div2',
               'options': {
-                'values': data_formatted.getDistinctValues(1),
                 'filterColumnLabel': "Destination",
-                'ui': { 'label': 'Specify destination city',
+                'ui': { 'label': 'Filter destination city',
+                        'caption': 'e.g. SHA',
                         'allowMultiple' : false,
                         'allowNone': true,}
               }
