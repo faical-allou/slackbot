@@ -41,13 +41,13 @@
         $('#loading_extra').show();
 
         var filter = document.getElementById("ODinput");
-        var od = filter.value;
+        var od = filter.value.toUpperCase();
         mixpanel.track("Itinerary selection", {"O&D": od,});
 
         var origin = od.substring(0,3);
         var destination = od.substring(4,7);
-        var url_to_call = './itineraries_data/'+origin+'/'+destination
 
+        var url_to_call = './itineraries_data/'+origin+'/'+destination
 
         $.ajax({
             type: 'GET',

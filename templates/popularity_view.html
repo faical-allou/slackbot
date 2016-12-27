@@ -30,23 +30,25 @@
 
         // Create 2 filters, passing some options
         var fromFilter = new google.visualization.ControlWrapper({
-              'controlType': 'StringFilter',
+              'controlType': 'CategoryFilter',
               'containerId': 'filter_div',
               'options': {
+                'values': data_formatted.getDistinctValues(0),
                 'filterColumnLabel': "Origin",
                 'ui': { 'label': 'Specify origin city',
-                        'allowMultiple' : true,
-                        'allowNone': true}
+                        'allowMultiple' : false,
+                        'allowNone': true,}
               }
         });
         var toFilter = new google.visualization.ControlWrapper({
-              'controlType': 'StringFilter',
+              'controlType': 'CategoryFilter',
               'containerId': 'filter_div2',
               'options': {
+                'values': data_formatted.getDistinctValues(1),
                 'filterColumnLabel': "Destination",
                 'ui': { 'label': 'Specify destination city',
-                        'allowMultiple' : true,
-                        'allowNone': true}
+                        'allowMultiple' : false,
+                        'allowNone': true,}
               }
         });
             // Create a chart, passing some options
@@ -88,30 +90,27 @@
 
             //retrieve 10 values every time the filters change
             google.visualization.events.addListener(fromFilter, 'statechange', function() {
+              filter_state = fromFilter.getState();
+              value_filtered = filter_state.selectedValues[0];
+              mixpanel.track("Popularity selection", {"Origin": value_filtered,});
               var new_view = new google.visualization.DataView(data_formatted);
-              value_filtered = fromFilter.getState();
-              if (value_filtered.value>'AAA') {
-                mixpanel.track("Popularity selection", {"Origin": value_filtered,});
-                new_view.setRows(new_view.getFilteredRows([{column: 0, value: value_filtered.value}]));
-                }
+              new_view.setRows(new_view.getFilteredRows([{column: 0, value: value_filtered}]));
               var filtered_view = new google.visualization.DataView(new_view);
               lastRowIndex = filtered_view.getNumberOfRows()-1
-              filtered_view.hideRows(10,lastRowIndex);
-              dashboard.draw(filtered_view);
+              if (lastRowIndex > 1) {filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
+              dashboard.draw(filtered_view);};
             });
 
             google.visualization.events.addListener(toFilter, 'statechange', function() {
+              filter_state = toFilter.getState();
+              value_filtered = filter_state.selectedValues[0];
+              mixpanel.track("Popularity selection", {"Destination": value_filtered,});
               var new_view = new google.visualization.DataView(data_formatted);
-              value_filtered = toFilter.getState();
-              if (value_filtered.value>'AAA') {
-                mixpanel.track("Popularity selection", {"Destination": value_filtered,});
-                new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.value}]));
-              }
+              new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered}]));
               var filtered_view = new google.visualization.DataView(new_view);
               lastRowIndex = filtered_view.getNumberOfRows()-1
-              filtered_view.hideRows(10,lastRowIndex);
-              dashboard.draw(filtered_view);
-
+              if (lastRowIndex > 1) {filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
+              dashboard.draw(filtered_view);};
             });
     };
 

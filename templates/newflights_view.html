@@ -98,8 +98,8 @@
           new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.selectedValues[0]}]));
           var filtered_view = new google.visualization.DataView(new_view);
           lastRowIndex = filtered_view.getNumberOfRows()-1
-          filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
-          dashboard.draw(filtered_view);
+          if (lastRowIndex > 1) {filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
+          dashboard.draw(filtered_view);};
         });
 
         google.visualization.events.addListener(toFilter, 'statechange', function() {
@@ -109,8 +109,8 @@
           new_view.setRows(new_view.getFilteredRows([{column: 2, value: value_filtered.selectedValues[0]}]));
           var filtered_view = new google.visualization.DataView(new_view);
           lastRowIndex = filtered_view.getNumberOfRows()-1
-          filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
-          dashboard.draw(filtered_view);
+          if (lastRowIndex > 1) {filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
+          dashboard.draw(filtered_view);};
         });
     };
 

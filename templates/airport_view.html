@@ -13,7 +13,7 @@
     function drawChart(airport) {
       var filter = document.getElementById("airportinput");
       if (isNaN(airport)) {
-      airport = filter.value.substring(0,3);
+      airport = filter.value.toUpperCase();
       mixpanel.track("Hub selection", {"Airport": filter.value,});
       };
 
