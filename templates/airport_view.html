@@ -15,6 +15,7 @@
       if (isNaN(airport)) {
       airport = filter.value.substring(0,3);
       };
+      mixpanel.track("Hub selection", {"Airport": filter.value,});
 
       var url_to_call = './airport_data/'+airport;
 

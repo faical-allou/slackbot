@@ -21,9 +21,12 @@
 
         var filter = document.getElementById("ODinput");
         var od = filter.value;
+        mixpanel.track("Itinerary selection", {"Filter": od,});
+
         var origin = od.substring(0,3);
         var destination = od.substring(4,7);
         var url_to_call = './itineraries_data/'+origin+'/'+destination
+
 
         $.ajax({
             type: 'GET',

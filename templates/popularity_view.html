@@ -90,7 +90,7 @@
             google.visualization.events.addListener(fromFilter, 'statechange', function() {
               var new_view = new google.visualization.DataView(data_formatted);
               value_filtered = fromFilter.getState();
-              console.log(value_filtered.value)
+              mixpanel.track("Popularity selection", {"Origin": value_filtered,});
               if (value_filtered.value>'AAA') {
               new_view.setRows(new_view.getFilteredRows([{column: 0, value: value_filtered.value}]));
               }
@@ -103,6 +103,7 @@
             google.visualization.events.addListener(toFilter, 'statechange', function() {
               var new_view = new google.visualization.DataView(data_formatted);
               value_filtered = toFilter.getState();
+              mixpanel.track("Popularity selection", {"Destination": value_filtered,});
               if (value_filtered.value>'AAA') {
               new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.value}]));
               }
@@ -110,6 +111,7 @@
               lastRowIndex = filtered_view.getNumberOfRows()-1
               filtered_view.hideRows(10,lastRowIndex);
               dashboard.draw(filtered_view);
+
             });
     };
 
