@@ -37,8 +37,8 @@
     $('#menu').css({'background-color': $(this).scrollTop()>50 ? "rgba(255,255,255,0.9)":"rgba(255,255,255,0.6)"});
   });
 
-  var viewpage = " View page " + window.location.href;
-  mixpanel.track(viewpage);
+  var viewpage = window.location.href;
+  mixpanel.track("Page view", {"Page":viewpage});
   </script>
 
 <body>
