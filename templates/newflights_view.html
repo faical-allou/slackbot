@@ -46,6 +46,7 @@
               'containerId': 'filter_div',
               'options': {
                 'filterColumnLabel': "Origin",
+                'values': data_formatted.getDistinctValues(1),
                 'ui': { 'label': 'Filter origin city',
                         'caption': 'e.g. LON',
                         'allowMultiple' : false,
@@ -57,6 +58,7 @@
               'containerId': 'filter_div2',
               'options': {
                 'filterColumnLabel': "Destination",
+                'values': data_formatted.getDistinctValues(2),
                 'ui': { 'label': 'Filter destination city',
                         'caption': 'e.g NYC',
                         'allowMultiple' : false,
@@ -67,10 +69,8 @@
         var myChart = new google.visualization.ChartWrapper({
               'chartType': 'Timeline',
               'containerId': 'chart_div',
-
               // The  chart will only use the columns listed - note:index start at 0
               'view': {'columns': [0,3,6,7]},
-
               'options': {
                 'height':600,
                 'width':700,

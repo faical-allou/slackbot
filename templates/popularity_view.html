@@ -34,6 +34,7 @@
               'containerId': 'filter_div',
               'options': {
                 'filterColumnLabel': "Origin",
+                'values': data_formatted.getDistinctValues(0),
                 'ui': { 'label': 'Filter origin city',
                         'caption': 'e.g. TYO',
                         'allowMultiple' : false,
@@ -45,6 +46,7 @@
               'containerId': 'filter_div2',
               'options': {
                 'filterColumnLabel': "Destination",
+                'values': data_formatted.getDistinctValues(1),
                 'ui': { 'label': 'Filter destination city',
                         'caption': 'e.g. SHA',
                         'allowMultiple' : false,
