@@ -13,8 +13,8 @@
     // instantiates the chart, passes in the data and draws it.
     function drawChart(filtertype,city) {
       var filter = document.getElementById("origin_input");
-      if (isNaN(city)) {
-      airport = filter.value.toUpperCase();
+      if (typeof city === "undefined") {
+      city = filter.value.toUpperCase();
       mixpanel.track("Popularity selection", {"Origin": filter.value,});
       };
       // prepare the URL to call
@@ -43,8 +43,7 @@
               for (i = 0; i < data_to_display.length ; i++) {
                     data_formatted.addRows([data_to_display.data[i]]);
               };
-              console.log(data_formatted, data_to_display);
-                  // Create a chart, passing some options
+              // Create a chart, passing some options
               myChart = new google.visualization.ChartWrapper({
                     'chartType': 'BarChart',
                     'containerId': 'chart_div',
@@ -127,7 +126,7 @@
                  <div class='container_12 ta-c mb-10'>
                    <div class='grid_2'> &nbsp </div>
                    <input id="origin_input" class='grid_4' type="text" value="Filter origin city (e.g. TYO)" onfocus='if (this.value=="Filter origin city (e.g. TYO)") {this.value="";}' onchange="filter_origin = this.value;">
-                   <input type="button" class="grid_3 button-style" value="check" onClick="drawChart('o',filter_origin)">
+                   <input type="button" class="grid_3 button-style" value="check" onClick="drawChart('o',undefined)">
                    <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
                  </div>
              </div>
