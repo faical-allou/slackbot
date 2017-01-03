@@ -150,6 +150,34 @@ class extractdata:
         connection.close()
         return rowarray_list
 
+    def gettrendingtable(self,cityfrom, cityto):
+
+        connection = self.getconnection()
+        cursor = connection.cursor()
+
+        query = "SELECT origincitycode, destinationcitycode, search_month, ranking \
+        FROM ptbsearches_trending \
+        WHERE origincitycode ='" + cityfrom + "' and destinationcitycode ='" + cityto + "' \
+        ORDER BY search_month ASC"
+        cursor.execute(query)
+
+        rows = [('a','b','c', 1)]
+        rowarray_list = []
+
+        while len(rows) > 0:
+
+            rows = cursor.fetchmany(500)
+            # Convert query to row arrays
+            for row in rows:
+                rows_to_convert = (row[0], row[1], row[2], row[3])
+                t = list(rows_to_convert)
+                rowarray_list.append(t)
+
+        j = simplejson.dumps(rowarray_list)
+
+        connection.close()
+        return rowarray_list
+
 
 
 def __init__(self):

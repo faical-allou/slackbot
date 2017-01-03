@@ -123,6 +123,14 @@ def airport_data(airport):
 
     return resp
 
+@app.route('/trending_data/<cityfrom>/<cityto>', methods=['GET'])
+def trending_data(cityfrom, cityto):
+        trend = extractdata.gettrendingtable(cityfrom, cityto)
+        lastupdate = extractdata.getlasttimeupdate('ptbsearches_trending')
+
+        resp = jsonify(data=trend, update = lastupdate, length = len(trend))
+
+        return resp
 
 @app.route('/popularity_view', methods=['GET'])
 def render_pax():
@@ -143,6 +151,11 @@ def render_itineraries():
 def render_airport():
     #Renders the passenger chart page
         return render_template("airport_view.html", title="What are they searching for" )
+
+@app.route('/trending_view', methods=['GET'])
+def render_trends():
+    #Renders the passenger chart page
+        return render_template("trending_view.html", title="What are they searching for" )
 
 @app.route('/')
 def render_home():
