@@ -36,15 +36,20 @@ class extractdata:
         connection.close()
         return results[0][0]
 
-    def getpopularitytable(self):
+    def getpopularitytable(self, filtertype, city ):
 
         connection = self.getconnection()
         cursor = connection.cursor()
-
-        query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
-        WHERE origincitycode > 'AAA' and destinationcitycode > 'AAA' \
-        ORDER BY seats DESC LIMIT 50000"
-        cursor.execute(query)
+        if filtertype == 'o':
+            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
+            WHERE origincitycode = '"+city+"' and destinationcitycode > 'AAA' \
+            ORDER BY seats DESC LIMIT 10"
+            cursor.execute(query)
+        else:
+            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
+            WHERE origincitycode > 'AAA' and destinationcitycode = '"+city+"' \
+            ORDER BY seats DESC LIMIT 10"
+            cursor.execute(query)
 
         rows = [('a','b','c', 1)]
         rowarray_list = []

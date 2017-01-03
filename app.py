@@ -17,15 +17,15 @@ app = Flask(__name__, static_folder='static')
 wsgi_app = app.wsgi_app
 extractdata = extractdata()
 
-@app.route('/popularity_data', methods=['GET'])
-def popularity_data():
+@app.route('/popularity_data/<filtertype>/<city>', methods=['GET'])
+def popularity_data(filtertype,city):
 
-    popular = extractdata.getpopularitytable()
+    popular = extractdata.getpopularitytable(filtertype,city)
     lastupdate = extractdata.getlasttimeupdate('ptbexits_popular')
     #normalize the table (adding 1 to the sum to return 0 when empty)
-    sum_popular = sum(row[3] for row in popular)+1
-    for k in range(0,len(popular)-1):
-        popular[k][3] = popular[k][3]*100000000/sum_popular
+    max_popular = max(row[3] for row in popular)+1
+    for k in range(0,len(popular)):
+        popular[k][3] = round(popular[k][3]*100/max_popular)
 
     resp = jsonify(data=popular, update = lastupdate, length = len(popular))
 
