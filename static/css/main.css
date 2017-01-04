@@ -635,7 +635,7 @@ a.underline:hover{text-decoration:underline;}
   outline: none;
 }
 
-.home-link {padding-top: 30px; padding-bottom: 30px; text-align: center;}
+.home-link {padding-top: 30px; padding-bottom: 30px; margin: 5px; text-align: center; background-color:rgba(255,255,255,1);}
 .home-link:hover { box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) }
 .home-link a {color:#372f45;}      /* unvisited link */
 .home-link a:visited {color:#372f45;}  /* visited link */
@@ -648,3 +648,15 @@ a.underline:hover{text-decoration:underline;}
 .filter-bar {height: 35px; text-align: center; margin-bottom: 10px}
 
 #dashboard_wrapper {height: 00px}
+
+.footer {
+	padding-top: 30px;
+	font-size: 16px;
+	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	color: #DFDCE3;
+	list-style: none;
+}
+.footer li a {color:#DFDCE3;}      /* unvisited link */
+.footer li a:visited {color:#DFDCE3;}  /* visited link */
+.footer li a:hover {color:#DFDCE3;}  /* mouse over link */
+.footer li a:active {color:#DFDCE3;}  /* selected link */
