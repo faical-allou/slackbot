@@ -45,7 +45,7 @@
         data_formatted.addColumn('string', 'Origin');
         data_formatted.addColumn('string', 'Destination');
         data_formatted.addColumn('date', 'Search Month');
-        data_formatted.addColumn('number', 'Rank of '+destination);
+        data_formatted.addColumn('number', destination+' from '+origin);
 
         for (i = 0; i < data_to_display.length -1; i++) {
               data_formatted.addRows([
@@ -125,7 +125,7 @@
             document.getElementById("update_time").innerHTML = update_time.toDateString() ;
 
         // add the new column.
-        data_formatted.addColumn('number', 'Rank of '+destination);
+        data_formatted.addColumn('number', destination+' from '+origin);
 
         for (i = 0; i < data_to_display.length -1; i++) {
               data_formatted.setValue(i, data_formatted.getNumberOfColumns()-1, data_to_display.data[i][3]);
@@ -192,11 +192,11 @@
   					</div>
             <div class="grid_4">
   							<i class="fa fa-calendar fa-4x sky-blue"></i>
-  							<p class=" text-icon "> In the last 12 months </p>
+  							<p class=" text-icon "> Since 2014 </p>
   					</div>
 						<div class="grid_4">
-								<i class="fa fa-plane fa-4x sky-blue"></i>
-								<p class=" text-icon ">The last 10 new flights are:</p>
+								<i class="fa fa-line-chart fa-4x sky-blue"></i>
+								<p class=" text-icon ">The destinations ranked as:</p>
 						</div>
           <!--Div that holds the animated gif until the chart loads-->
           <div id="loading_image" class="grid_12 pb-30">
@@ -211,12 +211,12 @@
           <div id="dashboard_wrapper" >
             <!--Divs that will hold each control and chart-->
             <div id="chart_div"></div>
-            <div class='container_12 ta-c mb-10'>
+            <div class='container_12 filter-bar'>
               <div class='grid_1'> &nbsp </div>
               <input id="origin_input" class='grid_3' type="text" value="From city (e.g. LON)" onfocus='if (this.value=="From city (e.g. LON)") {this.value="";}' onchange="filter_origin = this.value;">
               <input id="destination_input" class='grid_3' type="text" value="To city (e.g. NYC)" onfocus='if (this.value=="To city (e.g. NYC)") {this.value="";}' onchange="filter_destination = this.value;">
-              <input type="button" class="grid_2 button-style" value="redraw" onClick="drawChart(undefined,undefined)">
               <input type="button" class="grid_2 button-style" value="add" onClick="addToChart(undefined,undefined)">
+              <input type="button" class="grid_2 button-style" value="reset" onClick="drawChart(undefined,undefined)">
               <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
             </div>
           </div>
@@ -230,7 +230,8 @@
              </div>
              <div class="grid_10">
                  <span>
-                   xxx
+                   The Chart shows the ranking of destinations from a fixed origin for every month. </br>
+                   An improved ranking relveals an increase in popularity.
                  </span>
              </div>
           </div>
