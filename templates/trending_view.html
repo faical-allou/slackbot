@@ -31,19 +31,8 @@
 
         var dashboard = new google.visualization.Dashboard(
                 document.getElementById('dashboard_div'));
-            // Create 2 filters, passing some options
-        var fromFilter = new google.visualization.ControlWrapper({
-              'controlType': 'CategoryFilter',
-              'containerId': 'filter_div',
-              'options': {
-                'filterColumnLabel': "Origin",
-                'ui': { 'label': 'Filter origin city',
-                        'caption': 'e.g. LON',
-                        'allowMultiple' : true,
-                        'allowNone': true}
-              }
-            });
-            // Create a chart, passing some options
+
+        // Create a chart, passing some options
         var myChart = new google.visualization.ChartWrapper({
               'chartType': 'LineChart',
               'containerId': 'chart_div',
