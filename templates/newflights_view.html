@@ -5,6 +5,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script type="text/javascript">
+    $('#dashboard_wrapper').hide();
 
     // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart', 'controls']});
@@ -75,7 +76,7 @@
                 'height':600,
                 'width':700,
                 'colors': ['#00b2d6'],
-                'backgroundColor': { fill:'#DFDCE3' },
+                'backgroundColor': { fill:'#FFFFFF' },
                 'timeline':{rowLabelStyle:{fontName:"Helvetica", color:'#1b1524', fontSize: 16 },
                             barLabelStyle:{fontSize: 16} },
               }
@@ -120,6 +121,7 @@
 
         // loading image until the chart is done
         $('#loading_image').show();
+        $('#dashboard_wrapper').hide();
         // call API and pass the data to the drawchart function
         $.ajax({
             type: 'GET',
@@ -132,7 +134,8 @@
                 document.getElementById("update_time").innerHTML = update_time.toDateString() ;
             },
             complete: function(){
-                $('#loading_image').hide();
+              $('#loading_image').hide();
+              $('#dashboard_wrapper').show();
             },
             error: function (request, status, error) {
                 console.log(error);
@@ -144,53 +147,25 @@
     </script>
 
   <!-- HTML -->
-
-      <div class="bg-white">
-  	    <div class="container_12 icon-section">
-  					<div class="grid_4">
-  							<i class="fa fa-users fa-4x sky-blue"></i>
-  							<p class=" text-icon "> Based on 50M+ UMVs </p>
-  					</div>
-            <div class="grid_4">
-  							<i class="fa fa-calendar fa-4x sky-blue"></i>
-  							<p class=" text-icon "> In the last 12 months </p>
-  					</div>
-						<div class="grid_4">
-								<i class="fa fa-plane fa-4x sky-blue"></i>
-								<p class=" text-icon ">The last 10 new flights are:</p>
-						</div>
+        <div class="bg-white container_12 ta-c">
           <!--Div that holds the animated gif until the chart loads-->
           <div id="loading_image" class="grid_12 pb-30">
             <img src="{{ url_for('static', filename='loading.gif') }}"></img>
           </div>
-	      </div>
-      </div>
-
-       <div class="bg-light-grey">
-        <div class="container_12 ta-c fs-18 pb-30 pt-30">
-          <!--Div that will hold the dashboard-->
-          <div id="dashboard_div" >
-            <!--Divs that will hold each control and chart-->
-            <div id="chart_div"></div>
-            <div id="filter_div" class="grid_6 ta-l pb-30"></div>
-            <div id="filter_div2" class="grid_6 ta-l pb-30"></div>
-          </div>
-          <span class=" text-icon "> Last updated on: </span>
-          <span id="update_time" class=" text-icon"> - </span>
         </div>
-         <div class="container_12 info-section">
-           <div class="dib">
-             <div class="grid_2">
-                 <i class="fa fa-info-circle fa-5x "></i>
-             </div>
-             <div class="grid_10">
-                 <span>
-                   Flights are only shown when they gather a certain number of redirects. <br/>
-                   The bars show the timeframe between the earliest exit (travel date) captured
-                   and the last one and may not mean the flight is discontinued. <br/>
-                   Flights are ordered by date of discovery (first exit date), the latest ones on top.
-                 </span>
-             </div>
+
+       <div class="bg-white">
+        <div class="container_12 ta-c fs-18 pb-30 pt-30">
+          <div id="dashboard_wrapper">
+          <!--Div that will hold the dashboard-->
+            <div id="dashboard_div" >
+              <!--Divs that will hold each control and chart-->
+              <div id="chart_div"></div>
+              <div id="filter_div" class="grid_6 ta-l pb-30"></div>
+              <div id="filter_div2" class="grid_6 ta-l pb-30"></div>
+              <span class=" text-icon "> Last updated on: </span>
+              <span id="update_time" class=" text-icon"> - </span>
+            </div>
           </div>
         </div>
       </div>

@@ -68,7 +68,7 @@
                 'width':700,
                 'lineWidth': 4,
                 'colors': ['#00b2d6'],
-                'backgroundColor': { fill:'#DFDCE3' },
+                'backgroundColor': { fill:'#FFFFFF' },
                 'vAxis': {title: 'Rank',
                           textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
                           titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
@@ -145,7 +145,7 @@
                 'height':600,
                 'width':700,
                 'lineWidth': 5,
-                'backgroundColor': { fill:'#DFDCE3' },
+                'backgroundColor': { fill:'#FFFFFF' },
                 'vAxis': {title: 'Rank',
                           textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
                           titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
@@ -185,29 +185,14 @@
     </script>
 
   <!-- HTML -->
-
-      <div class="bg-white">
-  	    <div class="container_12 icon-section">
-  					<div class="grid_4">
-  							<i class="fa fa-users fa-4x sky-blue"></i>
-  							<p class=" text-icon "> Based on 50M+ UMVs </p>
-  					</div>
-            <div class="grid_4">
-  							<i class="fa fa-calendar fa-4x sky-blue"></i>
-  							<p class=" text-icon "> Since 2014 </p>
-  					</div>
-						<div class="grid_4">
-								<i class="fa fa-line-chart fa-4x sky-blue"></i>
-								<p class=" text-icon ">The destinations ranked as:</p>
-						</div>
+        <div class="bg-white container_12 ta-c">
           <!--Div that holds the animated gif until the chart loads-->
           <div id="loading_image" class="grid_12 pb-30">
             <img src="{{ url_for('static', filename='loading.gif') }}"></img>
           </div>
-	      </div>
-      </div>
+        </div>
 
-       <div class="bg-light-grey">
+       <div class="bg-white">
         <div class="container_12 ta-c fs-16 pb-30 pt-30">
           <!--Div that will hold the dashboard-->
           <div id="dashboard_wrapper" >
@@ -221,23 +206,10 @@
               <input type="button" class="grid_2 button-style" value="reset" onClick="drawChart(undefined,undefined)">
               <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
             </div>
-          </div>
-        </div>
-        <div class="container_12 ta-c">
-        <span class=" text-icon "> Last updated on: </span>
-        <span id="update_time" class=" text-icon"> - </span>
-        </div>
-         <div class="container_12 info-section">
-           <div class="dib">
-             <div class="grid_2">
-                 <i class="fa fa-info-circle fa-5x "></i>
-             </div>
-             <div class="grid_10">
-                 <span>
-                   The Chart shows the ranking of destinations from a fixed origin for every month. </br>
-                   An improved ranking reveals an increase in popularity. Rankings are based on number of searches made, converted or not.
-                 </span>
-             </div>
+            <div class="container_12 ta-c">
+              <span class="text-icon"> Last updated on: </span>
+              <span id="update_time" class=" text-icon"> - </span>
+            </div>
           </div>
         </div>
       </div>
