@@ -16,21 +16,6 @@
           ]
         });
 
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-            map.setCenter(pos);
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        };
       };
 
       function draw_map() {
@@ -172,7 +157,7 @@
 
   <!-- HTML -->
 
-      <div class="bg-white">
+      <div class="bg-white container_12 ta-c">
           <!--Div that holds the animated gif until the chart loads-->
           <div id="loading_image" class="grid_12 pb-30">
             <img src="{{ url_for('static', filename='loading.gif') }}"></img>
@@ -191,9 +176,9 @@
                 <input type="button" class="grid_2 button-style mb-10" value="clear" onClick="initMap()">
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
-           </div>
-           <span class="text-icon"> Last updated on: </span>
+            <span class="text-icon"> Last updated on: </span>
            <span id="update_time" class=" text-icon"> - </span>
+         </div>
          </div>
         </div>
 {% endblock %}
