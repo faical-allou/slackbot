@@ -173,19 +173,6 @@
   <!-- HTML -->
 
       <div class="bg-white">
-  	    <div class="container_12 icon-section">
-  					<div class="grid_4">
-  							<i class="fa fa-users fa-4x sky-blue"></i>
-  							<p class=" text-icon "> Based on 50M+ UMVs </p>
-  					</div>
-            <div class="grid_4">
-  							<i class="fa fa-calendar fa-4x sky-blue"></i>
-  							<p class=" text-icon "> In the last 12 months </p>
-  					</div>
-						<div class="grid_4">
-								<i class="fa fa-map-signs fa-4x sky-blue"></i>
-								<p class=" text-icon ">The prefered itineraries are: </p>
-						</div>
           <!--Div that holds the animated gif until the chart loads-->
           <div id="loading_image" class="grid_12 pb-30">
             <img src="{{ url_for('static', filename='loading.gif') }}"></img>
@@ -208,18 +195,5 @@
            <span class="text-icon"> Last updated on: </span>
            <span id="update_time" class=" text-icon"> - </span>
          </div>
-
-          <div class="container_12 info-section">
-            <div class="dib">
-              <div class="grid_2">
-                  <i class="fa fa-info-circle fa-5x"></i>
-              </div>
-              <div class="grid_10">
-                  <span> The map shows the preferred itineraries users chose in the last year for a particular O&D. <br/>
-                    The thickness of the line indicates how popular the routing is compared to the others.
-                  </span>
-              </div>
-            </div>
-          </div>
         </div>
 {% endblock %}
