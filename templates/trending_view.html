@@ -66,7 +66,7 @@
               'options': {
                 'height':600,
                 'width':700,
-                'chartArea': {height: '90%'},
+                'chartArea': {width: '75%', height: '90%'},
                 'curveType': 'function',
                 'lineWidth': 4,
                 'colors': ['#00b2d6'],
@@ -146,7 +146,7 @@
               'options': {
                 'height':600,
                 'width':700,
-                'chartArea': {height: '90%'},
+                'chartArea': {width: '75%', height: '90%'},
                 'curveType': 'function',
                 'lineWidth': 5,
                 'backgroundColor': { fill:'#FFFFFF' },
@@ -189,7 +189,7 @@
 
   <!-- HTML -->
         <div class="bg-white container_12 ta-c">
-          <div class="title"> Trending </div>
+          <div class="title"> Trending destinations </div>
           <!--Div that holds the animated gif until the chart loads-->
           <div id="loading_image" class="grid_12 pb-30">
             <img src="{{ url_for('static', filename='loading.gif') }}"></img>
