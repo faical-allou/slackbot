@@ -66,6 +66,8 @@
               'options': {
                 'height':600,
                 'width':700,
+                'chartArea': {height: '90%'},
+                'curveType': 'function',
                 'lineWidth': 4,
                 'colors': ['#00b2d6'],
                 'backgroundColor': { fill:'#FFFFFF' },
@@ -144,6 +146,8 @@
               'options': {
                 'height':600,
                 'width':700,
+                'chartArea': {height: '90%'},
+                'curveType': 'function',
                 'lineWidth': 5,
                 'backgroundColor': { fill:'#FFFFFF' },
                 'vAxis': {title: 'Rank',
@@ -177,8 +181,7 @@
         // loading image until the chart is done
         $('#dashboard_wrapper').hide();
         $('#loading_image').show();
-        drawChart('LON','NYC');
-
+        drawChart('TYO','SYD');
     });
 
 
@@ -186,7 +189,7 @@
 
   <!-- HTML -->
         <div class="bg-white container_12 ta-c">
-          <div class="title"> Trends </div>
+          <div class="title"> Trending </div>
           <!--Div that holds the animated gif until the chart loads-->
           <div id="loading_image" class="grid_12 pb-30">
             <img src="{{ url_for('static', filename='loading.gif') }}"></img>
