@@ -243,7 +243,7 @@ Helper classes
 
 
 /*font-family*/
-.title{font-family:"Open Sans Condensed", sans-serif;}
+.title{font-family:"Open Sans Condensed", sans-serif; font-size: 32px; margin-bottom: 20px}
 
 /*font-size*/
 .fs-6 {font-size:6px;}
