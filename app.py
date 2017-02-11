@@ -134,18 +134,19 @@ def trending_data(cityfrom, cityto):
         return resp
 
 @app.route('/neural_data/<in1>/<in2>/<in3>/<in4>/<in5>/<in6>/<out1>/<out2>/<out3>/<out4>/<out5>/<out6>', methods=['GET'])
-def gettrainednetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
-        neural = extractdata.trainneuralnetwork(cityfrom, cityto)
-        lastupdate = extractdata.getlasttimeupdate('ptbexits_neural')
-        resp = jsonify(data=trend, update = lastupdate, length = len(trend))
+def trainednetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
+
+        neural = neural_network.trainneuralnetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6)
+        #lastupdate = extractdata.getlasttimeupdate('ptbexits_neural')
+        resp = jsonify(data=neural,  length = len(neural))
 
         return resp
 
-@app.route('/neural_predict/<in1>', methods=['GET'])
-def trending_data(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
-        neural = extractdata.gettrendingtable(cityfrom, cityto)
-        lastupdate = extractdata.getlasttimeupdate('ptbexits_neural')
-        resp = jsonify(data=trend, update = lastupdate, length = len(trend))
+@app.route('/neural_predict/<in1>/<syn0>/<syn1>', methods=['GET'])
+def predict_od(in1, syn0, syn1):
+        prediction = extractdata.predict(in1,syn0,syn1)
+        #lastupdate = extractdata.getlasttimeupdate('ptbexits_neural')
+        resp = jsonify(data=prediction,  length = len(prediction))
 
         return resp
 
@@ -177,7 +178,7 @@ def render_trends():
         return render_template("trending_view.html", title="What are they searching for" )
 
 @app.route('/neural_view', methods=['GET'])
-def render_trends():
+def render_neuralnetwork():
     #Renders the passenger chart page
         return render_template("neural_view.html", title="What are they searching for" )
 

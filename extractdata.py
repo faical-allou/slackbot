@@ -206,6 +206,5 @@ class extractdata:
         connection.close()
         return rowarray_list[0]
 
-
 def __init__(self):
         print ("in init")

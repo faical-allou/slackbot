@@ -6,9 +6,9 @@ import numpy as np
 
 from extractdata import *
 
-class extractdata:
-    def trainneuralnetwork(self):
-        extractdata = extractdata()
+class neural_network:
+    def trainneuralnetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
+
 
         #train1 = extractdata.getneuralattributes('LON-NYC')
         #train2 = extractdata.getneuralattributes('LON-BCN')
@@ -78,6 +78,22 @@ class extractdata:
 
         print ("Output After Training:")
         print (l2)
-        
+        syn0_convert = simplejson.dumps(syn0)
+        syn1_convert = simplejson.dumps(syn1)
+
+        return (syn0_convert,syn1_convert)
+
+    def predict(self,input_od,syn0,syn1):
+        # input dataset
+        input_predict = extractdata.getneuralattributes(input_od)
+        X = np.array(input_predict,dtype='d')
+
+        # forward propagation
+        l0 = X
+        l1 = nonlin(np.dot(l0,syn0))
+        l2 = nonlin(np.dot(l1,syn1))
+
+        return (l2)
+
 def __init__(self):
         print ("in init")
