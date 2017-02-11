@@ -138,7 +138,7 @@ def trainednetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
 
         neural = neural_network.trainneuralnetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6)
         #lastupdate = extractdata.getlasttimeupdate('ptbexits_neural')
-        resp = jsonify(data=neural,  length = len(neural))
+        resp = jsonify(syn0=neural[0], syn1=neural[1],  length = len(neural))
 
         return resp
 

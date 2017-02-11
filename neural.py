@@ -78,10 +78,15 @@ class neural_network:
 
         print ("Output After Training:")
         print (l2)
-        syn0_convert = simplejson.dumps(syn0)
-        syn1_convert = simplejson.dumps(syn1)
+        array_json_syn0 = []
+        array_json_syn1 = [syn1[0][0],syn1[1][0],syn1[2][0],syn1[3][0]]
 
-        return (syn0_convert,syn1_convert)
+        for i in range(0,6):
+            t = (syn0[i][0],syn0[i][1],syn0[i][2],syn0[i][3] )
+            array_json_syn0.append(t)
+
+
+        return (array_json_syn0,array_json_syn1)
 
     def predict(self,input_od,syn0,syn1):
         # input dataset

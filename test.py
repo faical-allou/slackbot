@@ -76,4 +76,13 @@ for iter in range(60000):
     syn0 += l0.T.dot(l1_delta)
 
 print ("Output After Training:")
-print (l2)
+array_json_syn0 = []
+array_json_syn1 = []
+print('syn0=', syn0)
+for i in range(0,3):
+    t = (syn0[i][0],syn0[i][1],syn0[i][2],syn0[i][3])
+    r = (syn1[i][0])
+    array_json_syn0.append(t)
+    array_json_syn1.append(r)
+
+print (array_json_syn0, array_json_syn1)
