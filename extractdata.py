@@ -178,6 +178,33 @@ class extractdata:
         connection.close()
         return rowarray_list
 
+    def getneuralattributes(self,od):
+        connection = self.getconnection()
+        cursor = connection.cursor()
+
+        query = "SELECT sum_seats_cy, rank_from_org_cy, rank_from_dest_cy, \
+        sum_seats_ly, rank_from_org_ly, rank_from_dest_ly  \
+        FROM ptbexits_neural \
+        WHERE origdestcitycode ='" + od + "'"
+
+        cursor.execute(query)
+
+        rows = (1,2,3,4,5,6)
+        rowarray_list = []
+
+        while len(rows) > 0:
+
+            rows = cursor.fetchmany(1)
+            # Convert query to row arrays
+            for row in rows:
+                rows_to_convert = (row[0], row[1], row[2], row[3], row[4], row[5])
+                t = list(rows_to_convert)
+                rowarray_list.append(t)
+
+        j = simplejson.dumps(rowarray_list)
+
+        connection.close()
+        return rowarray_list[0]
 
 
 def __init__(self):

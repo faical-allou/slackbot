@@ -78,3 +78,6 @@ class extractdata:
 
         print ("Output After Training:")
         print (l2)
+        
+def __init__(self):
+        print ("in init")
