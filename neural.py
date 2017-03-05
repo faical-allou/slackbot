@@ -17,19 +17,14 @@ class neural_network:
         return 1/(1+np.exp(-x))
 
     def trainneuralnetwork(self, in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
-        #train1 = extractdata.getneuralattributes('LON-NYC')
-        #train2 = extractdata.getneuralattributes('LON-BCN')
-        #train3 = extractdata.getneuralattributes('LON-ALC')
-        #train4 = extractdata.getneuralattributes('LON-AGP')
-        #train5 = extractdata.getneuralattributes('LON-BKK')
-        #train6 = extractdata.getneuralattributes('LON-TYO')
+        train1 = extractdatahere.getneuralattributes('LON-NYC')
+        train2 = extractdatahere.getneuralattributes('LON-BCN')
+        train3 = extractdatahere.getneuralattributes('LON-ALC')
+        train4 = extractdatahere.getneuralattributes('LON-AGP')
+        train5 = extractdatahere.getneuralattributes('LON-BKK')
+        train6 = extractdatahere.getneuralattributes('LON-TYO')
 
-        input_training =    [[1,2,1,4,5,6],
-                            [1,2,1,4,5,6],
-                            [1,2,100,23234,5,6],
-                            [1,2,2,4,5,6],
-                            [1,2,6,4,5,6],
-                            [1,2,9,4,5,6]]
+        input_training =    [train1, train2, train3, train4, train5, train6]
 
         max_size = max(max(input_row[0] for input_row in input_training), max(input_row[3] for input_row in input_training))
 
@@ -37,14 +32,7 @@ class neural_network:
             input_row[0] = input_row[0]/max_size
             input_row[3] = input_row[3]/max_size
 
-        output_training =   [[1],
-                            [1],
-                            [1],
-                            [0],
-                            [0],
-                            [0]]
-
-
+        output_training =   [[out1], [out2], [out3], [out4], [out5], [out6]]
 
         # input dataset
         X = np.array(input_training,dtype='d')
@@ -93,8 +81,13 @@ class neural_network:
 
     def predict(self,input_od,syn0received,syn1received):
         # input dataset
-        input_predict = [[1.0000,2.0000,1.00000,4.00000,5.0000,6.00000]]
-        #input_predict = extractdatahere.getneuralattributes(input_od)
+        #input_predict = [[1.0000,2.0000,1.00000,4.00000,5.0000,6.00000]]
+        input_predict = extractdatahere.getneuralattributes(input_od)
+
+        print(type(input_predict))
+        print(input_predict)
+        sys.stdout.flush()
+
         X = np.array(input_predict,dtype='d')
 
         syn0 = np.fromstring(syn0received, dtype= 'd', count=24, sep=',').reshape(6,4)
@@ -109,7 +102,7 @@ class neural_network:
         print(l2)
         sys.stdout.flush()
 
-        t = l2[0][0]
+        t = l2[0]
 
         return (t)
 
