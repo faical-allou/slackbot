@@ -2,14 +2,21 @@ import psycopg2
 import json
 import collections
 import datetime
+import sys
 import numpy as np
 
 from extractdata import *
 
+extractdatahere = extractdata()
+
 class neural_network:
-    def trainneuralnetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
+    # sigmoid function
+    def nonlin(self,x,deriv=False):
+        if(deriv==True):
+            return x*(1-x)
+        return 1/(1+np.exp(-x))
 
-
+    def trainneuralnetwork(self, in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
         #train1 = extractdata.getneuralattributes('LON-NYC')
         #train2 = extractdata.getneuralattributes('LON-BCN')
         #train3 = extractdata.getneuralattributes('LON-ALC')
@@ -37,11 +44,7 @@ class neural_network:
                             [0],
                             [0]]
 
-        # sigmoid function
-        def nonlin(x,deriv=False):
-            if(deriv==True):
-                return x*(1-x)
-            return 1/(1+np.exp(-x))
+
 
         # input dataset
         X = np.array(input_training,dtype='d')
@@ -61,17 +64,17 @@ class neural_network:
 
             # forward propagation
             l0 = X
-            l1 = nonlin(np.dot(l0,syn0))
-            l2 = nonlin(np.dot(l1,syn1))
+            l1 = self.nonlin(np.dot(l0,syn0))
+            l2 = self.nonlin(np.dot(l1,syn1))
 
             l2_error = y - l2
 
             if (iter % 10000) == 0:
         	       print ("Error:" + str(np.mean(np.abs(l2_error))))
 
-            l2_delta = l2_error*nonlin(l2,deriv=True)
+            l2_delta = l2_error*self.nonlin(l2,deriv=True)
             l1_error = l2_delta.dot(syn1.T)
-            l1_delta = l1_error * nonlin(l1,deriv=True)
+            l1_delta = l1_error * self.nonlin(l1,deriv=True)
 
             syn1 += l1.T.dot(l2_delta)
             syn0 += l0.T.dot(l1_delta)
@@ -88,17 +91,27 @@ class neural_network:
 
         return (array_json_syn0,array_json_syn1)
 
-    def predict(self,input_od,syn0,syn1):
+    def predict(self,input_od,syn0received,syn1received):
         # input dataset
-        input_predict = extractdata.getneuralattributes(input_od)
+        input_predict = [[1.0000,2.0000,1.00000,4.00000,5.0000,6.00000]]
+        #input_predict = extractdatahere.getneuralattributes(input_od)
         X = np.array(input_predict,dtype='d')
+
+        syn0 = np.fromstring(syn0received, dtype= 'd', count=24, sep=',').reshape(6,4)
+        syn1 = np.fromstring(syn1received, dtype= 'd', count=4, sep=',').reshape(4,1)
 
         # forward propagation
         l0 = X
-        l1 = nonlin(np.dot(l0,syn0))
-        l2 = nonlin(np.dot(l1,syn1))
+        l1 = self.nonlin(np.dot(l0,syn0))
+        l2 = self.nonlin(np.dot(l1,syn1))
 
-        return (l2)
+        print(l2.dtype)
+        print(l2)
+        sys.stdout.flush()
+
+        t = l2[0][0]
+
+        return (t)
 
 def __init__(self):
         print ("in init")

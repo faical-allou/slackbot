@@ -78,7 +78,7 @@ for iter in range(60000):
 print ("Output After Training:")
 array_json_syn0 = []
 array_json_syn1 = []
-print('syn0=', syn0)
+print('ssyn0)
 for i in range(0,3):
     t = (syn0[i][0],syn0[i][1],syn0[i][2],syn0[i][3])
     r = (syn1[i][0])

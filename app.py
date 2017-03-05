@@ -17,6 +17,7 @@ app = Flask(__name__, static_folder='static')
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 extractdata = extractdata()
+neural_network = neural_network()
 
 @app.route('/popularity_data/<filtertype>/<city>', methods=['GET'])
 def popularity_data(filtertype,city):
@@ -142,11 +143,15 @@ def trainednetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
 
         return resp
 
-@app.route('/neural_predict/<in1>/<syn0>/<syn1>', methods=['GET'])
-def predict_od(in1, syn0, syn1):
-        prediction = extractdata.predict(in1,syn0,syn1)
-        #lastupdate = extractdata.getlasttimeupdate('ptbexits_neural')
-        resp = jsonify(data=prediction,  length = len(prediction))
+@app.route('/neural_predict/<in1>/', methods=['GET', 'POST'])
+
+def predict_od(in1):
+        syn0received = request.form['syn0']
+        syn1received = request.form['syn1']
+
+        prediction = neural_network.predict(in1,syn0received,syn1received)
+
+        resp = jsonify(data=prediction,  length = 1)
 
         return resp
 
