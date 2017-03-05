@@ -4,6 +4,7 @@ import collections
 import datetime
 import sys
 import numpy as np
+import ast
 
 from extractdata import *
 
@@ -17,26 +18,28 @@ class neural_network:
         return 1/(1+np.exp(-x))
 
     def trainneuralnetwork(self, in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
-        train1 = extractdatahere.getneuralattributes('LON-NYC')
-        train2 = extractdatahere.getneuralattributes('LON-BCN')
-        train3 = extractdatahere.getneuralattributes('LON-ALC')
-        train4 = extractdatahere.getneuralattributes('LON-AGP')
-        train5 = extractdatahere.getneuralattributes('LON-BKK')
-        train6 = extractdatahere.getneuralattributes('LON-TYO')
+        train1 = extractdatahere.getneuralattributes(in1)
+        train2 = extractdatahere.getneuralattributes(in2)
+        train3 = extractdatahere.getneuralattributes(in3)
+        train4 = extractdatahere.getneuralattributes(in4)
+        train5 = extractdatahere.getneuralattributes(in5)
+        train6 = extractdatahere.getneuralattributes(in6)
 
-        input_training =    [train1, train2, train3, train4, train5, train6]
+        input_training = [train1, train2, train3, train4, train5, train6]
 
-        max_size = max(max(input_row[0] for input_row in input_training), max(input_row[3] for input_row in input_training))
+        max_input_from_database = [0,0,0,0,0,0]
 
-        for input_row in input_training :
-            input_row[0] = input_row[0]/max_size
-            input_row[3] = input_row[3]/max_size
+        for i in range(0,6):
+            max_input_from_database[i] = max(input_row[i] for input_row in input_training)
+            for input_row in input_training :
+                input_row[i] = input_row[i]/max_input_from_database[i]
+
+        print(input_training)
 
         output_training =   [[out1], [out2], [out3], [out4], [out5], [out6]]
 
         # input dataset
         X = np.array(input_training,dtype='d')
-        print(X)
         # output dataset
         y = np.array(output_training,dtype='d')
 
@@ -76,33 +79,42 @@ class neural_network:
             t = (syn0[i][0],syn0[i][1],syn0[i][2],syn0[i][3] )
             array_json_syn0.append(t)
 
+        array_json_l2 = [l2[0][0],l2[1][0],l2[2][0],l2[3][0],l2[4][0],l2[5][0]]
 
-        return (array_json_syn0,array_json_syn1)
+        return (array_json_syn0,array_json_syn1,max_input_from_database,array_json_l2)
 
-    def predict(self,input_od,syn0received,syn1received):
+    def predict(self,input_od,syn0received,syn1received, normalizer_received):
         # input dataset
         #input_predict = [[1.0000,2.0000,1.00000,4.00000,5.0000,6.00000]]
         input_predict = extractdatahere.getneuralattributes(input_od)
 
-        print(type(input_predict))
-        print(input_predict)
-        sys.stdout.flush()
+        normalizer = ast.literal_eval(normalizer_received)
+
+
+        for i in range(0,5):
+            input_predict[i] = input_predict[i]/float(normalizer[i])
+
 
         X = np.array(input_predict,dtype='d')
 
-        syn0 = np.fromstring(syn0received, dtype= 'd', count=24, sep=',').reshape(6,4)
-        syn1 = np.fromstring(syn1received, dtype= 'd', count=4, sep=',').reshape(4,1)
+        syn0 = np.array(ast.literal_eval(syn0received)).reshape(6,4)
+        syn1 = np.array(ast.literal_eval(syn1received)).reshape(4,1)
 
         # forward propagation
         l0 = X
         l1 = self.nonlin(np.dot(l0,syn0))
         l2 = self.nonlin(np.dot(l1,syn1))
 
-        print(l2.dtype)
-        print(l2)
-        sys.stdout.flush()
-
         t = l2[0]
+
+        print('normalizer= ', normalizer)
+        print('X= ', X)
+        print('syn0= ',syn0)
+        print('syn1= ',syn1)
+
+        print(l1)
+        print(l2)
+        print(t)
 
         return (t)
 

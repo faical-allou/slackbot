@@ -16,23 +16,25 @@ extractdata = extractdata()
 #train5 = extractdata.getneuralattributes('LON-BKK')
 #train6 = extractdata.getneuralattributes('LON-TYO')
 
-input_training =    [[1,2,1,4,5,6],
-                    [1,2,1,4,5,6],
-                    [1,2,100,23234,5,6],
-                    [1,2,2,4,5,6],
-                    [1,2,6,4,5,6],
-                    [1,2,9,4,5,6]]
+input_training =    [[1,2,1,4,5,1],
+                    [1,6,1,4,5,3],
+                    [1,2,6,50,5,2],
+                    [1,2,2,4,5,4],
+                    [7,2,75,4,5,1],
+                    [1,2,90,4,5,3]]
 
-max_size = max(max(input_row[0] for input_row in input_training), max(input_row[3] for input_row in input_training))
+max_input_from_database = [0,0,0,0,0,0]
+print(max_input_from_database)
+for i in range(0,5):
+    max_input_from_database[i] = max(input_row[i] for input_row in input_training)
 
-for input_row in input_training :
-    input_row[0] = input_row[0]/max_size
-    input_row[3] = input_row[3]/max_size
+    for input_row in input_training :
+        input_row[i] = input_row[i]/max_input_from_database[i]
 
 output_training =   [[1],
                     [1],
                     [1],
-                    [0],
+                    [1],
                     [0],
                     [0]]
 
@@ -78,11 +80,12 @@ for iter in range(60000):
 print ("Output After Training:")
 array_json_syn0 = []
 array_json_syn1 = []
-print('ssyn0)
+print(l2)
 for i in range(0,3):
     t = (syn0[i][0],syn0[i][1],syn0[i][2],syn0[i][3])
     r = (syn1[i][0])
     array_json_syn0.append(t)
     array_json_syn1.append(r)
 
-print (array_json_syn0, array_json_syn1)
+print(array_json_syn0)
+print(array_json_syn1)
