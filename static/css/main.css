@@ -245,6 +245,9 @@ Helper classes
 /*font-family*/
 .title{font-family:"Open Sans Condensed", sans-serif; font-size: 32px; margin-bottom: 20px}
 
+.title2{font-family:"Open Sans Condensed", sans-serif; font-size: 26px; margin-bottom: 10px}
+
+
 /*font-size*/
 .fs-6 {font-size:6px;}
 .fs-8 {font-size:8px;}
@@ -626,6 +629,7 @@ a.underline:hover{text-decoration:underline;}
 	color : #00b2d6;
 	padding : 3px 11px;
 	background-color : #FFFFFF;
+	text-align: center;
 }
 .button-style:hover {
 		border : solid 2px #00b2d6;
