@@ -90,10 +90,8 @@ class neural_network:
 
         normalizer = ast.literal_eval(normalizer_received)
 
-
         for i in range(0,5):
             input_predict[i] = input_predict[i]/float(normalizer[i])
-
 
         X = np.array(input_predict,dtype='d')
 
