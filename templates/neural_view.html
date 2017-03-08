@@ -1,0 +1,185 @@
+{% extends "header.html" %}
+{% block content %}
+<!-- Load the Javascript -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {'packages':['gauge']});
+
+    $(document).ready(function () {
+      $('#loading_image').hide();
+      $('#loading_extra').hide();
+
+      $('#phase2_wrapper').hide();
+      $('#phase3_wrapper').hide();
+
+      $('#chart_wrapper').hide();
+
+    });
+
+    function train_network() {
+      mixpanel.track("Training Network");
+      $('#phase2_wrapper').hide();
+      $('#loading_image').show();
+      url_to_call = './neural_data/'+orig1.value+'-'+dest1.value+'/'+orig1.value+'-'+dest2.value+'/'+orig1.value+'-'+dest3.value+
+      '/'+orig1.value+'-'+dest4.value+'/'+orig1.value+'-'+dest5.value+'/'+orig1.value+'-'+dest6.value+'/'+
+      scor1.value+'/'+scor2.value+'/'+scor3.value+'/'+scor4.value+'/'+scor5.value+'/'+scor6.value;
+      console.log(url_to_call);
+      $.ajax({
+          type: 'GET',
+          url: url_to_call,
+          dataType: "json",
+          crossDomain: true,
+          success: function (api_results) {
+            window.training_parameters = api_results;
+            update_time = new Date(api_results.update);
+            console.log(training_parameters)
+          },
+          complete: function(){
+            document.getElementById("update_time").innerHTML = update_time.toDateString() ;
+            $('#phase2_wrapper').show();
+            $('#loading_image').hide();
+
+            },
+        });
+    }
+
+    function predict_od() {
+      var form = new FormData();
+      form.append("syn0", window.training_parameters.syn0 + "");
+      form.append("syn1", window.training_parameters.syn1 + "");
+      form.append("normalizer", window.training_parameters.normalizer + "");
+
+      mixpanel.track("Training Network");
+      $('#loading_extra').show();
+      url_to_post = './neural_predict/'+orig1.value+'-'+dest7.value+'/';
+      console.log(url_to_post);
+      $.ajax({
+          type: 'POST',
+          url: url_to_post,
+          dataType: "json",
+          processData: false,
+          contentType: false,
+          data: form,
+          mimeType: "multipart/form-data",
+          crossDomain: true,
+          success: function (api_results) {
+
+            console.log(api_results)
+            var chartdata = google.visualization.arrayToDataTable([
+              ['Label', 'Value'],
+              ['Good?', Math.round(api_results.data*100)]
+              ]);
+
+            var chartoptions = {
+              width: 120, height: 120,
+              greenFrom: 70, greenTo: 100,
+              yellowFrom:30, yellowTo: 70,
+              redFrom: 0, redTo: 30,
+              minorTicks: 10
+            };
+            var chartclass = new google.visualization.Gauge(document.getElementById('chart_div'));
+            chartclass.draw(chartdata, chartoptions);
+          },
+          complete: function(){
+            $('#loading_extra').hide();
+            $('#chart_wrapper').show();
+            },
+        });
+    }
+
+    </script>
+
+  <!-- HTML -->
+       <div class="bg-white">
+
+        <div class="container_12 ta-c fs-16 pb-30 pt-30">
+          <div class="title"> Machine Learning </div>
+          <div class="title2"> First train it on routes we know well ....</div>
+          <!--Div that will hold the dashboard-->
+          <div id="form_wrapper" >
+            <div class='container_12 filter-bar'>
+              <input id="orig1" class='grid_3' type="text" value="From city (e.g. RIO)" onfocus='if (this.value=="From city (e.g. RIO)") {this.value="";}'>
+              <input id="dest1" class='grid_3' type="text" value="To city (e.g. SAO)" onfocus='if (this.value=="To city (e.g. SAO)") {this.value="";}'>
+              <input id="scor1" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
+            </div>
+
+            <div class='container_12 filter-bar'>
+              <div class='grid_3'> &nbsp </div>
+              <input id="dest2" class='grid_3' type="text" value="To city (e.g. BUE)" onfocus='if (this.value=="To city (e.g. BUE)") {this.value="";}'>
+              <input id="scor2" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
+            </div>
+
+            <div class='container_12 filter-bar'>
+              <div class='grid_3'> &nbsp </div>
+              <input id="dest3" class='grid_3' type="text" value="To city (e.g. BHZ)" onfocus='if (this.value=="To city (e.g. BHZ)") {this.value="";}'>
+              <input id="scor3" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
+            </div>
+
+            <div class='container_12 filter-bar'>
+              <div class='grid_3'> &nbsp </div>
+              <input id="dest4" class='grid_3' type="text" value="To city (e.g. BSB)" onfocus='if (this.value=="To city (e.g. BSB)") {this.value="";}'>
+              <input id="scor4" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
+            </div>
+
+            <div class='container_12 filter-bar'>
+              <div class='grid_3'> &nbsp </div>
+              <input id="dest5" class='grid_3' type="text" value="To city (e.g. MIA)" onfocus='if (this.value=="To city (e.g. MIA)") {this.value="";}'>
+              <input id="scor5" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
+            </div>
+
+            <div class='container_12 filter-bar'>
+              <div class='grid_3'> &nbsp </div>
+              <input id="dest6" class='grid_3' type="text" value="To city (e.g. BOG)" onfocus='if (this.value=="To city (e.g. BOG)") {this.value="";}'>
+              <input id="scor6" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
+            </div>
+
+            <div class='container_12 filter-bar'>
+              <div class='grid_5'> &nbsp </div>
+              <input id="train_button" type="button" class="grid_2 button-style" value="train it" onClick="train_network()">
+            </div>
+
+            <!--Div that holds the animated gif until the chart loads-->
+            <div id="loading_image" class="grid_12 pb-30">
+              <img src="{{ url_for('static', filename='loading.gif') }}"></img>
+            </div>
+
+            <div id='phase2_wrapper'>
+              <div class="title2"> Now let it tell us what works </div>
+
+              <div class='container_12 filter-bar style="height: 50"'>
+                <input id="dest7" class='grid_3' type="text" value="To city (e.g. LAX)" onfocus='if (this.value=="To city (e.g. LAX)") {this.value="";}'>
+                <input id="submit_predict" type="button" class="grid_3 button-style" value="tell me what you think" onClick="predict_od()">
+                <div id="loading_extra" class="grid_3">
+                  <img src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
+                </div>
+              </div>
+
+              <div id="chart_wrapper" class='container_12'>
+                <div class='grid_5'> &nbsp </div>
+                <div id="chart_div" class='grid_7'></div>
+
+                <div class="container_12 ta-c mt-10">
+                  <span class="text-icon"> Last updated on: </span>
+                  <span id="update_time" class=" text-icon"> - </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container_12 info-section">
+          <div class="dib">
+            <div class="grid_2">
+                <i class="fa fa-info-circle fa-5x "></i>
+            </div>
+            <div class="grid_10">
+                <span>
+                  xxx
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}

@@ -26,15 +26,15 @@ class neural_network:
         train6 = extractdatahere.getneuralattributes(in6)
 
         input_training = [train1, train2, train3, train4, train5, train6]
-
+        print('input_training=', input_training)
         max_input_from_database = [0,0,0,0,0,0]
 
         for i in range(0,6):
-            max_input_from_database[i] = max(input_row[i] for input_row in input_training)
+            max_input_from_database[i] = max(max(input_row[i] for input_row in input_training), 1000)
             for input_row in input_training :
                 input_row[i] = input_row[i]/max_input_from_database[i]
 
-        print(input_training)
+        print('input after normal= ', input_training)
 
         output_training =   [[out1], [out2], [out3], [out4], [out5], [out6]]
 
@@ -87,10 +87,11 @@ class neural_network:
         # input dataset
         #input_predict = [[1.0000,2.0000,1.00000,4.00000,5.0000,6.00000]]
         input_predict = extractdatahere.getneuralattributes(input_od)
+        print('input_predict=', input_predict)
 
         normalizer = ast.literal_eval(normalizer_received)
 
-        for i in range(0,5):
+        for i in range(0,6):
             input_predict[i] = input_predict[i]/float(normalizer[i])
 
         X = np.array(input_predict,dtype='d')
