@@ -190,6 +190,11 @@ def render_neuralnetwork():
     #Renders the passenger chart page
         return render_template("neural_view.html", title="What are they searching for" )
 
+@app.route('/extract_view', methods=['GET'])
+def render_extract():
+    #Renders the passenger chart page
+        return render_template("extract_view.html", title="What are they searching for" )
+
 @app.route('/')
 def render_home():
     return render_template("home.html", title="What are they searching for" )
