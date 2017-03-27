@@ -664,3 +664,5 @@ a.underline:hover{text-decoration:underline;}
 .footer li a:visited {color:#DFDCE3;}  /* visited link */
 .footer li a:hover {color:#DFDCE3;}  /* mouse over link */
 .footer li a:active {color:#DFDCE3;}  /* selected link */
+
+.loading-iframe {background:url(../loading.gif) center center no-repeat;}
