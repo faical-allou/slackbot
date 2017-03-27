@@ -30,7 +30,6 @@
           success: function (data_to_display) {
             update_time = new Date(data_to_display.update);
             document.getElementById("update_time").innerHTML = update_time.toDateString() ;
-            console.log(data_to_display);
             if (data_to_display.length > 80) {
           // Create the data table.
           data_formatted = new google.visualization.DataTable();
@@ -45,7 +44,7 @@
           data_formatted.addColumn('number', 'Connecting');
 
           for (i = 0; i < 24; i++) {
-            console.log(i, data_to_display.data[i][2] )
+
             var timeofday = data_to_display.data[i][2];
             var timeofdayh = timeofday.concat("h");
 
@@ -138,7 +137,7 @@
               });
               myChart.draw();
               myPieChart.draw();
-            } else {alert("Sorry we don't have enough data for this request\nAre you sure you are entering an IATA airport code? ")}
+            } else {swal({  title: "Sorry",  text: "We don't have enough data for this request, \n are you entering an IATA airport code?",  type: "error",  confirmButtonText: "OK"});}
             },
             complete: function(){
               $('#loading_extra').hide();
