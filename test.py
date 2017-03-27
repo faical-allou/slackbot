@@ -25,3 +25,5 @@ l2 = nonlin(np.dot(l1,syn1))
 print('l0=' , l0)
 print('l1=' , l1)
 print('l2=' , l2)
+
+print(datetime.datetime.strptime('2017-01-01', '%Y-%m-%d').month)

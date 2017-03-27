@@ -130,7 +130,12 @@ def trending_data(cityfrom, cityto):
         trend = extractdata.gettrendingtable(cityfrom, cityto)
         lastupdate = extractdata.getlasttimeupdate('ptbsearches_trending')
 
-        resp = jsonify(data=trend, update = lastupdate, length = len(trend))
+        lastupdate_date = datetime.datetime.strptime(lastupdate, '%Y-%m-%d')
+        earliest_date = datetime.datetime.strptime('2014-02-02', '%Y-%m-%d')
+
+        max_range_data = (lastupdate_date.year - earliest_date.year)*12 + (lastupdate_date.month - earliest_date.month) + 1
+
+        resp = jsonify(data=trend, update = lastupdate, length = len(trend), max_length = max_range_data)
 
         return resp
 

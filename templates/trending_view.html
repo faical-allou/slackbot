@@ -39,53 +39,56 @@
             data_to_display=api_results;
             update_time = new Date(api_results.update);
             document.getElementById("update_time").innerHTML = update_time.toDateString() ;
+            console.log(api_results.length , api_results.max_length);
+            if (api_results.length == api_results.max_length ){
 
-          // Create the data table.
-          data_formatted = new google.visualization.DataTable();
-          data_formatted.addColumn('string', 'Origin');
-          data_formatted.addColumn('string', 'Destination');
-          data_formatted.addColumn('date', 'Search Month');
-          data_formatted.addColumn('number', destination+' from '+origin);
+              // Create the data table.
+              data_formatted = new google.visualization.DataTable();
+              data_formatted.addColumn('string', 'Origin');
+              data_formatted.addColumn('string', 'Destination');
+              data_formatted.addColumn('date', 'Search Month');
+              data_formatted.addColumn('number', destination+' from '+origin);
 
-          for (i = 0; i < data_to_display.length -1; i++) {
-                data_formatted.addRows([
-                  [data_to_display.data[i][0],
-                  data_to_display.data[i][1],
-                  new Date(data_to_display.data[i][2]),
-                  data_to_display.data[i][3],
-                ]]);
-          };
+              for (i = 0; i < data_to_display.length -1; i++) {
+                    data_formatted.addRows([
+                      [data_to_display.data[i][0],
+                      data_to_display.data[i][1],
+                      new Date(data_to_display.data[i][2]),
+                      data_to_display.data[i][3],
+                    ]]);
+              };
 
-              // Create a chart, passing some options
-          var myChart = new google.visualization.ChartWrapper({
-                'chartType': 'LineChart',
-                'containerId': 'chart_div',
-                'dataTable': data_formatted,
-                // The  chart will only use the columns listed - note:index start at 0
-                'view': {'columns': [2,3]},
-                'options': {
-                  'height':600,
-                  'width':700,
-                  'chartArea': {width: '75%', height: '80%'},
-                  'curveType': 'function',
-                  'lineWidth': 4,
-                  'colors': ['#00b2d6'],
-                  'backgroundColor': { fill:'#FFFFFF' },
-                  'vAxis': {title: 'Rank',
-                            textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                            titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                            direction: -1,
-                            gridlines: {count: -1},
-                            maxValue: 10,
-                            },
-                  'legend': {position: 'bottom'},
-                }
-          });
+                  // Create a chart, passing some options
+              var myChart = new google.visualization.ChartWrapper({
+                    'chartType': 'LineChart',
+                    'containerId': 'chart_div',
+                    'dataTable': data_formatted,
+                    // The  chart will only use the columns listed - note:index start at 0
+                    'view': {'columns': [2,3]},
+                    'options': {
+                      'height':600,
+                      'width':700,
+                      'chartArea': {width: '75%', height: '80%'},
+                      'curveType': 'function',
+                      'lineWidth': 4,
+                      'colors': ['#00b2d6'],
+                      'backgroundColor': { fill:'#FFFFFF' },
+                      'vAxis': {title: 'Rank',
+                                textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
+                                titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
+                                direction: -1,
+                                gridlines: {count: -1},
+                                maxValue: 10,
+                                },
+                      'legend': {position: 'bottom'},
+                    }
+              });
 
           // Draw the dashboard.
           myChart.draw();
 
           // closing the success clause of the AJAX call
+        } else {alert("Sorry we don't have enough data for this request\nAre you sure you are entering IATA city codes? ")}
           },
         complete: function(){
           $('#loading_image').hide();
@@ -126,6 +129,8 @@
             data_to_display=api_results;
             update_time = new Date(api_results.update);
             document.getElementById("update_time").innerHTML = update_time.toDateString() ;
+            console.log(api_results.length , api_results.max_length);
+            if (api_results.length == api_results.max_length ){
 
         // add the new column.
         data_formatted.addColumn('number', destination+' from '+origin);
@@ -165,6 +170,7 @@
         myChart.draw();
 
         // closing the success clause of the AJAX call
+      } else {alert("Sorry we don't have enough data for this request\n Are you sure you are entering IATA city codes? ")}
         },
         complete: function(){
           $('#loading_image').hide();
