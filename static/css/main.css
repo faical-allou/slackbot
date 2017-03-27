@@ -621,6 +621,7 @@ a.underline:hover{text-decoration:underline;}
 .menu li:first-child {margin-top: 0px; float:left;}
 
 .text-icon { font-size: 14; font-weight: 600  }
+.text-mini-icon { font-size: 10; font-weight: 300  }
 
 .button-style{
 	border : solid 2px #DFDCE3;
