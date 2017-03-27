@@ -150,7 +150,7 @@
 
               <div class='container_12 filter-bar' style="height: 50">
                 <input id="dest7" class='grid_3' type="text" value="To city (e.g. LAX)" onfocus='if (this.value=="To city (e.g. LAX)") {this.value="";}'>
-                <input id="submit_predict" type="button" class="grid_3 button-style" value="tell me what you think" onClick="predict_od()">
+                <input id="submit_predict" type="button" class="grid_3 button-style" value="What do you think?" onClick="predict_od()">
                 <div id="loading_extra" class="grid_3">
                   <img src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
                 </div>
@@ -175,7 +175,9 @@
             </div>
             <div class="grid_10">
                 <span>
-                  xxx
+                  The neural network learns from the input you give it to evaluate unknown routes, you should give both "good" and "bad" routes so that it can analyse the causes.
+                  The page uses the popularity of the route and the increase since last year to gauge the potential.
+                  The model is a demo and can be expanded to more destinations and metrics.
                 </span>
             </div>
           </div>
