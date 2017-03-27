@@ -30,7 +30,8 @@
           success: function (data_to_display) {
             update_time = new Date(data_to_display.update);
             document.getElementById("update_time").innerHTML = update_time.toDateString() ;
-
+            console.log(data_to_display);
+            if (data_to_display.length > 80) {
           // Create the data table.
           data_formatted = new google.visualization.DataTable();
           data_formatted.addColumn('string', 'ID');
@@ -43,7 +44,8 @@
           data_formatted.addColumn('number', 'Local');
           data_formatted.addColumn('number', 'Connecting');
 
-          for (i = 0; i < data_to_display.length -1; i++) {
+          for (i = 0; i < 24; i++) {
+            console.log(i, data_to_display.data[i][2] )
             var timeofday = data_to_display.data[i][2];
             var timeofdayh = timeofday.concat("h");
 
@@ -69,7 +71,7 @@
                 'view': {'columns': [2,5,6,3,4]},
                 'chartArea' : {width:'600px',height:'100%'},
                 'options': {
-                  'theme': 'maximized',
+                  'chartArea': {height: '80%', width: '92%'},
                   'series': {
                             0 : {color: '#00B2D6' },
                             1 : {color: '#00B2D6' },
@@ -83,6 +85,7 @@
                   'backgroundColor': { fill:'#FFFFFF' },
                   'legend': {position: 'none'},
                   'hAxis': {title: 'Time of the day',
+                            position: 'low',
                             baselineColor: '#DFDCE3',
                             maxAlternation: 1,
                             textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
@@ -108,8 +111,11 @@
                   {'column': 8, 'aggregation': google.visualization.data.sum, 'type': 'number'}
                 ]
             );
+            var local_value = agg_table.getValue(0, 1);
+            var connect_value = agg_table.getValue(0, 2);
+            var total_value = local_value + connect_value;
             var data_for_pie = google.visualization.arrayToDataTable(
-                [['Type', 'Index'],['Local', agg_table.getValue(0, 1)],['Connecting', agg_table.getValue(0, 2)]], false
+                [['Type', 'Index'],['Local', Math.round(local_value*100/total_value)],['Connecting', Math.round(connect_value*100/total_value)]], false
             );
 
             myPieChart = new google.visualization.ChartWrapper({
@@ -117,20 +123,22 @@
                 'containerId': 'piechart_div',
                 'dataTable' : data_for_pie,
                 'options': {
+                  'chartArea': {height: '80%', width: '80%'},
                   'fontSize': 14,
                   'height':200,
                   'width':200,
                   'slices': {
-                            0 : {color: '#272133' },
-                            1 : {color: '#00B2D6' },
+                            0 : {color: '#272133'},
+                            1 : {color: '#00B2D6'},
                           },
                   'colors': ['#00b2d6'],
                   'backgroundColor': { fill:'#FFFFFF' },
-                  'legend': {position: 'none'},
+                  'legend': {position: 'none',},
                 },
               });
-              myPieChart.draw();
               myChart.draw();
+              myPieChart.draw();
+            } else {alert("Sorry we don't have enough data for this request\nAre you sure you are entering an IATA airport code? ")}
             },
             complete: function(){
               $('#loading_extra').hide();
@@ -144,7 +152,7 @@
         // loading image until the chart is done
         $('#dashboard_wrapper').hide();
         $('#loading_image').show();
-        drawChart('LHR');
+        drawChart('MAD');
     });
 
 
@@ -169,7 +177,7 @@
               </div>
               <div class='container_12 filter-bar'>
                 <div class='grid_3'> &nbsp </div>
-                <input id="airportinput" class='grid_4' type="text" value="LHR" onFocus='this.value=""'>
+                <input id="airportinput" class='grid_4' type="text" value="MAD" onFocus='this.value=""'>
                 <input type="button" class="grid_3 button-style" value="draw hub graph" onClick="drawChart()">
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
@@ -190,7 +198,8 @@
                   to maximise and coincide with as many connections as possible.
                   The visualization shows the number of arrivals above the line
                   (people arriving at the airport add up) and departures below
-                  (reducing the number of people at the airport). 
+                  (reducing the number of people at the airport). </br>
+                  The values are index with 100 being the highest (or -100 the lowest).
                 </span>
             </div>
           </div>

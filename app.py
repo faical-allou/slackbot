@@ -82,8 +82,6 @@ def airport_data(airport):
     # getting size of the large table from the database to iterate on
     airport_size = len(airports)
 
-    peak = max(row[4] for row in airports)+1
-
     # initializing the hub table that wil be returned with first column as ID AIrport/timeofday
     # also building an index table to retrieve the right row to fill in when iterating later
     hub = [['id','ap','time',0,0,0,0]]
@@ -94,9 +92,8 @@ def airport_data(airport):
             hub.append([airport_list[i] + str(j).zfill(2), airport_list[i], str(j).zfill(2),0,0,0,0])
             hub_col0.append(airport_list[i] + str(j).zfill(2))
 
-    # filling the hub table by iterating on the airport table and normalizing as we go
+    # filling the hub table by iterating on the airport table
     for k in range(0,airport_size-1):
-        airports[k][4] = max(airports[k][4]*100000/peak,1)
 
         # hub table structure is ID/airport/timeofday/paxlocalarrival/paxlocaldeparture/paxconnectarrival/paxconnectdeparture
         # when it is a departure we switch one column to the left and we use negative number
@@ -119,8 +116,20 @@ def airport_data(airport):
     # removing the first row (empty)
     hub.pop(0)
 
+    peak_arrival = max(hub[k][3]+hub[k][5] for k in range (0, 24) )
+    peak_departure = max(-hub[k][4]-hub[k][6] for k in range (0, 24) )
+    peak_activity = max(peak_departure, peak_arrival)
+
+    for k in range (0, 24):
+        hub[k][3] = round(hub[k][3]*100 / peak_activity)
+        hub[k][4] = round(hub[k][4]*100 / peak_activity)
+        hub[k][5] = round(hub[k][5]*100 / peak_activity)
+        hub[k][6] = round(hub[k][6]*100 / peak_activity)
+
+
+
     #calculating size of hub table for the json
-    datasize = len(hub)
+    datasize = len(airports)
     resp = jsonify(data=hub, update = lastupdate, length = datasize)
 
     return resp
