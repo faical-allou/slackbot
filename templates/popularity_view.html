@@ -31,9 +31,10 @@
           crossDomain: true,
           success: function (api_results) {
               data_to_display=api_results;
+              console.log(api_results);
+              if (api_results.length == 10 ) {
               update_time = new Date(api_results.update);
               document.getElementById("update_time").innerHTML = update_time.toDateString() ;
-
               // Create the data table.
               var data_formatted = new google.visualization.DataTable();
               data_formatted.addColumn('string', 'Origin');
@@ -72,7 +73,7 @@
 
                 // Draw the chart
                 myChart.draw();
-
+              } else {swal({  title: "Sorry",  text: "We don't have enough data for this request,\n are you entering an IATA city code?",  type: "error",  confirmButtonText: "OK"});}
           // closing the success clause of the AJAX call
           },
           complete: function(){

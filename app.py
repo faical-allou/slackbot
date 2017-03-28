@@ -25,7 +25,11 @@ def popularity_data(filtertype,city):
     popular = extractdata.getpopularitytable(filtertype,city)
     lastupdate = extractdata.getlasttimeupdate('ptbexits_popular')
     #normalize the table (adding 1 to the sum to return 0 when empty)
-    max_popular = max(max(row[3] for row in popular),1)
+    if len(popular) == 10:
+        max_popular = max(max(row[3] for row in popular),1)
+    else :
+        max_popular = 99999
+
     for k in range(0,len(popular)):
         popular[k][3] = round(popular[k][3]*100/max_popular)
 
