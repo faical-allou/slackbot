@@ -58,7 +58,7 @@ def itineraries_data(fromcity, tocity):
         max_itin = max(row[14] for row in itin)+1
 
     for k in range(0,len(itin)):
-        itin[k][14] = max(itin[k][14]*100/max_itin,1)
+        itin[k][14] = max(itin[k][14]*3/max_itin,1)
 
     resp = jsonify(data=itin, update = lastupdate, length = len(itin))
 
