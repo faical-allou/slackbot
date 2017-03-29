@@ -22,10 +22,11 @@
       mixpanel.track("Training Network");
       $('#phase2_wrapper').hide();
       $('#loading_image').show();
-      url_to_call = './neural_data/'+orig1.value+'-'+dest1.value+'/'+orig1.value+'-'+dest2.value+'/'+orig1.value+'-'+dest3.value+
+      list_of_od = orig1.value+'-'+dest1.value+'/'+orig1.value+'-'+dest2.value+'/'+orig1.value+'-'+dest3.value+
       '/'+orig1.value+'-'+dest4.value+'/'+orig1.value+'-'+dest5.value+'/'+orig1.value+'-'+dest6.value+'/'+
       scor1.value+'/'+scor2.value+'/'+scor3.value+'/'+scor4.value+'/'+scor5.value+'/'+scor6.value;
-      console.log(url_to_call);
+      url_to_call = './neural_data/'+list_of_od.toUpperCase();
+
       $.ajax({
           type: 'GET',
           url: url_to_call,
@@ -33,13 +34,18 @@
           crossDomain: true,
           success: function (api_results) {
             window.training_parameters = api_results;
+            validity = api_results.validity;
             update_time = new Date(api_results.update);
-            console.log(training_parameters)
           },
           complete: function(){
+            $('#loading_image').hide();
+            if (validity) {
             document.getElementById("update_time").innerHTML = update_time.toDateString() ;
             $('#phase2_wrapper').show();
-            $('#loading_image').hide();
+          } else {
+                  swal({title: "Sorry",  text: "We don't have enough data for this request,\n are you entering IATA city codes?",  type: "error",  confirmButtonText: "OK"});
+                  mixpanel.track("Error pop up", {"Page":viewpage});
+                }
 
             },
         });
@@ -53,8 +59,8 @@
 
       mixpanel.track("Training Network");
       $('#loading_extra').show();
-      url_to_post = './neural_predict/'+orig1.value+'-'+dest7.value+'/';
-      console.log(url_to_post);
+      od_to_predict = orig1.value+'-'+dest7.value
+      url_to_post = './neural_predict/'+od_to_predict.toUpperCase()+'/';
       $.ajax({
           type: 'POST',
           url: url_to_post,
@@ -66,7 +72,8 @@
           crossDomain: true,
           success: function (api_results) {
 
-            console.log(api_results)
+            if (api_results.validity) {
+
             var chartdata = google.visualization.arrayToDataTable([
               ['Label', 'Value'],
               ['Good?', Math.round(api_results.data*100)]
@@ -81,10 +88,14 @@
             };
             var chartclass = new google.visualization.Gauge(document.getElementById('chart_div'));
             chartclass.draw(chartdata, chartoptions);
+            $('#chart_wrapper').show();
+          } else {
+                  swal({title: "Sorry",  text: "We don't have enough data for this request,\n are you entering IATA city codes?",  type: "error",  confirmButtonText: "OK"});
+                  mixpanel.track("Error pop up", {"Page":viewpage});
+                };
           },
           complete: function(){
             $('#loading_extra').hide();
-            $('#chart_wrapper').show();
             },
         });
     }

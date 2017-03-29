@@ -203,6 +203,7 @@ class extractdata:
 
         j = simplejson.dumps(rowarray_list)
 
+        if len(rowarray_list) == 0 : rowarray_list.append([0,0,0,0,0,0])
         connection.close()
         return rowarray_list[0]
 

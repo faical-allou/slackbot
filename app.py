@@ -159,7 +159,7 @@ def trainednetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
 
         neural = neural_network.trainneuralnetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6)
         lastupdate = extractdata.getlasttimeupdate('ptbexits_neural')
-        resp = jsonify(syn0=neural[0], syn1=neural[1], normalizer=neural[2], end_result= neural[3],update = lastupdate, length = len(neural))
+        resp = jsonify(syn0=neural[0], syn1=neural[1], normalizer=neural[2], end_result= neural[3],update = lastupdate, length = len(neural), validity = neural[4])
 
 
         return resp
@@ -174,7 +174,7 @@ def predict_od(in1):
 
         prediction = neural_network.predict(in1,syn0received,syn1received, normalizer_received)
 
-        resp = jsonify(data=prediction,  length = 1)
+        resp = jsonify(data=prediction[0], validity = prediction[1],  length = 1)
 
         return resp
 
