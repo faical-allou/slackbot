@@ -113,7 +113,10 @@
                     //now fit the map to the newly inclusive bounds
                     map.fitBounds(bounds);
                   };
-              } else {swal({  title: "Sorry",  text: "We don't have enough data for this request, \n are you entering IATA city codes: 'AAA-BBB'?",  type: "error",  confirmButtonText: "OK"});}
+                } else {
+                      swal({  title: "Sorry",  text: "We don't have enough data for this request, \n are you entering IATA city codes: 'AAA-BBB'?",  type: "error",  confirmButtonText: "OK"});
+                      mixpanel.track("Error pop up", {"Page":viewpage});
+                    }
             },
           error: function (request, status, error) {
             console.log(error);

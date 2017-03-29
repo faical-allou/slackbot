@@ -72,63 +72,65 @@ def itineraries_data(fromcity, tocity):
 def airport_data(airport):
     if len(airport) < 3: airport = 'xxx'
     airports = extractdata.getairporttable(airport)
+
     lastupdate = extractdata.getlasttimeupdate('ptbexits_airport')
-    #Converting to float normalize the table (adding 1 to the sum to return 0 when empty)
-    # and formatting for easy consumption by the chart
-    # getting the list of airports to consider, the final table is based on airport
-    transpose = list(zip(*airports))
-    transposelist = list(transpose[0])
-    transposelist1 = list(transpose[1])
-    transposelist.extend(transposelist1)
-    airport_list = list(set(transposelist))
-    airport_list.remove('xxx')
-
-    # getting size of the large table from the database to iterate on
-    airport_size = len(airports)
-
-    # initializing the hub table that wil be returned with first column as ID AIrport/timeofday
-    # also building an index table to retrieve the right row to fill in when iterating later
     hub = [['id','ap','time',0,0,0,0]]
-    hub_col0 = [0]
+    if len(airports) > 0 :
+        #Converting to float normalize the table (adding 1 to the sum to return 0 when empty)
+        # and formatting for easy consumption by the chart
+        # getting the list of airports to consider, the final table is based on airport
+        transpose = list(zip(*airports))
+        transposelist = list(transpose[0])
+        transposelist1 = list(transpose[1])
+        transposelist.extend(transposelist1)
+        airport_list = list(set(transposelist))
+        airport_list.remove('xxx')
 
-    for i in range(0,len(airport_list)):
-        for j in range(0,24):
-            hub.append([airport_list[i] + str(j).zfill(2), airport_list[i], str(j).zfill(2),0,0,0,0])
-            hub_col0.append(airport_list[i] + str(j).zfill(2))
+        # getting size of the large table from the database to iterate on
+        airport_size = len(airports)
 
-    # filling the hub table by iterating on the airport table
-    for k in range(0,airport_size-1):
+        # initializing the hub table that wil be returned with first column as ID AIrport/timeofday
+        # also building an index table to retrieve the right row to fill in when iterating later
+        hub_col0 = [0]
 
-        # hub table structure is ID/airport/timeofday/paxlocalarrival/paxlocaldeparture/paxconnectarrival/paxconnectdeparture
-        # when it is a departure we switch one column to the left and we use negative number
-        departureflag = 0
+        for i in range(0,len(airport_list)):
+            for j in range(0,24):
+                hub.append([airport_list[i] + str(j).zfill(2), airport_list[i], str(j).zfill(2),0,0,0,0])
+                hub_col0.append(airport_list[i] + str(j).zfill(2))
 
-        if airports[k][0] == 'xxx' :
-            airport_to_fill = airports[k][1]
-        else:
-            airport_to_fill = airports[k][0]
-            airports[k][4] = -1*airports[k][4]
-            departureflag = 1
+        # filling the hub table by iterating on the airport table
+        for k in range(0,airport_size-1):
 
-        #reading from hub_col0 to find the row to fill in the hub table
-        index0 = hub_col0.index(airport_to_fill + airports[k][2])
+            # hub table structure is ID/airport/timeofday/paxlocalarrival/paxlocaldeparture/paxconnectarrival/paxconnectdeparture
+            # when it is a departure we switch one column to the left and we use negative number
+            departureflag = 0
 
-        if 'local' in airports[k][3]:
-            hub[index0][3+departureflag] = hub[index0][3+departureflag] + float(airports[k][4])
-        else: hub[index0][5+departureflag] = hub[index0][5+departureflag] + float(airports[k][4])
+            if airports[k][0] == 'xxx' :
+                airport_to_fill = airports[k][1]
+            else:
+                airport_to_fill = airports[k][0]
+                airports[k][4] = -1*airports[k][4]
+                departureflag = 1
 
-    # removing the first row (empty)
-    hub.pop(0)
+            #reading from hub_col0 to find the row to fill in the hub table
+            index0 = hub_col0.index(airport_to_fill + airports[k][2])
 
-    peak_arrival = max(hub[k][3]+hub[k][5] for k in range (0, 24) )
-    peak_departure = max(-hub[k][4]-hub[k][6] for k in range (0, 24) )
-    peak_activity = max(peak_departure, peak_arrival)
+            if 'local' in airports[k][3]:
+                hub[index0][3+departureflag] = hub[index0][3+departureflag] + float(airports[k][4])
+            else: hub[index0][5+departureflag] = hub[index0][5+departureflag] + float(airports[k][4])
 
-    for k in range (0, 24):
-        hub[k][3] = round(hub[k][3]*100 / peak_activity)
-        hub[k][4] = round(hub[k][4]*100 / peak_activity)
-        hub[k][5] = round(hub[k][5]*100 / peak_activity)
-        hub[k][6] = round(hub[k][6]*100 / peak_activity)
+        # removing the first row (empty)
+        hub.pop(0)
+
+        peak_arrival = max(hub[k][3]+hub[k][5] for k in range (0, 24) )
+        peak_departure = max(-hub[k][4]-hub[k][6] for k in range (0, 24) )
+        peak_activity = max(peak_departure, peak_arrival)
+
+        for k in range (0, 24):
+            hub[k][3] = round(hub[k][3]*100 / peak_activity)
+            hub[k][4] = round(hub[k][4]*100 / peak_activity)
+            hub[k][5] = round(hub[k][5]*100 / peak_activity)
+            hub[k][6] = round(hub[k][6]*100 / peak_activity)
 
 
 
