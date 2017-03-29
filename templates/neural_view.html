@@ -26,8 +26,8 @@
       scor1.value+'/'+scor2.value+'/'+scor3.value+'/'+scor4.value+'/'+scor5.value+'/'+scor6.value;
       url_to_call = './neural_data/'+list_of_od.toUpperCase();
 
-      test = Number(scor1) +Number(scor2) +Number(scor3) +Number(scor4) +Number(scor5) + Number(scor6);
-
+      test = Number(scor1.value) +Number(scor2.value) +Number(scor3.value) +Number(scor4.value) +Number(scor5.value) + Number(scor6.value);
+      console.log(test)
       if (isNaN(test) || test == 0 || test == 6 ) {
         swal({title: "Sorry",  text: "You should train on a combination of good (1) and bad (0) routes",  type: "error",  confirmButtonText: "OK"});
         mixpanel.track("Error pop up", {"Page":viewpage});
