@@ -514,7 +514,6 @@ a.underline:hover{text-decoration:underline;}
 .home-link a:active {color:#372f45;}
 
 .home-mini-link { padding-top: 10px; padding-bottom: 10px; margin: 2px; text-align: center; background-color:rgba(255,255,255,1);}
-.home-mini-link:hover { box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19) }
 .home-mini-link a {color:#372f45;}      /* unvisited link */
 .home-mini-link a:visited {color:#372f45;}  /* visited link */
 .home-mini-link a:hover {color:#00B2D6;}  /* mouse over link */
