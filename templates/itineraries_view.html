@@ -81,7 +81,7 @@
                     var arrival = itintable[i][5];
                     var stop1 = itintable[i][8];
                     var stop2 = itintable[i][11];
-                    var popularity = (itintable[i][14]).toFixed(2);
+                    var rank = (i+1);
 
                     // adding markers to show airports
                     var marker_from = new google.maps.Marker({
@@ -120,7 +120,7 @@
 
                     routing = departure+"-"+stop1+"-"+stop2+"-"+arrival;
                     routing = routing.replace(/\s/g, '').replace('--','-').replace('--','-');
-                    info_content = "<div style='text-align:left; font-size: 16px; font-weight: 600 '>Routing : "+routing+"</br>"+"Popularity index: "+popularity+"</div>";
+                    info_content = "<div style='text-align:left; font-size: 16px; font-weight: 600 '>Routing : "+routing+"</br>"+"Rank: "+rank+"</div>";
                     window.info[i].setContent(info_content);
                     var last_zindex = 0;
 
