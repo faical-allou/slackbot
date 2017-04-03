@@ -27,10 +27,10 @@
       url_to_call = './neural_data/'+list_of_od.toUpperCase();
 
       test = Number(scor1.value) +Number(scor2.value) +Number(scor3.value) +Number(scor4.value) +Number(scor5.value) + Number(scor6.value);
-      console.log(test)
-      if (isNaN(test) || test == 0 || test == 6 ) {
+
+      if (isNaN(test) || test == 0 || test >= 6 ) {
         swal({title: "Sorry",  text: "You should train on a combination of good (1) and bad (0) routes",  type: "error",  confirmButtonText: "OK"});
-        mixpanel.track("Error pop up", {"Page":viewpage});
+        mixpanel.track("Error pop up", {"Page":viewpage, "Step":"training form: "+test});
       } else {
 
         $('#loading_image').show();
@@ -51,7 +51,7 @@
               $('#phase2_wrapper').show();
             } else {
                     swal({title: "Sorry",  text: "We don't have enough data for this request,\n are you entering IATA city codes?",  type: "error",  confirmButtonText: "OK"});
-                    mixpanel.track("Error pop up", {"Page":viewpage});
+                    mixpanel.track("Error pop up", {"Page":viewpage,"Step":"training results", "URL": url_to_call});
               }
             },
         });
@@ -64,7 +64,7 @@
       form.append("syn1", window.training_parameters.syn1 + "");
       form.append("normalizer", window.training_parameters.normalizer + "");
 
-      mixpanel.track("Training Network");
+      mixpanel.track("Predict Network");
       $('#loading_extra').show();
       od_to_predict = orig1.value+'-'+dest7.value
       url_to_post = './neural_predict/'+od_to_predict.toUpperCase()+'/';
@@ -97,8 +97,8 @@
             chartclass.draw(chartdata, chartoptions);
             $('#chart_wrapper').show();
           } else {
-                  swal({title: "Sorry",  text: "We don't have enough data for this request,\n are you entering IATA city codes?",  type: "error",  confirmButtonText: "OK"});
-                  mixpanel.track("Error pop up", {"Page":viewpage});
+                  swal({title: "Sorry",  text: "We don't have enough data for this request,\n are you entering an IATA city code?",  type: "error",  confirmButtonText: "OK"});
+                  mixpanel.track("Error pop up", {"Page":viewpage, "Step":"Predict", "URL": url_to_post});
                 };
           },
           complete: function(){
