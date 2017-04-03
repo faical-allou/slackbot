@@ -22,6 +22,7 @@
   mixpanel.init("47f5a127413bbc146f50746083bcf1e6");</script>
   <!-- end Mixpanel -->
 
+
   <!-- resize the window mobile-->
   <script type="text/javascript">
   $(function(){
@@ -35,10 +36,6 @@
      $('#Viewport').attr('content', 'initial-scale=1.0, maximum-scale=2, minimum-scale=1.0, user-scalable=yes, width=' + ww);
     }
   }
-  });
-
-  $(document).scroll(function() {
-    $('#menu').css({'background-color': $(this).scrollTop()>50 ? "rgba(255,255,255,0.9)":"rgba(255,255,255,0.6)"});
   });
 
   var viewpage = window.location.href;
