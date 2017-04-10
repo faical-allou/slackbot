@@ -184,7 +184,7 @@ def predict_od(in1):
 def catchment_data(airport, rangekm, destinationcity):
         catchment = extractdata.getcatchment(airport, rangekm, destinationcity)
         leakage = extractdata.getleakage(airport, rangekm, destinationcity)
-        lastupdate = extractdata.getlasttimeupdate('ptbexist_leakage')
+        lastupdate = extractdata.getlasttimeupdate('ptbexits_leakage')
 
         resp = jsonify(catchment=catchment, leakage=leakage, update = lastupdate, length = [len(catchment), len(leakage)])
 
@@ -224,6 +224,11 @@ def render_neuralnetwork():
 def render_extract():
     #Renders the passenger chart page
         return render_template("extract_view.html", title="What are they searching for" )
+
+@app.route('/catchment_view', methods=['GET'])
+def render_catchment():
+    #Renders the passenger chart page
+        return render_template("catchment_view.html", title="What are they searching for" )
 
 @app.route('/')
 def render_home():

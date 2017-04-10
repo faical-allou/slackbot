@@ -211,7 +211,7 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT usercountry, city, sum(seats) as sum_seats from (\
+        query = "SELECT usercountry, usercity, sum(seats) as sum_seats from (\
                 SELECT * from (\
                 SELECT *, \
                 acos( \
@@ -232,7 +232,7 @@ class extractdata:
                 ) as catchment \
                 JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
                 WHERE destinationcitycode = '"+ destinationcity +"' \
-                GROUP BY usercountry, city \
+                GROUP BY usercountry, usercity \
                 ORDER BY sum_seats DESC\
                 LIMIT 100"
 

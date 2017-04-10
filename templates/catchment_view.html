@@ -1,0 +1,174 @@
+{% extends "header.html" %}
+{% block content %}
+
+<!-- Load the Javascript -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+
+    // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart', 'controls']});
+    // Callback that creates and populates a data table,
+    // instantiates the chart, passes in the data and draws it.
+    function drawChart(airport,rangekm,destinationcity) {
+      var filterairport = document.getElementById("airportinput");
+      var filterrangekm = document.getElementById("rangekminput");
+      var filterdestinationcity = document.getElementById("destinationcityinput");
+
+      if (isNaN(airport)) {
+      airport = filterairport.value.toUpperCase();
+      rangekm = filterrangekm.value.toUpperCase();
+      destinationcity= filterdestinationcity.value.toUpperCase();
+      mixpanel.track("Catchment selection", {"Airport": filterairport.value, "Rangekm":filterrangekm.value, "Destinationcity": filterdestinationcity.value});
+      };
+
+      var url_to_call = './catchment_data/'+airport+'/'+rangekm+'/'+destinationcity;
+
+      // loading image until the chart is done
+      $('#loading_extra').show();
+      // call API and pass the data to the drawchart function
+      $.ajax({
+          type: 'GET',
+          url: url_to_call,
+          dataType: "json",
+          crossDomain: true,
+          success: function (data_to_display) {
+            update_time = new Date(data_to_display.update);
+            document.getElementById("update_time").innerHTML = update_time.toDateString();
+            console.log(data_to_display);
+            if (data_to_display.length[0] > 3 && data_to_display.length[1] > 3) {
+              // Create the data table.
+              data_formatted = new google.visualization.DataTable();
+              data_formatted.addColumn('string', 'Country');
+              data_formatted.addColumn('string', 'City');
+              data_formatted.addColumn('number', 'Pax');
+
+              for (i = 0; i < data_to_display.length[0]; i++) {
+                data_formatted.addRows([
+                [data_to_display.catchment[i][0],
+                data_to_display.catchment[i][1],
+                Number(data_to_display.catchment[i][2]),
+                ]]);
+              };
+
+              // Create a chart, passing some options
+            catchmentChart = new google.visualization.ChartWrapper({
+                'chartType': 'Table',
+                'containerId': 'chart_div',
+                'dataTable': data_formatted,
+                // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
+                'chartArea' : {width:'600px',height:'100%'},
+                'options': {
+                  'chartArea': {height: '80%', width: '92%'},
+                  'height':550,
+                  'width':'100%',
+                  'legend': {position: 'none'},
+                },
+              });
+
+
+            catchmentChart.draw();
+
+            // Create the data table.
+            data_formatted = new google.visualization.DataTable();
+            data_formatted.addColumn('string', 'Origin');
+            data_formatted.addColumn('string', 'Destination');
+            data_formatted.addColumn('number', 'Pax');
+
+            for (i = 0; i < data_to_display.length[1]; i++) {
+              data_formatted.addRows([
+              [data_to_display.leakage[i][0],
+              data_to_display.leakage[i][1],
+              Number(data_to_display.catchment[i][2]),
+              ]]);
+            };
+
+            // Create a chart, passing some options
+          leakageChart = new google.visualization.ChartWrapper({
+              'chartType': 'Table',
+              'containerId': 'chart2_div',
+              'dataTable': data_formatted,
+              // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
+              'chartArea' : {width:'600px',height:'100%'},
+              'options': {
+                'chartArea': {height: '80%', width: '92%'},
+                'height':550,
+                'width':'100%',
+                'legend': {position: 'none'},
+              },
+            });
+
+
+          leakageChart.draw();
+
+
+            } else {
+                  swal({  title: "Sorry",  text: "We don't have enough data for this request, \n are you entering an IATA airport code?",  type: "error",  confirmButtonText: "OK"});
+                  mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
+              };
+          },
+          complete: function(){
+              $('#loading_extra').hide();
+              $('#loading_image').hide();
+              $('#dashboard_wrapper').show();
+          }
+      })
+    };
+    $(document).ready(function () {
+        // loading image until the chart is done
+        $('#dashboard_wrapper').hide();
+        $('#loading_image').show();
+        drawChart('CGN','20','NYC');
+    });
+
+
+    </script>
+
+  <!-- HTML -->
+        <div class="bg-white container_12 ta-c">
+          <div class="title"> Catchment Area and Traffic Leakage </div>
+          <!--Div that holds the animated gif until the chart loads-->
+          <div id="loading_image" class="grid_12 pb-30">
+            <img src="{{ url_for('static', filename='loading.gif') }}"></img>
+          </div>
+        </div>
+
+       <div class="bg-white">
+        <div class="container_12 ta-c fs-16 pb-30 pt-30">
+          <div id="dashboard_wrapper">
+              <div class="container_12 mb-30">
+                <!--Divs that will hold each control and chart-->
+                <div id="chart_div" class='grid_6'></div>
+                <div id="chart2_div" class='grid_6'></div>
+              </div>
+              <div class='container_12 filter-bar'>
+                <input id="airportinput" class='grid_3' type="text" value="CGN" onFocus='this.value=""'>
+                <input id="rangekminput" class='grid_3' type="text" value="20" onFocus='this.value=""'>
+                <input id="destinationcityinput" class='grid_3' type="text" value="NYC" onFocus='this.value=""'>
+
+                <input type="button" class="grid_3 button-style" value="check leakage" onClick="drawChart()">
+                <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
+              </div>
+              <div class="container_12 ta-c">
+                <span class="text-icon"> Last updated on: </span>
+                <span id="update_time" class=" text-icon"> - </span>
+              </div>
+            </div>
+        </div>
+        <div class="container_12 info-section">
+          <div class="dib">
+            <div class="grid_2">
+                <i class="fa fa-info-circle fa-5x "></i>
+            </div>
+            <div class="grid_10">
+                <span>
+                  bla bla catchment - bla bla bla leakage.
+                </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+{% endblock %}
