@@ -190,10 +190,10 @@ def catchment_data(airport, rangekm, destinationcity):
         for row in catchment:
             row[2] = round(row[2]*100/peak_catchment)
 
-        peak_leakage = max(row[2] for row in leakage )+1
+        sum_leakage = sum(row[2] for row in leakage )+1
         home_size = 0
         for row in leakage:
-            row[2] = round(row[2]*100/peak_leakage)
+            row[2] = round(row[2]*100/sum_leakage)
             if row[0] == airport : home_size = row[2]
 
         airport_share = home_size / (sum(row[2] for row in leakage)+1)

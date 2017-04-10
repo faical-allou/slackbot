@@ -101,6 +101,7 @@
 
             // Create the data table.
             data_formatted = new google.visualization.DataTable();
+
             data_formatted.addColumn('string', 'Origin');
             data_formatted.addColumn('number', 'Pax');
 
@@ -119,7 +120,7 @@
 
               // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
               'options': {
-                'title': "Most used departure airport (index)",
+                'title': "Most used departure airport (%)",
                 'titleTextStyle': {fontSize: 16,  bold: true},
                 'legend': {position: 'none'},
                 'chartArea' : {width:'60%',height:'90%'},
