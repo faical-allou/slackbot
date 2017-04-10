@@ -207,5 +207,105 @@ class extractdata:
         connection.close()
         return rowarray_list[0]
 
+    def getcatchment(self, airport, rangekm, destinationcity):
+        connection = self.getconnection()
+        cursor = connection.cursor()
+
+        query = "SELECT usercountry, city, sum(seats) as sum_seats from (\
+                SELECT * from (\
+                SELECT *, \
+                acos( \
+                      cos(radians( latitude )) \
+                    * cos(radians( airport_lat )) \
+                    * cos(radians( longitude ) - radians( airport_long )) \
+                    + sin(radians( latitude ))  \
+                    * sin(radians( airport_lat )) \
+                  )*6380 AS greatCircleDistance_in_km\
+                from citypopandlocations CROSS JOIN \
+                (\
+                SELECT airport, latitude as airport_lat, longitude as airport_long \
+                FROM iatatogeo \
+                WHERE airport = '"+ airport +"' \
+                ) as airport_coord \
+                ) as full_table\
+                where greatCircleDistance_in_km < " + str(rangekm) + " \
+                ) as catchment \
+                JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
+                WHERE destinationcitycode = '"+ destinationcity +"' \
+                GROUP BY usercountry, city \
+                ORDER BY sum_seats DESC\
+                LIMIT 100"
+
+        cursor.execute(query)
+
+        rows = ('a', 'b',1)
+        rowarray_list = []
+
+        while len(rows) > 0:
+
+            rows = cursor.fetchall()
+            # Convert query to row arrays
+            for row in rows:
+                rows_to_convert = (row[0], row[1].encode('UTF-8'), row[2])
+                t = list(rows_to_convert)
+                rowarray_list.append(t)
+
+        j = simplejson.dumps(rowarray_list)
+
+        if len(rowarray_list) == 0 : rowarray_list.append([0,0,0])
+        connection.close()
+        return rowarray_list
+
+    def getleakage(self, airport, rangekm, destinationcity):
+        connection = self.getconnection()
+        cursor = connection.cursor()
+
+        query = "SELECT origincitycode, destinationcitycode, sum(seats) as sum_seats from (\
+                SELECT * from (\
+                SELECT *, \
+                acos( \
+                      cos(radians( latitude )) \
+                    * cos(radians( airport_lat )) \
+                    * cos(radians( longitude ) - radians( airport_long )) \
+                    + sin(radians( latitude ))  \
+                    * sin(radians( airport_lat )) \
+                  )*6380 AS greatCircleDistance_in_km\
+                from citypopandlocations CROSS JOIN \
+                (\
+                SELECT airport, latitude as airport_lat, longitude as airport_long \
+                FROM iatatogeo \
+                WHERE airport = '"+ airport +"' \
+                ) as airport_coord \
+                ) as full_table\
+                where greatCircleDistance_in_km < " + str(rangekm) + " \
+                ) as catchment \
+                JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
+                WHERE destinationcitycode = '"+ destinationcity +"' \
+                GROUP BY origincitycode, destinationcitycode \
+                ORDER BY sum_seats DESC\
+                LIMIT 100"
+
+        cursor.execute(query)
+
+        rows = ('a', 'b',1)
+        rowarray_list = []
+
+        while len(rows) > 0:
+
+            rows = cursor.fetchall()
+            # Convert query to row arrays
+            for row in rows:
+                rows_to_convert = (row[0], row[1], row[2])
+                t = list(rows_to_convert)
+                rowarray_list.append(t)
+
+        j = simplejson.dumps(rowarray_list)
+
+        if len(rowarray_list) == 0 : rowarray_list.append([0,0,0])
+        connection.close()
+        return rowarray_list
+
+
+
 def __init__(self):
         print ("in init")

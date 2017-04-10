@@ -17,6 +17,7 @@ app = Flask(__name__, static_folder='static')
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
+app.config['JSON_AS_ASCII'] = False
 extractdata = extractdata()
 neural_network = neural_network()
 @app.route('/popularity_data/<filtertype>/<city>', methods=['GET'])
@@ -179,6 +180,15 @@ def predict_od(in1):
         return resp
 
 
+@app.route('/catchment_data/<airport>/<rangekm>/<destinationcity>', methods=['GET'])
+def catchment_data(airport, rangekm, destinationcity):
+        catchment = extractdata.getcatchment(airport, rangekm, destinationcity)
+        leakage = extractdata.getleakage(airport, rangekm, destinationcity)
+        lastupdate = extractdata.getlasttimeupdate('ptbexist_leakage')
+
+        resp = jsonify(catchment=catchment, leakage=leakage, update = lastupdate, length = [len(catchment), len(leakage)])
+
+        return resp
 
 @app.route('/popularity_view', methods=['GET'])
 def render_pax():
