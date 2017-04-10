@@ -211,7 +211,8 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT usercountry, usercity, sum(seats) as sum_seats from (\
+        query = "SELECT usercountry, usercity,  sum(seats) as sum_seats, latitude, longitude, airport_lat, airport_long\
+                from (\
                 SELECT * from (\
                 SELECT *, \
                 acos( \
@@ -232,13 +233,13 @@ class extractdata:
                 ) as catchment \
                 JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
                 WHERE destinationcitycode = '"+ destinationcity +"' \
-                GROUP BY usercountry, usercity \
+                GROUP BY usercountry, usercity, latitude, longitude, airport_lat, airport_long\
                 ORDER BY sum_seats DESC\
-                LIMIT 100"
+                LIMIT 10"
 
         cursor.execute(query)
 
-        rows = ('a', 'b',1)
+        rows = ('a', 'b',1,2,3,4,5)
         rowarray_list = []
 
         while len(rows) > 0:
@@ -246,13 +247,13 @@ class extractdata:
             rows = cursor.fetchall()
             # Convert query to row arrays
             for row in rows:
-                rows_to_convert = (row[0], row[1].encode('UTF-8'), row[2])
+                rows_to_convert = (row[0], row[1].encode('UTF-8'), row[2], row[3], row[4],row[5],row[6])
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
         j = simplejson.dumps(rowarray_list)
 
-        if len(rowarray_list) == 0 : rowarray_list.append([0,0,0])
+        if len(rowarray_list) == 0 : rowarray_list.append([0,0,0,0,0,0,0])
         connection.close()
         return rowarray_list
 
@@ -260,7 +261,7 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT origincitycode, destinationcitycode, sum(seats) as sum_seats from (\
+        query = "SELECT originairport, destinationcitycode, sum(seats) as sum_seats from (\
                 SELECT * from (\
                 SELECT *, \
                 acos( \
@@ -280,10 +281,10 @@ class extractdata:
                 where greatCircleDistance_in_km < " + str(rangekm) + " \
                 ) as catchment \
                 JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
-                WHERE destinationcitycode = '"+ destinationcity +"' \
-                GROUP BY origincitycode, destinationcitycode \
+                WHERE destinationcitycode = '"+ destinationcity +"' and originairport is not NULL\
+                GROUP BY originairport, destinationcitycode \
                 ORDER BY sum_seats DESC\
-                LIMIT 100"
+                LIMIT 10"
 
         cursor.execute(query)
 
