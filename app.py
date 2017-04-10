@@ -186,17 +186,17 @@ def catchment_data(airport, rangekm, destinationcity):
         leakage = extractdata.getleakage(airport, rangekm, destinationcity)
         lastupdate = extractdata.getlasttimeupdate('ptbexits_leakage')
 
-        peak_catchment = max(row[2] for row in catchment )
+        peak_catchment = max(row[2] for row in catchment )+1
         for row in catchment:
             row[2] = round(row[2]*100/peak_catchment)
 
-        peak_leakage = max(row[2] for row in leakage )
+        peak_leakage = max(row[2] for row in leakage )+1
         home_size = 0
         for row in leakage:
             row[2] = round(row[2]*100/peak_leakage)
             if row[0] == airport : home_size = row[2]
 
-        airport_share = home_size / sum(row[2] for row in leakage)
+        airport_share = home_size / (sum(row[2] for row in leakage)+1)
 
         airport_coord = (catchment[0][5], catchment[0][6])
 

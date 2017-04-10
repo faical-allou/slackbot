@@ -15,11 +15,12 @@
       var filterrangekm = document.getElementById("rangekminput");
       var filterdestinationcity = document.getElementById("destinationcityinput");
 
-      if (isNaN(originairport)) {
-      originairport = filteroriginairport.value.toUpperCase();
-      rangekm = filterrangekm.value.toUpperCase();
-      destinationcity= filterdestinationcity.value.toUpperCase();
-      mixpanel.track("Catchment selection", {"originairport": filteroriginairport.value, "Rangekm":filterrangekm.value, "Destinationcity": filterdestinationcity.value});
+
+      if (originairport == null) {
+        originairport = filteroriginairport.value.toUpperCase();
+        rangekm = filterrangekm.value.toUpperCase();
+        destinationcity= filterdestinationcity.value.toUpperCase();
+        mixpanel.track("Catchment selection", {"originairport": filteroriginairport.value, "Rangekm":filterrangekm.value, "Destinationcity": filterdestinationcity.value});
       };
 
       var url_to_call = './catchment_data/'+originairport+'/'+rangekm+'/'+destinationcity;
@@ -36,12 +37,11 @@
             update_time = new Date(data_to_display.update);
             document.getElementById("update_time").innerHTML = update_time.toDateString();
             if (data_to_display.airport_share > 0) {
-              var recapture = Math.round(1000/data_to_display.airport_share)/10-100;
-              document.getElementById("text_recapture").innerHTML = "<strong>"+originairport+ "</strong> captures <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> of the potential <br/>With better service (non-stop, frequency etc ...) the traffic could grow <strong>"+ recapture+"%</strong>"
+              var recapture = Math.round(100/data_to_display.airport_share)-100;
+              document.getElementById("text_recapture").innerHTML = "<strong>"+originairport+ "</strong> captures <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> of the potential from the catchment<br/>With better service (non-stop, frequency etc ...) the traffic could grow <strong>"+ recapture+"%</strong>"
             } else {
               document.getElementById("text_recapture").innerHTML = "<strong>"+originairport+" is not in the TOP 10 airports</strong> from this catchment area to go to <strong>"+destinationcity+"</strong>."
             };
-
 
             console.log(data_to_display);
             if (data_to_display.length[0] > 3 && data_to_display.length[1] > 3) {
@@ -51,8 +51,6 @@
               data_formatted.addColumn('number', 'Long');
               data_formatted.addColumn('string', 'City');
               data_formatted.addColumn('string', 'Marker');
-
-
 
               for (i = 0; i < data_to_display.length[0]; i++) {
                 data_formatted.addRows([
@@ -78,10 +76,10 @@
                 'legend': {position: 'none'},
                 'showInfoWindow': true,
                 'showTooltip': true,
-                'mapType': 'styledMap',
+                'mapType': 'normal',
                 'maps': {styledMap : {name: 'Skyscanner', styles: [
-                    {elementType: 'geometry', stylers: [{color: '#DFDCE3'}]},
-                    {featureType: 'water', elementType: 'geometry',stylers: [{color: '#272133'}]},
+                  {featureType: "administrative.land_parcel", elementType: "labels", stylers: [{"visibility": "off"}]},                    {elementType: 'geometry', stylers: [{color: '#DFDCE3'}]},
+                  {featureType: 'water', elementType: 'geometry',stylers: [{color: '#272133'}]},
                         ]
                       }
                 },
@@ -143,6 +141,10 @@
               $('#loading_extra').hide();
               $('#loading_image').hide();
               $('#dashboard_wrapper').show();
+          },
+          error: function() {
+            swal({  title: "Sorry",  text: "Something went wrong, please review your input.",  type: "error",  confirmButtonText: "OK"});
+            mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
           }
       })
     };
@@ -177,11 +179,11 @@
 
               </div>
               <div class='container_12 filter-bar'>
-                <input id="originairportinput" class='grid_2' type="text" value="CGN" onFocus='this.value=""'>
-                <input id="rangekminput" class='grid_2' type="text" value="20" onFocus='this.value=""'>
-                <input id="destinationcityinput" class='grid_2' type="text" value="NYC" onFocus='this.value=""'>
+                <input id="originairportinput" class='grid_3' type="text" value="airport code" onFocus='this.value=""'>
+                <input id="rangekminput" class='grid_2' type="text" value="distance (km)" onFocus='this.value=""'>
+                <input id="destinationcityinput" class='grid_3' type="text" value="dest. city code" onFocus='this.value=""'>
 
-                <input type="button" class="grid_3 button-style" value="check leakage" onClick="drawChart()">
+                <input type="button" class="grid_2 button-style" value="check" onClick="drawChart()">
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
 
@@ -200,7 +202,9 @@
             </div>
             <div class="grid_10">
                 <span>
-                  bla bla catchment - bla bla bla leakage.
+                  Traffic leakage is a major problem with airport-to-airport reporting,
+                  by defining a distance around an airport, we can identify the most used airport from the catchment
+                  and estimate the true traffic potential that can be recaptured 
                 </span>
             </div>
           </div>

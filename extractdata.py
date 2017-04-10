@@ -235,7 +235,7 @@ class extractdata:
                 WHERE destinationcitycode = '"+ destinationcity +"' \
                 GROUP BY usercountry, usercity, latitude, longitude, airport_lat, airport_long\
                 ORDER BY sum_seats DESC\
-                LIMIT 10"
+                LIMIT 30"
 
         cursor.execute(query)
 
