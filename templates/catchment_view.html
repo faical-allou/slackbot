@@ -36,9 +36,11 @@
             update_time = new Date(data_to_display.update);
             document.getElementById("update_time").innerHTML = update_time.toDateString();
             if (data_to_display.airport_share > 0) {
-            var recapture = Math.round(1000/data_to_display.airport_share)/10-100;
-            document.getElementById("text_recapture").innerHTML = "The airport captures <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> of the potential <br/>With better service (non-stop, frequency etc ...) the traffic could grow <strong>"+ recapture+"%</strong>"
-            }
+              var recapture = Math.round(1000/data_to_display.airport_share)/10-100;
+              document.getElementById("text_recapture").innerHTML = "<strong>"+originairport+ "</strong> captures <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> of the potential <br/>With better service (non-stop, frequency etc ...) the traffic could grow <strong>"+ recapture+"%</strong>"
+            } else {
+              document.getElementById("text_recapture").innerHTML = "<strong>"+originairport+" is not in the TOP 10 airports</strong> from this catchment area to go to <strong>"+destinationcity+"</strong>."
+            };
 
 
             console.log(data_to_display);
