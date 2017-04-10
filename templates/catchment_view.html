@@ -79,7 +79,7 @@
               data_formatted.addRows([
               [data_to_display.leakage[i][0],
               data_to_display.leakage[i][1],
-              Number(data_to_display.catchment[i][2]),
+              Number(data_to_display.leakage[i][2]),
               ]]);
             };
 
@@ -103,7 +103,7 @@
 
 
             } else {
-                  swal({  title: "Sorry",  text: "We don't have enough data for this request, \n are you entering an IATA airport code?",  type: "error",  confirmButtonText: "OK"});
+                  swal({  title: "Sorry",  text: "We don't have enough data for this request, \n are you entering an IATA airport code, distance, IATA city code?",  type: "error",  confirmButtonText: "OK"});
                   mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
               };
           },
@@ -142,9 +142,9 @@
                 <div id="chart2_div" class='grid_6'></div>
               </div>
               <div class='container_12 filter-bar'>
-                <input id="airportinput" class='grid_3' type="text" value="CGN" onFocus='this.value=""'>
-                <input id="rangekminput" class='grid_3' type="text" value="20" onFocus='this.value=""'>
-                <input id="destinationcityinput" class='grid_3' type="text" value="NYC" onFocus='this.value=""'>
+                <input id="airportinput" class='grid_2' type="text" value="CGN" onFocus='this.value=""'>
+                <input id="rangekminput" class='grid_2' type="text" value="20" onFocus='this.value=""'>
+                <input id="destinationcityinput" class='grid_2' type="text" value="NYC" onFocus='this.value=""'>
 
                 <input type="button" class="grid_3 button-style" value="check leakage" onClick="drawChart()">
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
