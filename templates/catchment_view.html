@@ -38,7 +38,7 @@
             document.getElementById("update_time").innerHTML = update_time.toDateString();
             if (data_to_display.airport_share > 0) {
               var recapture = Math.round(100/data_to_display.airport_share)-100;
-              document.getElementById("text_recapture").innerHTML = "<strong>"+originairport+ "</strong> captures <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> of the potential from the catchment<br/>With better service (non-stop, frequency etc ...) the traffic could grow <strong>"+ recapture+"%</strong>"
+              document.getElementById("text_recapture").innerHTML = "<strong>"+originairport+ "</strong> captures <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> of the traffic from the catchment area <strong>("+rangekm+"km around the airport)</strong> going to <strong>"+destinationcity+"</strong> <br/>With better service such as non-stop, frequency etc... the traffic could grow <strong>"+ recapture+"%</strong>"
             } else {
               document.getElementById("text_recapture").innerHTML = "<strong>"+originairport+" is not in the TOP 10 airports</strong> from this catchment area to go to <strong>"+destinationcity+"</strong>."
             };
@@ -120,7 +120,7 @@
 
               // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
               'options': {
-                'title': "Most used departure airport (%)",
+                'title': "Most used airport (%)",
                 'titleTextStyle': {fontSize: 16,  bold: true},
                 'legend': {position: 'none'},
                 'chartArea' : {width:'60%',height:'90%'},
