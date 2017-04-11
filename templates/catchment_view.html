@@ -156,7 +156,11 @@
         drawChart('CGN','20','NYC');
     });
 
-
+    document.onkeypress = function (e) {
+        if (e.keyCode == 13) {
+            drawChart();
+        }
+    };
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk" async defer></script>
 

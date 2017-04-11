@@ -177,6 +177,11 @@
         });
     }
   );
+    document.onkeypress = function (e) {
+        if (e.keyCode == 13) {
+            draw_map();
+        }
+    };
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk&callback=initMap" async defer></script>
 

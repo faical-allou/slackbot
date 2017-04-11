@@ -179,6 +179,12 @@
         drawChart('TYO','SYD');
     });
 
+    document.onkeypress = function (e) {
+        if (e.keyCode == 13) {
+            addToChart(undefined,undefined);
+        }
+    };
+
     </script>
 
   <!-- HTML -->
