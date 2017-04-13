@@ -26,7 +26,7 @@ else:
         print ("Connected to heroku!")
         cursor_heroku = conn_heroku.cursor()
         query = "SELECT * FROM ptbsearches_trending \
-        WHERE  origincitycode = 'LON'and destinationcitycode in ('REK', 'BUD', 'SOF') \
+        WHERE  origincitycode = 'LON' \
         ORDER BY destinationcitycode, search_month ASC"
 
 
@@ -58,6 +58,7 @@ for res in rows_converted:
 rows_smoothed = []
 x = []
 z = []
+y = []
 
 for index, rows_to_smooth in enumerate(result):
     mov_avg_row = moving_average(np.asarray(rows_to_smooth[1:], dtype=float),12)
@@ -66,6 +67,15 @@ for index, rows_to_smooth in enumerate(result):
     x=np.arange(0,len(mov_avg_row))
 
     dest = [str(rows_to_smooth[0])]
-    z.append(list(np.append(dest,np.polyfit (x,mov_avg_row,1))))
+    if len(x) >= 28:
+        z.append(list(np.append(dest,np.polyfit (x,mov_avg_row,1))))
 
-print ( z)
+
+for t in z:
+    y.append( [t[0], t[1].astype(float), t[2].astype(float)] )
+
+y.sort(key=lambda k: (k[1]), reverse=False)
+
+
+for rows_y in y:
+    print (rows_y)
