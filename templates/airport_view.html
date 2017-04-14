@@ -31,7 +31,7 @@
             update_time = new Date(data_to_display.update);
             document.getElementById("update_time").innerHTML = update_time.toDateString();
             console.log(data_to_display.length);
-            if (data_to_display.length > 80) {
+            if (data_to_display.length > 70) {
           // Create the data table.
           data_formatted = new google.visualization.DataTable();
           data_formatted.addColumn('string', 'ID');
@@ -157,7 +157,7 @@
         $('#loading_image').show();
         drawChart('MAD');
     });
-    
+
     document.onkeypress = function (e) {
         if (e.keyCode == 13) {
             drawChart();
