@@ -44,7 +44,7 @@
             };
 
             console.log(data_to_display);
-            if (data_to_display.length[0] > 3 && data_to_display.length[1] > 3) {
+            if (data_to_display.length[0] >= 1 && data_to_display.length[1] >= 2) {
               // Create the data table.
               data_formatted = new google.visualization.DataTable();
               data_formatted.addColumn('number', 'Lat');
