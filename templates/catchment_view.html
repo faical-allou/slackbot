@@ -23,7 +23,6 @@
             }
         }
     };
-
     // Callback that creates and populates a data table,
     // instantiates the chart, passes in the data and draws it.
     function drawChart(originairport,rangekm,destinationcity) {
@@ -31,16 +30,6 @@
       window.originairport =  originairport;
       window.rangekm =  rangekm;
       window.destinationcity = destinationcity;
-
-      var originairportURL =  getUrlParameter('originairport');
-      var rangekmURL =  getUrlParameter('rangekm');
-      var destinationcityURL =  getUrlParameter('destinationcity');
-
-      if (originairportURL != undefined && rangekmURL != undefined && destinationcityURL != undefined) {
-        window.originairport =  originairportURL;
-        window.rangekm =  rangekmURL;
-        window.destinationcity = destinationcityURL;
-      };
 
       var filteroriginairport = document.getElementById("originairportinput");
       var filterrangekm = document.getElementById("rangekminput");
@@ -188,8 +177,16 @@
         // loading image until the chart is done
         $('#dashboard_wrapper').hide();
         $('#loading_image').show();
-        drawChart('CGN','20','NYC');
 
+        var originairportURL =  getUrlParameter('originairport');
+        var rangekmURL =  getUrlParameter('rangekm');
+        var destinationcityURL =  getUrlParameter('destinationcity');
+
+        if (originairportURL != undefined && rangekmURL != undefined && destinationcityURL != undefined) {
+        drawChart(originairportURL,rangekmURL,destinationcityURL);
+        } else {
+        drawChart('CGN','20','NYC');
+        };
     });
 
 
