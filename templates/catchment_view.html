@@ -62,7 +62,7 @@
               document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+" is not in the TOP 10 airports</strong> from this catchment area to go to <strong>"+window.destinationcity+"</strong>."
             };
 
-            if (data_to_display.length[0] >= 1 && data_to_display.length[1] >= 1) {
+            if (data_to_display.length[0] >= 2 && data_to_display.length[1] >= 1) {
               // Create the data table.
               data_formatted = new google.visualization.DataTable();
               data_formatted.addColumn('number', 'Lat');
