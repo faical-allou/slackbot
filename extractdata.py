@@ -211,7 +211,7 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT usercountry, usercity,  sum(seats) as sum_seats, latitude, longitude, airport_lat, airport_long\
+        query = "SELECT usercountry, usercity,  sum(seats) as sum_seats, catchment.latitude, catchment.longitude, airport_lat, airport_long\
                 from (\
                 SELECT * from (\
                 SELECT *, \
@@ -225,15 +225,23 @@ class extractdata:
                 from citypopandlocations CROSS JOIN \
                 (\
                 SELECT airport, latitude as airport_lat, longitude as airport_long \
-                FROM iatatogeo \
+                FROM iatatogeo iata0 \
                 WHERE airport = '"+ airport +"' \
                 ) as airport_coord \
                 ) as full_table\
                 where greatCircleDistance_in_km < " + str(rangekm) + " \
                 ) as catchment \
                 JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
-                WHERE destinationcitycode = '"+ destinationcity +"' \
-                GROUP BY usercountry, usercity, latitude, longitude, airport_lat, airport_long\
+                JOIN iatatogeo iata1 on (originairport = iata1.airport)\
+                WHERE destinationcitycode = '"+ destinationcity +"' and originairport is not NULL and \
+                acos( \
+                      cos(radians( iata1.latitude )) \
+                    * cos(radians( airport_lat )) \
+                    * cos(radians( iata1.longitude ) - radians( airport_long )) \
+                    + sin(radians( iata1.latitude ))  \
+                    * sin(radians( airport_lat )) \
+                  )*6380 < 300 \
+                GROUP BY usercountry, usercity, catchment.latitude, catchment.longitude, airport_lat, airport_long\
                 ORDER BY sum_seats DESC\
                 LIMIT 30"
 
@@ -281,8 +289,16 @@ class extractdata:
                 where greatCircleDistance_in_km < " + str(rangekm) + " \
                 ) as catchment \
                 JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
-                WHERE destinationcitycode = '"+ destinationcity +"' and originairport is not NULL\
-                GROUP BY originairport, destinationcitycode \
+                JOIN iatatogeo iata1 on (originairport = iata1.airport)\
+                WHERE destinationcitycode = '"+ destinationcity +"' and originairport is not NULL and \
+                acos( \
+                      cos(radians( iata1.latitude )) \
+                    * cos(radians( airport_lat )) \
+                    * cos(radians( iata1.longitude ) - radians( airport_long )) \
+                    + sin(radians( iata1.latitude ))  \
+                    * sin(radians( airport_lat )) \
+                  )*6380 < 300 \
+                GROUP BY originairport, destinationcitycode\
                 ORDER BY sum_seats DESC\
                 LIMIT 10"
 
