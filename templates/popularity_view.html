@@ -74,7 +74,7 @@
                 // Draw the chart
                 myChart.draw();
               } else {
-                      swal({title: "Sorry",  text: "We don't have enough data for this request,\n are you entering an IATA city code?",  type: "error",  confirmButtonText: "OK"});
+                      swal({title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering an IATA <span class='swal-highlight'>city code</span>?", html:true, type: "error",  confirmButtonText: "OK"});
                       mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
                     }
           // closing the success clause of the AJAX call

@@ -30,7 +30,6 @@
           success: function (data_to_display) {
             update_time = new Date(data_to_display.update);
             document.getElementById("update_time").innerHTML = update_time.toDateString();
-            console.log(data_to_display.length);
             if (data_to_display.length > 70) {
           // Create the data table.
           data_formatted = new google.visualization.DataTable();
@@ -139,7 +138,7 @@
               myChart.draw();
               myPieChart.draw();
             } else {
-                    swal({  title: "Sorry",  text: "We don't have enough data for this request, \n are you entering an IATA airport code?",  type: "error",  confirmButtonText: "OK"});
+                    swal({  title: "Sorry",  text: "We don't have enough data for this request, </br> are you entering an IATA <span class='swal-highlight'>airport code</span>?",  html: true, type: "error",  confirmButtonText: "OK"});
                     mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
                   }
             },

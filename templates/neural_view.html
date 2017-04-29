@@ -49,7 +49,7 @@
               document.getElementById("update_time").innerHTML = update_time.toDateString() ;
               $('#phase2_wrapper').show();
             } else {
-                    swal({title: "Sorry",  text: "We don't have enough data for this request,\n are you entering IATA city codes?",  type: "error",  confirmButtonText: "OK"});
+                    swal({title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering IATA <span class='swal-highlight'>city codes</span>?", html:true, type: "error",  confirmButtonText: "OK"});
                     mixpanel.track("Error pop up", {"Page":viewpage,"Step":"training results", "URL": url_to_call});
               }
             },
@@ -96,7 +96,7 @@
             chartclass.draw(chartdata, chartoptions);
             $('#chart_wrapper').show();
           } else {
-                  swal({title: "Sorry",  text: "We don't have enough data for this request,\n are you entering an IATA city code?",  type: "error",  confirmButtonText: "OK"});
+                  swal({title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering an IATA <span class='swal-highlight'>city codes</span>?",  type: "error",  confirmButtonText: "OK"});
                   mixpanel.track("Error pop up", {"Page":viewpage, "Step":"Predict", "URL": url_to_post});
                 };
           },
