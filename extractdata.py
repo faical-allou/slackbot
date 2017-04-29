@@ -240,10 +240,9 @@ class extractdata:
                     * cos(radians( iata1.longitude ) - radians( airport_long )) \
                     + sin(radians( iata1.latitude ))  \
                     * sin(radians( airport_lat )) \
-                  )*6380 < 300 \
+                  )*6380 < 420 \
                 GROUP BY usercountry, usercity, catchment.latitude, catchment.longitude, airport_lat, airport_long\
-                ORDER BY sum_seats DESC\
-                LIMIT 30"
+                ORDER BY sum_seats DESC"
 
         cursor.execute(query)
 
@@ -297,7 +296,7 @@ class extractdata:
                     * cos(radians( iata1.longitude ) - radians( airport_long )) \
                     + sin(radians( iata1.latitude ))  \
                     * sin(radians( airport_lat )) \
-                  )*6380 < 300 \
+                  )*6380 < 420 \
                 GROUP BY originairport, destinationcitycode\
                 ORDER BY sum_seats DESC\
                 LIMIT 10"
