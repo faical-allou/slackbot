@@ -219,6 +219,8 @@ class extractdata:
                      + sin(radians( catchment.latitude )) * sin(radians( iata1.latitude ))))*6300 as distance_alternate,  \
                     acos((cos(radians(airport_lat )) * cos(radians(  iata2.latitude )) * cos(radians( airport_long ) - radians( iata2.longitude )) \
                      + sin(radians( airport_lat )) * sin(radians(  iata2.latitude ))))*6300 as distance_od, \
+                    acos((cos(radians(iata1.latitude )) * cos(radians(  iata2.latitude )) * cos(radians( iata1.longitude ) - radians( iata2.longitude )) \
+                     + sin(radians( iata1.latitude )) * sin(radians(  iata2.latitude ))))*6300 as distance_newod, \
                     sum(seats) as sum_seats \
                       from (\
                       SELECT *\
@@ -238,9 +240,9 @@ class extractdata:
                     JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
                     JOIN iatatogeo iata1 on (originairport = iata1.airport)\
                     JOIN iatatogeo iata2 on (destinationcitycode = iata2.airport)\
-                    GROUP BY usercountry, usercity, originairport, destinationcitycode, catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, iata1.latitude,iata1.longitude , ground_transport, distance_od \
+                    GROUP BY usercountry, usercity, originairport, destinationcitycode, catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, iata1.latitude,iata1.longitude , ground_transport, distance_od, distance_newod \
                     ) as fulltable\
-                WHERE destinationcitycode = '"+destinationcity+"' and originairport is not NULL and distance_alternate < 420 and ground_transport < distance_od\
+                WHERE destinationcitycode = '"+destinationcity+"' and originairport is not NULL and distance_alternate < distance_od/3 and distance_newod + distance_alternate < 1.5*distance_od\
                 GROUP BY usercountry, usercity, city_latitude, city_longitude, airport_lat, airport_long \
                 ORDER BY sum_seats DESC\
                 LIMIT 50"
@@ -277,6 +279,8 @@ class extractdata:
                      + sin(radians( catchment.latitude )) * sin(radians( iata1.latitude ))))*6300 as distance_alternate,  \
                     acos((cos(radians(airport_lat )) * cos(radians(  iata2.latitude )) * cos(radians( airport_long ) - radians( iata2.longitude )) \
                      + sin(radians( airport_lat )) * sin(radians(  iata2.latitude ))))*6300 as distance_od, \
+                    acos((cos(radians(iata1.latitude )) * cos(radians(  iata2.latitude )) * cos(radians( iata1.longitude ) - radians( iata2.longitude )) \
+                    + sin(radians( iata1.latitude )) * sin(radians(  iata2.latitude ))))*6300 as distance_newod, \
                     sum(seats) as sum_seats \
                       from (\
                       SELECT *\
@@ -296,9 +300,9 @@ class extractdata:
                     JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
                     JOIN iatatogeo iata1 on (originairport = iata1.airport)\
                     JOIN iatatogeo iata2 on (destinationcitycode = iata2.airport)\
-                    GROUP BY usercountry, usercity, originairport, destinationcitycode, catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, iata1.latitude,iata1.longitude , ground_transport, distance_od \
+                    GROUP BY usercountry, usercity, originairport, destinationcitycode, catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, iata1.latitude,iata1.longitude , ground_transport, distance_od, distance_newod \
                     ) as fulltable\
-                WHERE destinationcitycode = '"+destinationcity+"' and originairport is not NULL and distance_alternate < 420 and ground_transport < distance_od\
+                WHERE destinationcitycode = '"+destinationcity+"' and originairport is not NULL and distance_alternate < distance_od/3 and distance_newod + distance_alternate < 1.5*distance_od\
                 GROUP BY originairport, destinationcitycode\
                 ORDER BY sum_seats DESC\
                 LIMIT 10"
