@@ -211,38 +211,39 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT usercountry, usercity,  sum(seats) as sum_seats, catchment.latitude, catchment.longitude, airport_lat, airport_long\
+        query = "SELECT usercountry, usercity, sum(sum_seats) as sum_seats, city_latitude, city_longitude, airport_lat, airport_long\
                 from (\
-                SELECT * from (\
-                SELECT *, \
-                acos( \
-                      cos(radians( latitude )) \
-                    * cos(radians( airport_lat )) \
-                    * cos(radians( longitude ) - radians( airport_long )) \
-                    + sin(radians( latitude ))  \
-                    * sin(radians( airport_lat )) \
-                  )*6380 AS greatCircleDistance_in_km\
-                from citypopandlocations CROSS JOIN \
-                (\
-                SELECT airport, latitude as airport_lat, longitude as airport_long \
-                FROM iatatogeo iata0 \
-                WHERE airport = '"+ airport +"' \
-                ) as airport_coord \
-                ) as full_table\
-                where greatCircleDistance_in_km < " + str(rangekm) + " \
-                ) as catchment \
-                JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
-                JOIN iatatogeo iata1 on (originairport = iata1.airport)\
-                WHERE destinationcitycode = '"+ destinationcity +"' and originairport is not NULL and \
-                acos( \
-                      cos(radians( iata1.latitude )) \
-                    * cos(radians( airport_lat )) \
-                    * cos(radians( iata1.longitude ) - radians( airport_long )) \
-                    + sin(radians( iata1.latitude ))  \
-                    * sin(radians( airport_lat )) \
-                  )*6380 < 420 \
-                GROUP BY usercountry, usercity, catchment.latitude, catchment.longitude, airport_lat, airport_long\
-                ORDER BY sum_seats DESC"
+                    SELECT usercountry, usercity, originairport, destinationcitycode, catchment.latitude as city_latitude, catchment.longitude as city_longitude, airport_lat, airport_long, \
+                    iata1.latitude,iata1.longitude, ground_transport, \
+                    acos((cos(radians( catchment.latitude )) * cos(radians( iata1.latitude )) * cos(radians( iata1.longitude ) - radians( airport_long )) \
+                     + sin(radians( catchment.latitude )) * sin(radians( iata1.latitude ))))*6300 as distance_alternate,  \
+                    acos((cos(radians(airport_lat )) * cos(radians(  iata2.latitude )) * cos(radians( airport_long ) - radians( iata2.longitude )) \
+                     + sin(radians( airport_lat )) * sin(radians(  iata2.latitude ))))*6300 as distance_od, \
+                    sum(seats) as sum_seats \
+                      from (\
+                      SELECT *\
+                           from (\
+                        SELECT *, \
+                        acos(cos(radians( latitude )) * cos(radians( airport_lat )) * cos(radians( longitude ) - radians( airport_long )) + sin(radians( latitude )) * sin(radians( airport_lat )))*6380 AS ground_transport\
+                        from citypopandlocations \
+                        CROSS JOIN \
+                          (\
+                          SELECT airport, latitude as airport_lat, longitude as airport_long \
+                          FROM iatatogeo iata0\
+                          WHERE airport = '"+airport+"'\
+                          ) as airport_coord \
+                       ) as interim_table\
+                      where ground_transport < "+rangekm+"\
+                      ) as catchment \
+                    JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
+                    JOIN iatatogeo iata1 on (originairport = iata1.airport)\
+                    JOIN iatatogeo iata2 on (destinationcitycode = iata2.airport)\
+                    GROUP BY usercountry, usercity, originairport, destinationcitycode, catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, iata1.latitude,iata1.longitude , ground_transport, distance_od \
+                    ) as fulltable\
+                WHERE destinationcitycode = '"+destinationcity+"' and originairport is not NULL and distance_alternate < 420 and ground_transport < distance_od\
+                GROUP BY usercountry, usercity, city_latitude, city_longitude, airport_lat, airport_long \
+                ORDER BY sum_seats DESC\
+                LIMIT 50"
 
         cursor.execute(query)
 
@@ -268,35 +269,36 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT originairport, destinationcitycode, sum(seats) as sum_seats from (\
-                SELECT * from (\
-                SELECT *, \
-                acos( \
-                      cos(radians( latitude )) \
-                    * cos(radians( airport_lat )) \
-                    * cos(radians( longitude ) - radians( airport_long )) \
-                    + sin(radians( latitude ))  \
-                    * sin(radians( airport_lat )) \
-                  )*6380 AS greatCircleDistance_in_km\
-                from citypopandlocations CROSS JOIN \
-                (\
-                SELECT airport, latitude as airport_lat, longitude as airport_long \
-                FROM iatatogeo \
-                WHERE airport = '"+ airport +"' \
-                ) as airport_coord \
-                ) as full_table\
-                where greatCircleDistance_in_km < " + str(rangekm) + " \
-                ) as catchment \
-                JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
-                JOIN iatatogeo iata1 on (originairport = iata1.airport)\
-                WHERE destinationcitycode = '"+ destinationcity +"' and originairport is not NULL and \
-                acos( \
-                      cos(radians( iata1.latitude )) \
-                    * cos(radians( airport_lat )) \
-                    * cos(radians( iata1.longitude ) - radians( airport_long )) \
-                    + sin(radians( iata1.latitude ))  \
-                    * sin(radians( airport_lat )) \
-                  )*6380 < 420 \
+        query = "SELECT originairport, destinationcitycode, sum(sum_seats) as sum_seats\
+                from (\
+                    SELECT usercountry, usercity, originairport, destinationcitycode, catchment.latitude as city_latitude, catchment.longitude as city_longitude, airport_lat, airport_long, \
+                    iata1.latitude,iata1.longitude, ground_transport, \
+                    acos((cos(radians( catchment.latitude )) * cos(radians( iata1.latitude )) * cos(radians( iata1.longitude ) - radians( airport_long )) \
+                     + sin(radians( catchment.latitude )) * sin(radians( iata1.latitude ))))*6300 as distance_alternate,  \
+                    acos((cos(radians(airport_lat )) * cos(radians(  iata2.latitude )) * cos(radians( airport_long ) - radians( iata2.longitude )) \
+                     + sin(radians( airport_lat )) * sin(radians(  iata2.latitude ))))*6300 as distance_od, \
+                    sum(seats) as sum_seats \
+                      from (\
+                      SELECT *\
+                           from (\
+                        SELECT *, \
+                        acos(cos(radians( latitude )) * cos(radians( airport_lat )) * cos(radians( longitude ) - radians( airport_long )) + sin(radians( latitude )) * sin(radians( airport_lat )))*6380 AS ground_transport\
+                        from citypopandlocations \
+                        CROSS JOIN \
+                          (\
+                          SELECT airport, latitude as airport_lat, longitude as airport_long \
+                          FROM iatatogeo iata0\
+                          WHERE airport = '"+airport+"'\
+                          ) as airport_coord \
+                       ) as interim_table\
+                      where ground_transport < "+rangekm+"\
+                      ) as catchment \
+                    JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
+                    JOIN iatatogeo iata1 on (originairport = iata1.airport)\
+                    JOIN iatatogeo iata2 on (destinationcitycode = iata2.airport)\
+                    GROUP BY usercountry, usercity, originairport, destinationcitycode, catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, iata1.latitude,iata1.longitude , ground_transport, distance_od \
+                    ) as fulltable\
+                WHERE destinationcitycode = '"+destinationcity+"' and originairport is not NULL and distance_alternate < 420 and ground_transport < distance_od\
                 GROUP BY originairport, destinationcitycode\
                 ORDER BY sum_seats DESC\
                 LIMIT 10"
