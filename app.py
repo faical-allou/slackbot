@@ -12,6 +12,7 @@ import datetime
 import sys
 from extractdata import *
 from neural import *
+from alexa import *
 import gc
 app = Flask(__name__, static_folder='static')
 
@@ -20,6 +21,8 @@ wsgi_app = app.wsgi_app
 app.config['JSON_AS_ASCII'] = False
 extractdata = extractdata()
 neural_network = neural_network()
+alexa_skill = alexa_skill()
+
 @app.route('/popularity_data/<filtertype>/<city>', methods=['GET'])
 def popularity_data(filtertype,city):
 
@@ -213,10 +216,11 @@ def popularity_data_alexa():
     gc.collect()
     json_request = request.get_json(force=True, silent=False, cache=True)
     request_city = json_request['request']['intent']['slots']['origin']['value']
-
+    print("resquest_city= ", request_city)
     popular = extractdata.getpopularitytablealexa('o',request_city)
+    print(popular)
 
-    resp = jsonify(popular)
+    resp = jsonify(alexa_skill.speak_populardestinations(popular))
     return resp
 
 @app.route('/popularity_view', methods=['GET'])

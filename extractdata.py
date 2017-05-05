@@ -341,22 +341,20 @@ class extractdata:
             ORDER BY seats DESC LIMIT 10"
         cursor.execute(query)
 
-        rows = [('a')]
+        rows = ['a']
         rowarray_list = []
 
-        while len(rows) > 0:
+        dest_list = []
 
-            rows = cursor.fetchall()
-            # Convert query to row arrays
-            for row in rows:
-                rows_to_convert = row
-                t = list(rows_to_convert)
-                rowarray_list.append(t)
+        rows = cursor.fetchall()
 
-        j = simplejson.dumps(rowarray_list)
+        for row in rows:
+            dest_list.extend(row)
+        print(dest_list)
 
         connection.close()
-        return rowarray_list
+
+        return dest_list
 
 
 
