@@ -208,6 +208,16 @@ def catchment_data(airport, rangekm, destinationcity):
 
         return resp
 
+@app.route('/popularity_data_alexa/', methods=['GET', 'POST'])
+def popularity_data_alexa():
+    gc.collect()
+    cityfrom = request.form['syn0']
+    popular = extractdata.getpopularitytablealexa('o'',city)
+
+    resp = jsonify(data=popular)
+
+    return resp
+
 @app.route('/popularity_view', methods=['GET'])
 def render_pax():
     #Renders the passenger chart page
