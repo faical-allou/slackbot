@@ -211,11 +211,12 @@ def catchment_data(airport, rangekm, destinationcity):
 @app.route('/popularity_data_alexa/', methods=['GET', 'POST'])
 def popularity_data_alexa():
     gc.collect()
-    cityfrom = request.form['syn0']
-    popular = extractdata.getpopularitytablealexa('o',city)
+    json_request = request.get_json(force=True, silent=False, cache=True)
+    request_city = json_request['request']['intent']['slots']['origin']['value']
 
-    resp = jsonify(data=popular)
+    popular = extractdata.getpopularitytablealexa('o',request_city)
 
+    resp = jsonify(popular)
     return resp
 
 @app.route('/popularity_view', methods=['GET'])

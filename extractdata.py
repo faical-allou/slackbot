@@ -331,7 +331,7 @@ class extractdata:
 
         connection = self.getconnection()
         cursor = connection.cursor()
-        query = "SELECT iata1.city, iata2.city \
+        query = "SELECT iata2.city \
             FROM ptbexits_popular \
             join iatatogeo iata1 \
             ON iata1.airport = origincitycode\
@@ -341,15 +341,15 @@ class extractdata:
             ORDER BY seats DESC LIMIT 10"
         cursor.execute(query)
 
-        rows = [('a','b')]
+        rows = [('a')]
         rowarray_list = []
 
         while len(rows) > 0:
 
-            rows = cursor.fetchmany(500)
+            rows = cursor.fetchall()
             # Convert query to row arrays
             for row in rows:
-                rows_to_convert = (row[0], row[1])
+                rows_to_convert = row
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
