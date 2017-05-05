@@ -212,7 +212,7 @@ def catchment_data(airport, rangekm, destinationcity):
 def popularity_data_alexa():
     gc.collect()
     cityfrom = request.form['syn0']
-    popular = extractdata.getpopularitytablealexa('o'',city)
+    popular = extractdata.getpopularitytablealexa('o',city)
 
     resp = jsonify(data=popular)
 
