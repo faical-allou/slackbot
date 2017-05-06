@@ -14,7 +14,7 @@ class alexa_skill:
         session_attributes = {}
         card_title = "Popularity"
         reprompt_text = ""
-        should_end_session = False
+        should_end_session = True
 
         dest_String = ",".join(list_destinations)
 
