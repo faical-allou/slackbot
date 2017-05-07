@@ -200,31 +200,45 @@
     $( function() {
       $( "#originairportinput" ).autocomplete({
             source: availableairports,
-            change: function(event,ui)
+            minLength: 2,
+            response: function(event,ui)
               {
-              if (ui.item==null)
-                  {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("originairportinput").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
                   $("#originairportinput").val('');
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("originairportinput").value });
                   $("#originairportinput").focus();
-                  }
+                };
               }
       });
     });
 
     $( function() {
       $( "#destinationcityinput" ).autocomplete({
-            source: availableairports,
-            change: function(event,ui)
+            source: availablecities,
+            minLength: 2,
+            response: function(event,ui)
               {
-              if (ui.item==null)
-                  {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("destinationcityinput").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
                   $("#destinationcityinput").val('');
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("destinationcityinput").value });
+
                   $("#destinationcityinput").focus();
-                  }
+                };
               }
       });
     });
-
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk" async defer></script>
 
@@ -255,9 +269,9 @@
                 <div class='grid_2'> &nbsp </div>
                 <div class='grid_2'> &nbsp </div>
 
-                <input id="originairportinput" class='grid_2' type="text" value="Airport code" onFocus='this.value=""'>
+                <input id="originairportinput" class='grid_2' type="text" value="Airport code" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
                 <input id="rangekminput" class='grid_2' type="text" value="in (km)" onFocus='this.value=""'>
-                <input id="destinationcityinput" class='grid_2' type="text" value="City code" onFocus='this.value=""'>
+                <input id="destinationcityinput" class='grid_2' type="text" value="City code" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
 
                 <input type="button" class="grid_2 button-style" value="check" onClick="drawChart()">
                 <input type="button" class="grid_2 button-style" value="download" onClick="print()">

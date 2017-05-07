@@ -189,13 +189,20 @@
     $( function() {
       $( "#origin_input" ).autocomplete({
             source: availablecities,
-            change: function(event,ui)
+            minLength: 2,
+            response: function(event,ui)
               {
-              if (ui.item==null)
-                  {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("origin_input").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
                   $("#origin_input").val('');
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("origin_input").value });
                   $("#origin_input").focus();
-                  }
+                };
               }
       });
     });
@@ -203,13 +210,20 @@
     $( function() {
       $( "#destination_input" ).autocomplete({
             source: availablecities,
-            change: function(event,ui)
+            minLength: 2,
+            response: function(event,ui)
               {
-              if (ui.item==null)
-                  {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("destination_input").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
                   $("#destination_input").val('');
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("destination_input").value });
                   $("#destination_input").focus();
-                  }
+                };
               }
       });
     });
@@ -239,8 +253,8 @@
               <div class='grid_1'> &nbsp </div>
 
               <div class='grid_1'> &nbsp </div>
-              <input id="origin_input" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' onchange="filter_origin = this.value;">
-              <input id="destination_input" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' onchange="filter_destination = this.value;">
+              <input id="origin_input" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
+              <input id="destination_input" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
               <input type="button" class="grid_2 button-style" value="add" onClick="addToChart(undefined,undefined)">
               <input type="button" class="grid_2 button-style" value="reset" onClick="drawChart(undefined,undefined)">
               <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>

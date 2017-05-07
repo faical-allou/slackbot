@@ -206,7 +206,7 @@
                 <div class='grid_6'> &nbsp </div>
 
                 <div class='grid_2'> &nbsp </div>
-                <input id="ODinput" class='grid_4' type="text" value="AAA-BBB city codes" onfocus='if (this.value=="AAA-BBB city codes") {this.value="";}'>
+                <input id="ODinput" class='grid_4' type="text" value="AAA-BBB city codes" oninput='this.value=this.value.toUpperCase()' onfocus='if (this.value=="AAA-BBB city codes") {this.value="";}'>
                 <input type="button" class="grid_3 button-style" value="draw itineraries" onClick="draw_map()">
                 <input type="button" class="grid_2 button-style mb-10" value="clear" onClick="initMap()">
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
