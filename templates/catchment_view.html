@@ -210,8 +210,8 @@
                 };
                 if(ui.content.length==0)
                 {
-                  $("#originairportinput").val('');
                   mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("originairportinput").value });
+                  $("#originairportinput").val('');
                   $("#originairportinput").focus();
                 };
               }
@@ -231,9 +231,8 @@
                 };
                 if(ui.content.length==0)
                 {
-                  $("#destinationcityinput").val('');
                   mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("destinationcityinput").value });
-
+                  $("#destinationcityinput").val('');
                   $("#destinationcityinput").focus();
                 };
               }

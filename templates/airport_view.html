@@ -176,8 +176,8 @@
                 };
                 if(ui.content.length==0)
                 {
-                  $("#airportinput").val('');
                   mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("airportinput").value });
+                  $("#airportinput").val('');
                   $("#airportinput").focus();
                 };
               }

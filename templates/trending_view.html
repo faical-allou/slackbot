@@ -220,8 +220,8 @@
                 };
                 if(ui.content.length==0)
                 {
-                  $("#destination_input").val('');
                   mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("destination_input").value });
+                  $("#destination_input").val('');
                   $("#destination_input").focus();
                 };
               }

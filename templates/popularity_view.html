@@ -117,8 +117,8 @@
                 };
                 if(ui.content.length==0)
                 {
-                  $("#origin_input").val('');
                   mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("origin_input").value });
+                  $("#origin_input").val('');
                   $("#origin_input").focus();
                 };
               }
