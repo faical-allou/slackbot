@@ -163,6 +163,19 @@
         }
     };
 
+    $( function() {
+      $( "#airportinput" ).autocomplete({
+            source: availableairports,
+            change: function(event,ui)
+              {
+              if (ui.item==null)
+                  {
+                  $("#airportinput").val('');
+                  $("#airportinput").focus();
+                  }
+              }
+      });
+    });
     </script>
 
   <!-- HTML -->

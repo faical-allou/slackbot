@@ -338,7 +338,7 @@ class extractdata:
             JOIN iatatogeo iata2\
             ON iata2.airport = destinationcitycode\
             WHERE iata1.city = '"+city+"' and destinationcitycode > 'AAA' \
-            ORDER BY seats DESC LIMIT 10"
+            ORDER BY seats DESC LIMIT 3"
         cursor.execute(query)
 
         rows = ['a']
