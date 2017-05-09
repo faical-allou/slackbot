@@ -212,6 +212,7 @@ def catchment_data(airport, rangekm, destinationcity):
 
         confidence = 1.96* math.sqrt(airport_share*(1-airport_share)/(sample_size))
         resp = jsonify(catchment=catchment, leakage=leakage, airport_share = airport_share, airport_coord = airport_coord, update = lastupdate, confidence = confidence, length = [len(catchment), len(leakage)])
+        if peak_catchment == 1 : resp = jsonify(catchment=0, leakage=0, airport_share = 0, airport_coord = 0, update = 0, confidence = 0, length = [0, 0])
 
         return resp
 
