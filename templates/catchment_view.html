@@ -57,9 +57,9 @@
             document.getElementById("update_time").innerHTML = update_time.toDateString();
             if (data_to_display.airport_share > 0) {
               var recapture = Math.round(100/data_to_display.airport_share)-100;
-              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+ "</strong> serves <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> of the traffic from the catchment <strong>("+window.rangekm+"km around the airport)</strong> going to <strong>"+window.destinationcity+"</strong> <br/>With better service such as non-stop, frequency etc... the traffic could grow <strong>"+ recapture+"%</strong>"
+              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+ "</strong> serves <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> +-"+ Math.round(data_to_display.confidence*100) +"% of the traffic from the catchment <strong>("+window.rangekm+"km </strong>around the airport) going to <strong>"+window.destinationcity+"</strong> <br/>With better service such as non-stop, frequency etc... the traffic could grow <strong>"+ recapture+"%</strong>"
             } else {
-              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+" is not in the TOP 10 airports</strong> from this catchment area to go to <strong>"+window.destinationcity+"</strong>."
+              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+" is not in the TOP 5 airports</strong> for this catchment area to go to <strong>"+window.destinationcity+"</strong>."
             };
 
             if (data_to_display.length[0] >= 1 && data_to_display.length[1] >= 1) {

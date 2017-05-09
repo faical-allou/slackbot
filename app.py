@@ -10,6 +10,7 @@ import json
 import collections
 import datetime
 import sys
+import math
 from extractdata import *
 from neural import *
 from alexa import *
@@ -195,7 +196,9 @@ def catchment_data(airport, rangekm, destinationcity):
 
         sum_leakage = sum(row[2] for row in leakage )+1
         home_size = 0
+        sample_size = 1
         for row in leakage:
+            if row[0] == airport : sample_size = float(row[2])
             row[2] = round(row[2]*100/sum_leakage)
             if row[0] == airport : home_size = row[2]
 
@@ -207,7 +210,8 @@ def catchment_data(airport, rangekm, destinationcity):
                 del row[6]
                 del row[5]
 
-        resp = jsonify(catchment=catchment, leakage=leakage, airport_share = airport_share, airport_coord = airport_coord, update = lastupdate, length = [len(catchment), len(leakage)])
+        confidence = 1.96* math.sqrt(airport_share*(1-airport_share)/(sample_size))
+        resp = jsonify(catchment=catchment, leakage=leakage, airport_share = airport_share, airport_coord = airport_coord, update = lastupdate, confidence = confidence, length = [len(catchment), len(leakage)])
 
         return resp
 
