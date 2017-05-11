@@ -302,10 +302,10 @@ class extractdata:
                     JOIN iatatogeo iata2 on (destinationcitycode = iata2.airport)\
                     GROUP BY usercountry, usercity, originairport, destinationcitycode, catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, iata1.latitude,iata1.longitude , ground_transport, distance_od, distance_newod \
                     ) as fulltable\
-                WHERE destinationcitycode = '"+destinationcity+"' and originairport is not NULL and distance_alternate < distance_od/3 and distance_newod + distance_alternate < 1.5*distance_od\
+                WHERE destinationcitycode = '"+destinationcity+"' and originairport is not NULL and distance_alternate < distance_od/3 and distance_newod + distance_alternate < 1.2*distance_od\
                 GROUP BY originairport, destinationcitycode\
                 ORDER BY sum_seats DESC\
-                LIMIT 10"
+                LIMIT 5"
 
         cursor.execute(query)
 
@@ -326,6 +326,35 @@ class extractdata:
         if len(rowarray_list) == 0 : rowarray_list.append([0,0,0])
         connection.close()
         return rowarray_list
+
+    def getpopularitytablealexa(self, filtertype, city ):
+
+        connection = self.getconnection()
+        cursor = connection.cursor()
+        query = "SELECT iata2.city \
+            FROM ptbexits_popular \
+            join iatatogeo iata1 \
+            ON iata1.airport = origincitycode\
+            JOIN iatatogeo iata2\
+            ON iata2.airport = destinationcitycode\
+            WHERE iata1.city = '"+city+"' and destinationcitycode > 'AAA' \
+            ORDER BY seats DESC LIMIT 3"
+        cursor.execute(query)
+
+        rows = ['a']
+        rowarray_list = []
+
+        dest_list = []
+
+        rows = cursor.fetchall()
+
+        for row in rows:
+            dest_list.extend(row)
+        print(dest_list)
+
+        connection.close()
+
+        return dest_list
 
 
 

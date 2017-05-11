@@ -163,6 +163,26 @@
         }
     };
 
+    $( function() {
+      $( "#airportinput" ).autocomplete({
+            source: availableairports,
+            minLength: 2,
+            response: function(event,ui)
+              {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("airportinput").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("airportinput").value });
+                  $("#airportinput").val('');
+                  $("#airportinput").focus();
+                };
+              }
+      });
+    });
     </script>
 
   <!-- HTML -->
@@ -184,11 +204,16 @@
               </div>
               <div class='container_12 filter-bar'>
                 <div class='grid_3'> &nbsp </div>
+                <div class='grid_4'> <strong>Airport code</strong> </div>
+                <div class='grid_3'> &nbsp </div>
+                <div class='grid_2'> &nbsp </div>
+
+                <div class='grid_3'> &nbsp </div>
                 <input id="airportinput" class='grid_4' type="text" value="MAD" onFocus='this.value=""'>
                 <input type="button" class="grid_3 button-style" value="draw hub graph" onClick="drawChart()">
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
-              <div class="container_12 ta-c">
+              <div class="grid_12 update_time_container">
                 <span class="text-icon"> Last updated on: </span>
                 <span id="update_time" class=" text-icon"> - </span>
               </div>

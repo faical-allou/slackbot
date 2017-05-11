@@ -10,8 +10,10 @@ import json
 import collections
 import datetime
 import sys
+import math
 from extractdata import *
 from neural import *
+from alexa import *
 import gc
 app = Flask(__name__, static_folder='static')
 
@@ -20,6 +22,8 @@ wsgi_app = app.wsgi_app
 app.config['JSON_AS_ASCII'] = False
 extractdata = extractdata()
 neural_network = neural_network()
+alexa_skill = alexa_skill()
+
 @app.route('/popularity_data/<filtertype>/<city>', methods=['GET'])
 def popularity_data(filtertype,city):
 
@@ -192,7 +196,9 @@ def catchment_data(airport, rangekm, destinationcity):
 
         sum_leakage = sum(row[2] for row in leakage )+1
         home_size = 0
+        sample_size = 1
         for row in leakage:
+            if row[0] == airport : sample_size = float(row[2])
             row[2] = round(row[2]*100/sum_leakage)
             if row[0] == airport : home_size = row[2]
 
@@ -204,9 +210,23 @@ def catchment_data(airport, rangekm, destinationcity):
                 del row[6]
                 del row[5]
 
-        resp = jsonify(catchment=catchment, leakage=leakage, airport_share = airport_share, airport_coord = airport_coord, update = lastupdate, length = [len(catchment), len(leakage)])
+        confidence = 1.96* math.sqrt(airport_share*(1-airport_share)/(sample_size))
+        resp = jsonify(catchment=catchment, leakage=leakage, airport_share = airport_share, airport_coord = airport_coord, update = lastupdate, confidence = confidence, length = [len(catchment), len(leakage)])
+        if peak_catchment == 1 : resp = jsonify(catchment=0, leakage=0, airport_share = 0, airport_coord = 0, update = 0, confidence = 0, length = [0, 0])
 
         return resp
+
+@app.route('/popularity_data_alexa/', methods=['GET', 'POST'])
+def popularity_data_alexa():
+    gc.collect()
+    json_request = request.get_json(force=True, silent=False, cache=True)
+    request_city = json_request['request']['intent']['slots']['origin']['value']
+    print("resquest_city= ", request_city)
+    popular = extractdata.getpopularitytablealexa('o',request_city)
+    print(popular)
+
+    resp = jsonify(alexa_skill.speak_populardestinations(popular))
+    return resp
 
 @app.route('/popularity_view', methods=['GET'])
 def render_pax():

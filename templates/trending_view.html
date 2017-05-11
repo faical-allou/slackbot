@@ -186,6 +186,47 @@
         }
     };
 
+    $( function() {
+      $( "#origin_input" ).autocomplete({
+            source: availablecities,
+            minLength: 2,
+            response: function(event,ui)
+              {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("origin_input").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
+                  $("#origin_input").val('');
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("origin_input").value });
+                  $("#origin_input").focus();
+                };
+              }
+      });
+    });
+
+    $( function() {
+      $( "#destination_input" ).autocomplete({
+            source: availablecities,
+            minLength: 2,
+            response: function(event,ui)
+              {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("destination_input").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("destination_input").value });
+                  $("#destination_input").val('');
+                  $("#destination_input").focus();
+                };
+              }
+      });
+    });
     </script>
 
   <!-- HTML -->
@@ -205,13 +246,20 @@
             <div id="chart_div"></div>
             <div class='container_12 filter-bar'>
               <div class='grid_1'> &nbsp </div>
-              <input id="origin_input" class='grid_3' type="text" value="From city (e.g. LON)" onfocus='if (this.value=="From city (e.g. LON)") {this.value="";}' onchange="filter_origin = this.value;">
-              <input id="destination_input" class='grid_3' type="text" value="To city (e.g. NYC)" onfocus='if (this.value=="To city (e.g. NYC)") {this.value="";}' onchange="filter_destination = this.value;">
+              <div class='grid_3'> <strong>From city</strong> </div>
+              <div class='grid_3'> <strong>To city</strong> </div>
+              <div class='grid_2'> &nbsp </div>
+              <div class='grid_2'> &nbsp </div>
+              <div class='grid_1'> &nbsp </div>
+
+              <div class='grid_1'> &nbsp </div>
+              <input id="origin_input" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
+              <input id="destination_input" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
               <input type="button" class="grid_2 button-style" value="add" onClick="addToChart(undefined,undefined)">
               <input type="button" class="grid_2 button-style" value="reset" onClick="drawChart(undefined,undefined)">
               <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
             </div>
-            <div class="container_12 ta-c">
+            <div class="grid_12 update_time_container">
               <span class="text-icon"> Last updated on: </span>
               <span id="update_time" class=" text-icon"> - </span>
             </div>

@@ -104,6 +104,27 @@
         }
     };
 
+    $( function() {
+      $( "#origin_input" ).autocomplete({
+            source: availablecities,
+            minLength: 2,
+            response: function(event,ui)
+              {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("origin_input").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("origin_input").value });
+                  $("#origin_input").val('');
+                  $("#origin_input").focus();
+                };
+              }
+      });
+    });
+
     </script>
 
   <!-- HTML -->
@@ -122,11 +143,15 @@
                  <div id="chart_div" class="zlow"></div>
                  <div class='container_12 filter-bar'>
                    <div class='grid_4'> &nbsp </div>
-                   <input id="origin_input" class='grid_4' type="text" value="Filter origin city (e.g. TYO)" onfocus='if (this.value=="Filter origin city (e.g. TYO)") {this.value="";}' onchange="filter_origin = this.value;">
+                   <div class='grid_4'> <strong>Origin city</strong> </div>
+                   <div class='grid_4'> &nbsp </div>
+
+                   <div class='grid_4'> &nbsp </div>
+                   <input id="origin_input" class='grid_4' type="text" value="IATA city code (e.g. TYO)" onfocus='if (this.value=="IATA city code (e.g. TYO)") {this.value="";}' oninput="this.value=this.value.toUpperCase()" onchange="filter_origin = this.value;">
                    <input type="button" class="grid_2 button-style" value="check" onClick="drawChart('o',undefined)">
                    <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
                  </div>
-              <div class="container_12 ta-c">
+              <div class="grid_12 update_time_container">
                 <span class=" text-icon "> Last updated on: </span>
                 <span id="update_time" class=" text-icon"> - </span>
               </div>

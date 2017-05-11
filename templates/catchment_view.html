@@ -57,11 +57,12 @@
             document.getElementById("update_time").innerHTML = update_time.toDateString();
             if (data_to_display.airport_share > 0) {
               var recapture = Math.round(100/data_to_display.airport_share)-100;
-              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+ "</strong> serves <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> of the traffic from the catchment <strong>("+window.rangekm+"km around the airport)</strong> going to <strong>"+window.destinationcity+"</strong> <br/>With better service such as non-stop, frequency etc... the traffic could grow <strong>"+ recapture+"%</strong>"
+              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+ "</strong> serves <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> of the traffic from the catchment <strong>("+window.rangekm+"km </strong>around the airport) going to <strong>"+window.destinationcity+"</strong> <br/>"
+              +"With better service such as non-stop, frequency etc... the traffic could grow <strong>"+ recapture+"%</strong></br>"
+              +"<span class='fs-14'>Note: given the sample size the confidence interval for the share of "+window.originairport+" is +-"+ Math.round(data_to_display.confidence*100) +"%</span>"
             } else {
-              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+" is not in the TOP 10 airports</strong> from this catchment area to go to <strong>"+window.destinationcity+"</strong>."
+              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+" is not in the TOP 5 airports</strong> for this catchment area to go to <strong>"+window.destinationcity+"</strong>."
             };
-
             if (data_to_display.length[0] >= 1 && data_to_display.length[1] >= 1) {
               // Create the data table.
               data_formatted = new google.visualization.DataTable();
@@ -196,6 +197,48 @@
             drawChart();
         }
     };
+
+    $( function() {
+      $( "#originairportinput" ).autocomplete({
+            source: availableairports,
+            minLength: 2,
+            response: function(event,ui)
+              {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("originairportinput").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("originairportinput").value });
+                  $("#originairportinput").val('');
+                  $("#originairportinput").focus();
+                };
+              }
+      });
+    });
+
+    $( function() {
+      $( "#destinationcityinput" ).autocomplete({
+            source: availablecities,
+            minLength: 2,
+            response: function(event,ui)
+              {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("destinationcityinput").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("destinationcityinput").value });
+                  $("#destinationcityinput").val('');
+                  $("#destinationcityinput").focus();
+                };
+              }
+      });
+    });
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk" async defer></script>
 
@@ -215,13 +258,18 @@
                 <!--Divs that will hold each control and chart-->
                 <div id="chart_div" class='grid_8'></div>
                 <div id="chart2_div" class='grid_4'></div>
-                <div id="text_recapture" class='grid_12 pt-30'></div>
+                <div id="text_recapture" class='grid_12 pt-30 ta-l'></div>
 
               </div>
               <div class='container_12 filter-bar'>
-                <input id="originairportinput" class='grid_2' type="text" value="airport code" onFocus='this.value=""'>
-                <input id="rangekminput" class='grid_2' type="text" value="distance (km)" onFocus='this.value=""'>
-                <input id="destinationcityinput" class='grid_2' type="text" value="dest. city code" onFocus='this.value=""'>
+                <div class='grid_2'> <strong>Airport</strong> </div>
+                <div class='grid_2'> <strong>Distance</strong> </div>
+                <div class='grid_2'> <strong>Dest. city</strong> </div>
+                <div class='grid_6'> &nbsp </div>
+
+                <input id="originairportinput" class='grid_2' type="text" value="Airport code" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
+                <input id="rangekminput" class='grid_2' type="text" value="in (km)" onFocus='this.value=""'>
+                <input id="destinationcityinput" class='grid_2' type="text" value="City code" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
 
                 <input type="button" class="grid_2 button-style" value="check" onClick="drawChart()">
                 <input type="button" class="grid_2 button-style" value="download" onClick="print()">
@@ -229,13 +277,12 @@
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
 
-
-
-              <div class="container_12 ta-c">
+              <div class="grid_12 update_time_container">
                 <span class="text-icon"> Last updated on: </span>
                 <span id="update_time" class=" text-icon"> - </span>
               </div>
             </div>
+
         </div>
         <div class="container_12 info-section">
           <div class="dib">
