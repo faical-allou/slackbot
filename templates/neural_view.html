@@ -28,7 +28,7 @@
       test = Number(scor1.value) +Number(scor2.value) +Number(scor3.value) +Number(scor4.value) +Number(scor5.value) + Number(scor6.value);
 
       if (isNaN(test) || test == 0 || test >= 6 ) {
-        swal({title: "Sorry",  text: "You should train on a combination of good (1) and bad (0) routes",  type: "error",  confirmButtonText: "OK"});
+        swal({title: "Sorry",  text: "You should train on a combination of good (1) and bad (0) routes", html:true,  type: "error",  confirmButtonText: "OK"});
         mixpanel.track("Error pop up", {"Page":viewpage, "Step":"training form: "+test});
       } else {
 
@@ -96,7 +96,7 @@
             chartclass.draw(chartdata, chartoptions);
             $('#chart_wrapper').show();
           } else {
-                  swal({title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering an IATA <span class='swal-highlight'>city codes</span>?",  type: "error",  confirmButtonText: "OK"});
+                  swal({title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering an IATA <span class='swal-highlight'>city codes</span>?", html:true,  type: "error",  confirmButtonText: "OK"});
                   mixpanel.track("Error pop up", {"Page":viewpage, "Step":"Predict", "URL": url_to_post});
                 };
           },
@@ -115,43 +115,37 @@
           <div class="title"> Machine Learning </div>
           <div class="title2"> First train it on routes we know well ....</div>
           <!--Div that will hold the dashboard-->
-          <div id="form_wrapper" >
+
             <div class='container_12 filter-bar'>
               <input id="orig1" class='grid_3' type="text" value="From city (e.g. RIO)" onfocus='if (this.value=="From city (e.g. RIO)") {this.value="";}'>
               <input id="dest1" class='grid_3' type="text" value="To city (e.g. SAO)" onfocus='if (this.value=="To city (e.g. SAO)") {this.value="";}'>
               <input id="scor1" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
-            </div>
-
-            <div class='container_12 filter-bar'>
+              <div class='grid_3'> &nbsp </div>
+              <div class='grid_3'> &nbsp </div>
               <div class='grid_3'> &nbsp </div>
               <input id="dest2" class='grid_3' type="text" value="To city (e.g. BUE)" onfocus='if (this.value=="To city (e.g. BUE)") {this.value="";}'>
               <input id="scor2" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
-            </div>
-
-            <div class='container_12 filter-bar'>
+              <div class='grid_3'> &nbsp </div>
+              <div class='grid_3'> &nbsp </div>
               <div class='grid_3'> &nbsp </div>
               <input id="dest3" class='grid_3' type="text" value="To city (e.g. BHZ)" onfocus='if (this.value=="To city (e.g. BHZ)") {this.value="";}'>
               <input id="scor3" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
-            </div>
-
-            <div class='container_12 filter-bar'>
+              <div class='grid_3'> &nbsp </div>
+              <div class='grid_3'> &nbsp </div>
               <div class='grid_3'> &nbsp </div>
               <input id="dest4" class='grid_3' type="text" value="To city (e.g. BSB)" onfocus='if (this.value=="To city (e.g. BSB)") {this.value="";}'>
               <input id="scor4" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
-            </div>
-
-            <div class='container_12 filter-bar'>
+              <div class='grid_3'> &nbsp </div>
+              <div class='grid_3'> &nbsp </div>
               <div class='grid_3'> &nbsp </div>
               <input id="dest5" class='grid_3' type="text" value="To city (e.g. MIA)" onfocus='if (this.value=="To city (e.g. MIA)") {this.value="";}'>
               <input id="scor5" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
-            </div>
-
-            <div class='container_12 filter-bar'>
+              <div class='grid_3'> &nbsp </div>
+              <div class='grid_3'> &nbsp </div>
               <div class='grid_3'> &nbsp </div>
               <input id="dest6" class='grid_3' type="text" value="To city (e.g. BOG)" onfocus='if (this.value=="To city (e.g. BOG)") {this.value="";}'>
               <input id="scor6" type="text" class="grid_3" value="good route? (1/0)" onfocus="this.value = 1">
             </div>
-
             <div class='container_12 filter-bar'>
               <div class='grid_5'> &nbsp </div>
               <input id="train_button" type="button" class="grid_2 button-style" value="train it" onClick="train_network()">
@@ -183,7 +177,6 @@
                 </div>
               </div>
             </div>
-          </div>
         </div>
         <div class="container_12 info-section">
           <div class="dib">
