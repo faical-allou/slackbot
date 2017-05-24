@@ -82,7 +82,6 @@
                       var url_to_send_to = "../trending_view?origincity="+city+"&destinationcity="+value
                       mixpanel.track("Clickthrough", {"From_page":viewpage, "To_page": url_to_send_to});
                       window.open(url_to_send_to);
-
                     }
                   });
                 },1000);

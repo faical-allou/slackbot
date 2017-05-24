@@ -394,6 +394,12 @@ class extractdata:
         z = []
         y = []
 
+        lastupdate = extractdata.getlasttimeupdate(self,'ptbexits_popular')
+        lastupdate_date = datetime.datetime.strptime(lastupdate, '%Y-%m-%d')
+        earliest_date = datetime.datetime.strptime('2014-02-02', '%Y-%m-%d')
+
+        max_range_data = (lastupdate_date.year - earliest_date.year)*12 + (lastupdate_date.month - earliest_date.month) + 1
+
         for index, rows_to_smooth in enumerate(result):
             mov_avg_row = self.moving_average(np.asarray(rows_to_smooth[1:], dtype=float),12)
             rows_smoothed.append(mov_avg_row)
@@ -401,7 +407,8 @@ class extractdata:
             x=np.arange(0,len(mov_avg_row))
 
             dest = [str(rows_to_smooth[0])]
-            if len(x) >= 28:
+
+            if len(x) == max_range_data-11:
                 z.append(list(np.append(dest,np.polyfit (x,mov_avg_row,1))))
 
 
