@@ -15,7 +15,7 @@
       var filter = document.getElementById("origin_input");
       if (typeof city === "undefined") {
       city = filter.value.toUpperCase();
-      mixpanel.track("Popularity selection", {"Origin": filter.value,});
+      mixpanel.track("Fastest selection", {"Origin": filter.value,});
       };
       // prepare the URL to call
       var url_to_call = './popularity_fastest_data/'+city;
