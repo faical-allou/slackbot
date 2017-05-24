@@ -73,16 +73,31 @@
 
                 // Draw the chart
                 myChart.draw();
-              } else {
+                setTimeout(function(){
+                  console.log(myChart.getChart());
+                  google.visualization.events.addListener(myChart.getChart(), 'select', function() {
+                    var selectedItem = myChart.getChart().getSelection()[0];
+                    if (selectedItem) {
+                      var value = data_formatted.getValue(selectedItem.row, 0);
+                      var url_to_send_to = "../trending_view?origincity="+city+"&destinationcity="+value
+                      mixpanel.track("Clickthrough", {"From_page":viewpage, "To_page": url_to_send_to});
+                      window.open(url_to_send_to);
+
+                    }
+                  });
+                },1000);
+
+                } else {
                       swal({title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering an IATA <span class='swal-highlight'>city code</span>?", html:true, type: "error",  confirmButtonText: "OK"});
                       mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
-                    }
+                    };
           // closing the success clause of the AJAX call
           },
           complete: function(){
             $('#loading_image').hide();
             $('#loading_extra').hide();
             $('#dashboard_wrapper').show();
+
           },
           error: function (request, status, error) {
             console.log(error);
