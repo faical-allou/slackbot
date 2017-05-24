@@ -228,6 +228,16 @@ def popularity_data_alexa():
     resp = jsonify(alexa_skill.speak_populardestinations(popular))
     return resp
 
+@app.route('/popularity_fastest_data/<city>', methods=['GET'])
+def popularity_fastest_data(city):
+    gc.collect()
+
+    fastest = extractdata.getfastestgrowing(city)
+    lastupdate = extractdata.getlasttimeupdate('ptbexits_popular')
+
+    resp = jsonify(data=fastest, length=len(fastest))
+    return resp
+
 @app.route('/popularity_view', methods=['GET'])
 def render_pax():
     #Renders the passenger chart page
@@ -267,6 +277,12 @@ def render_extract():
 def render_catchment():
     #Renders the passenger chart page
         return render_template("catchment_view.html", title="What are they searching for" )
+
+@app.route('/fastestgrowing_view', methods=['GET'])
+def render_fastest():
+    #Renders the passenger chart page
+        return render_template("fastestgrowing_view.html", title="What are they searching for" )
+
 
 @app.route('/')
 def render_home():

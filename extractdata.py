@@ -2,6 +2,7 @@ import psycopg2
 import simplejson
 import collections
 import datetime
+import numpy as np
 
 class extractdata:
     def getconnection(self):
@@ -356,6 +357,73 @@ class extractdata:
 
         return dest_list
 
+    def moving_average(self,a, n=3) :
+        ret = np.cumsum(a, dtype=float)
+        ret[n:] = ret[n:] - ret[:-n]
+        return ret[n - 1:] / n
+
+    def getfastestgrowing(self, city):
+        connection = self.getconnection()
+        cursor = connection.cursor()
+        query = "SELECT * FROM ptbsearches_trending \
+            WHERE  origincitycode = '"+city+"' \
+            ORDER BY destinationcitycode, search_month ASC"
+
+        cursor.execute(query)
+
+        rows = cursor.fetchall()
+
+        rows_converted = np.asarray(rows)
+        save_dest = rows_converted[0][1]
+        result = [[save_dest]]
+
+        i = 0
+        j = 0
+        for res in rows_converted:
+            if res[1] == save_dest:
+                result[i].append(res[4])
+            else:
+                save_dest = res[1]
+                result.append([])
+                i = i+1
+                result[i].append(res[1])
+                result[i].append(res[4])
+
+        rows_smoothed = []
+        x = []
+        z = []
+        y = []
+
+        for index, rows_to_smooth in enumerate(result):
+            mov_avg_row = self.moving_average(np.asarray(rows_to_smooth[1:], dtype=float),12)
+            rows_smoothed.append(mov_avg_row)
+
+            x=np.arange(0,len(mov_avg_row))
+
+            dest = [str(rows_to_smooth[0])]
+            if len(x) >= 28:
+                z.append(list(np.append(dest,np.polyfit (x,mov_avg_row,1))))
+
+
+        for t in z:
+            y.append( [t[0], t[1].astype(float), t[2].astype(float)] )
+
+        y.sort(key=lambda k: (k[1]), reverse=False)
+
+
+        rows = ('a', 1,1)
+        rowarray_list = []
+        i=0
+        # Convert query to row arrays
+        for row in y:
+            i=i+1
+            if i <=10 and  row[1] < 0:
+                rows_to_convert = (row[0], -row[1], row[2])
+                t = list(rows_to_convert)
+                rowarray_list.append(t)
+
+        j = simplejson.dumps(rowarray_list)
+        return rowarray_list
 
 
 def __init__(self):
