@@ -216,6 +216,16 @@ def catchment_data(airport, rangekm, destinationcity):
 
         return resp
 
+@app.route('/popularity_fastest_data/<city>', methods=['GET'])
+def popularity_fastest_data(city):
+    gc.collect()
+
+    fastest = extractdata.getfastestgrowing(city)
+    lastupdate = extractdata.getlasttimeupdate('ptbexits_popular')
+
+    resp = jsonify(data=fastest, update = lastupdate, length=len(fastest))
+    return resp
+    
 @app.route('/popularity_data_alexa/', methods=['GET', 'POST'])
 def popularity_data_alexa():
     gc.collect()
@@ -228,15 +238,6 @@ def popularity_data_alexa():
     resp = jsonify(alexa_skill.speak_populardestinations(popular))
     return resp
 
-@app.route('/popularity_fastest_data/<city>', methods=['GET'])
-def popularity_fastest_data(city):
-    gc.collect()
-
-    fastest = extractdata.getfastestgrowing(city)
-    lastupdate = extractdata.getlasttimeupdate('ptbexits_popular')
-
-    resp = jsonify(data=fastest, length=len(fastest))
-    return resp
 
 @app.route('/popularity_view', methods=['GET'])
 def render_pax():
