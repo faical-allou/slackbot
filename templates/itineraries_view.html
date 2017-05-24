@@ -21,8 +21,9 @@
       function draw_map() {
         $('#loading_extra').show();
 
-        var filter = document.getElementById("ODinput");
-        var od = filter.value.toUpperCase();
+        var filter = document.getElementById("origin_input").value+'-'+document.getElementById("destination_input").value;
+        var od = filter;
+        console.log(filter);
         mixpanel.track("Itinerary selection", {"O&D": od,});
 
         var origin = od.substring(0,3);
@@ -176,12 +177,53 @@
             }
         });
     }
-  );
+    );
     document.onkeypress = function (e) {
         if (e.keyCode == 13) {
             draw_map();
         }
     };
+    $( function() {
+      $( "#origin_input" ).autocomplete({
+            source: availablecities,
+            minLength: 2,
+            response: function(event,ui)
+              {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("origin_input").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
+                  $("#origin_input").val('');
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("origin_input").value });
+                  $("#origin_input").focus();
+                };
+              }
+      });
+    });
+
+    $( function() {
+      $( "#destination_input" ).autocomplete({
+            source: availablecities,
+            minLength: 2,
+            response: function(event,ui)
+              {
+                if(ui.content.length==1)
+                {
+                  document.getElementById("destination_input").value=ui.content[0].value;
+                  ui.item = ui.content[0].value;
+                };
+                if(ui.content.length==0)
+                {
+                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("destination_input").value });
+                  $("#destination_input").val('');
+                  $("#destination_input").focus();
+                };
+              }
+      });
+    });
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk&callback=initMap" async defer></script>
 
@@ -201,13 +243,15 @@
            <div id="map_wrapper">
               <div id="map" class="mb-30"></div>
               <div class='container_12 filter-bar'>
-                <div class='grid_2'> &nbsp </div>
-                <div class='grid_4'> Origin-Destination (O&D) </div>
-                <div class='grid_6'> &nbsp </div>
+                <div class='grid_1'> &nbsp </div>
+                <div class='grid_3'> Origin </div>
+                <div class='grid_3'> Destination </div>
+                <div class='grid_5'> &nbsp </div>
 
-                <div class='grid_2'> &nbsp </div>
-                <input id="ODinput" class='grid_4' type="text" value="AAA-BBB city codes" oninput='this.value=this.value.toUpperCase()' onfocus='if (this.value=="AAA-BBB city codes") {this.value="";}'>
-                <input type="button" class="grid_3 button-style" value="draw itineraries" onClick="draw_map()">
+                <div class='grid_1'> &nbsp </div>
+                <input id="origin_input" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
+                <input id="destination_input" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
+                <input type="button" class="grid_2 button-style" value="draw" onClick="draw_map()">
                 <input type="button" class="grid_2 button-style mb-10" value="clear" onClick="initMap()">
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
@@ -225,8 +269,7 @@
              <div class="grid_10">
                  <span>
                    Our Connections map visually plots how people get from A to B and where they might stop over on the way.
-                   Airline planners need to know the stop-off points that comprise
-                   the journey so they can think about ways to improve the route offering based on demand.
+                   Airline planners need to know the stop over to think about ways to improve the route offering.
                  </span>
              </div>
            </div>
