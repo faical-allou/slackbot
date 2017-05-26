@@ -163,26 +163,8 @@
         }
     };
 
-    $( function() {
-      $( "#airportinput" ).autocomplete({
-            source: availableairports,
-            minLength: 2,
-            response: function(event,ui)
-              {
-                if(ui.content.length==1)
-                {
-                  document.getElementById("airportinput").value=ui.content[0].value;
-                  ui.item = ui.content[0].value;
-                };
-                if(ui.content.length==0)
-                {swal(document.getElementById("airportinput").value+" is not a valid AIRPORT code");
-                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("airportinput").value });
-                  $("#airportinput").val('');
-                  $("#airportinput").focus();
-                };
-              }
-      });
-    });
+  autoSuggestInput("airportinput", "airport");
+
     </script>
 
   <!-- HTML -->

@@ -198,47 +198,9 @@
         }
     };
 
-    $( function() {
-      $( "#originairportinput" ).autocomplete({
-            source: availableairports,
-            minLength: 2,
-            response: function(event,ui)
-              {
-                if(ui.content.length==1)
-                {
-                  document.getElementById("originairportinput").value=ui.content[0].value;
-                  ui.item = ui.content[0].value;
-                };
-                if(ui.content.length==0)
-                { swal(document.getElementById("originairportinput").value+" is not a valid AIRPORT code");
-                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("originairportinput").value });
-                  $("#originairportinput").val('');
-                  $("#originairportinput").focus();
-                };
-              }
-      });
-    });
+    autoSuggestInput("originairportinput", "airport");
+    autoSuggestInput("destinationcityinput", "city");
 
-    $( function() {
-      $( "#destinationcityinput" ).autocomplete({
-            source: availablecities,
-            minLength: 2,
-            response: function(event,ui)
-              {
-                if(ui.content.length==1)
-                {
-                  document.getElementById("destinationcityinput").value=ui.content[0].value;
-                  ui.item = ui.content[0].value;
-                };
-                if(ui.content.length==0)
-                {  swal(document.getElementById("destinationcityinput").value+" is not a valid CITY code");
-                  mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("destinationcityinput").value });
-                  $("#destinationcityinput").val('');
-                  $("#destinationcityinput").focus();
-                };
-              }
-      });
-    });
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk" async defer></script>
 
