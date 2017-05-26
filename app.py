@@ -45,17 +45,7 @@ def airservice():
 @app.route('/itineraries_data/<fromcity>/<tocity>', methods=['GET'])
 def itineraries_data(fromcity, tocity):
     itin = extractdata.getitintable(fromcity, tocity)
-
     lastupdate = extractdata.getlasttimeupdate('ptbexits_itineraries')
-    #Converting to float and normalize the table (adding 1 to the sum to return 0 when empty)
-    if len(itin) == 0:
-        max_itin = 1
-    else:
-        max_itin = max(row[14] for row in itin)+1
-
-    for k in range(0,len(itin)):
-        itin[k][14] = max(itin[k][14]*3/max_itin,1)
-
     resp = jsonify(data=itin, update = lastupdate, length = len(itin))
 
     return resp

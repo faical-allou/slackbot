@@ -81,7 +81,10 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT concat(originairport, destinationairport,  carriercode, weekday_mon_1), originairport, destinationairport,  carriercode, weekday_mon_1, to_char(first_exit, 'YYYY-MM-DD'), to_char(first_flight, 'YYYY-MM-DD'), to_char(last_flight, 'YYYY-MM-DD')  FROM ptbexits_airservice \
+        query = "SELECT concat(originairport, destinationairport,  carriercode, weekday_mon_1), \
+        originairport, destinationairport,  carriercode, weekday_mon_1, to_char(first_exit, 'YYYY-MM-DD'), \
+        to_char(first_flight, 'YYYY-MM-DD'), to_char(last_flight, 'YYYY-MM-DD')  \
+        FROM ptbexits_airservice \
         ORDER BY first_exit DESC LIMIT 100000"
         cursor.execute(query)
 
@@ -110,7 +113,9 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT * FROM ptbexits_itineraries WHERE origincitycode ='" + fromcity + "' AND destinationcitycode ='" + tocity + "' ORDER BY sum_seats DESC"
+        query = "SELECT * FROM ptbexits_itineraries \
+        WHERE origincitycode ='" + fromcity + "' AND destinationcitycode ='" + tocity + "' \
+        ORDER BY sum_seats DESC"
 
         cursor.execute(query)
 
@@ -127,8 +132,16 @@ class extractdata:
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
-        j = simplejson.dumps(rowarray_list)
         connection.close()
+        #Converting to float and normalize the table (adding 1 to the sum to return 0 when empty)
+        if len(rowarray_list) == 0:
+            max_itin = 1
+        else:
+            max_itin = max(row[14] for row in rowarray_list)+1
+
+        for k in range(0,len(rowarray_list)):
+            rowarray_list[k][14] = max(rowarray_list[k][14]*3/max_itin,1)
+
         return rowarray_list
 
     def getairporttable(self,airport):
