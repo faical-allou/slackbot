@@ -166,10 +166,66 @@ class extractdata:
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
-        j = simplejson.dumps(rowarray_list)
-
         connection.close()
-        return rowarray_list
+        hub = [['id','ap','time',0,0,0,0]]
+        if len(rowarray_list) > 0 :
+            #Converting to float normalize the table (adding 1 to the sum to return 0 when empty)
+            # and formatting for easy consumption by the chart
+            # getting the list of airports to consider, the final table is based on airport
+            transpose = list(zip(*rowarray_list))
+            transposelist = list(transpose[0])
+            transposelist1 = list(transpose[1])
+            transposelist.extend(transposelist1)
+            airport_list = list(set(transposelist))
+            airport_list.remove('xxx')
+
+            # getting size of the large table from the database to iterate on
+            airport_size = len(rowarray_list)
+
+            # initializing the hub table that wil be returned with first column as ID AIrport/timeofday
+            # also building an index table to retrieve the right row to fill in when iterating later
+            hub_col0 = [0]
+
+            for i in range(0,len(airport_list)):
+                for j in range(0,24):
+                    hub.append([airport_list[i] + str(j).zfill(2), airport_list[i], str(j).zfill(2),0,0,0,0])
+                    hub_col0.append(airport_list[i] + str(j).zfill(2))
+
+            # filling the hub table by iterating on the airport table
+            for k in range(0,airport_size-1):
+
+                # hub table structure is ID/airport/timeofday/paxlocalarrival/paxlocaldeparture/paxconnectarrival/paxconnectdeparture
+                # when it is a departure we switch one column to the left and we use negative number
+                departureflag = 0
+
+                if rowarray_list[k][0] == 'xxx' :
+                    airport_to_fill = rowarray_list[k][1]
+                else:
+                    airport_to_fill = rowarray_list[k][0]
+                    rowarray_list[k][4] = -1*rowarray_list[k][4]
+                    departureflag = 1
+
+                #reading from hub_col0 to find the row to fill in the hub table
+                index0 = hub_col0.index(airport_to_fill + rowarray_list[k][2])
+
+                if 'local' in rowarray_list[k][3]:
+                    hub[index0][3+departureflag] = hub[index0][3+departureflag] + float(rowarray_list[k][4])
+                else: hub[index0][5+departureflag] = hub[index0][5+departureflag] + float(rowarray_list[k][4])
+
+            # removing the first row (empty)
+            hub.pop(0)
+
+            peak_arrival = max(hub[k][3]+hub[k][5] for k in range (0, 24) )
+            peak_departure = max(-hub[k][4]-hub[k][6] for k in range (0, 24) )
+            peak_activity = max(peak_departure, peak_arrival)
+
+            for k in range (0, 24):
+                hub[k][3] = round(hub[k][3]*100 / peak_activity)
+                hub[k][4] = round(hub[k][4]*100 / peak_activity)
+                hub[k][5] = round(hub[k][5]*100 / peak_activity)
+                hub[k][6] = round(hub[k][6]*100 / peak_activity)
+        resp = (hub, len(rowarray_list))
+        return resp
 
     def gettrendingtable(self,cityfrom, cityto):
 
