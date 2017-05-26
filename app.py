@@ -83,7 +83,6 @@ def trainednetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
         lastupdate = extractdata.getlasttimeupdate('ptbexits_neural')
         resp = jsonify(syn0=neural[0], syn1=neural[1], normalizer=neural[2], end_result= neural[3],update = lastupdate, length = len(neural), validity = neural[4])
 
-
         return resp
 
 @app.route('/neural_predict/<in1>/', methods=['GET', 'POST'])
@@ -107,29 +106,8 @@ def catchment_data(airport, rangekm, destinationcity):
         leakage = extractdata.getleakage(airport, rangekm, destinationcity)
         lastupdate = extractdata.getlasttimeupdate('ptbexits_leakage')
 
-        peak_catchment = max(row[2] for row in catchment )+1
-        for row in catchment:
-            row[2] = round(row[2]*100/peak_catchment)
-
-        sum_leakage = sum(row[2] for row in leakage )+1
-        home_size = 0
-        sample_size = 1
-        for row in leakage:
-            if row[0] == airport : sample_size = float(row[2])
-            row[2] = round(row[2]*100/sum_leakage)
-            if row[0] == airport : home_size = row[2]
-
-        airport_share = home_size / (sum(row[2] for row in leakage)+1)
-
-        airport_coord = (catchment[0][5], catchment[0][6])
-
-        for row in catchment :
-                del row[6]
-                del row[5]
-
-        confidence = 1.96* math.sqrt(airport_share*(1-airport_share)/(sample_size))
-        resp = jsonify(catchment=catchment, leakage=leakage, airport_share = airport_share, airport_coord = airport_coord, update = lastupdate, confidence = confidence, length = [len(catchment), len(leakage)])
-        if peak_catchment == 1 : resp = jsonify(catchment=0, leakage=0, airport_share = 0, airport_coord = 0, update = 0, confidence = 0, length = [0, 0])
+        resp = jsonify(catchment=catchment[0], leakage=leakage[0], airport_share = leakage[1], airport_coord = catchment[1], update = lastupdate, confidence = leakage[2], length = [len(catchment), len(leakage)])
+        if catchment[2] == 1 : resp = jsonify(catchment=0, leakage=0, airport_share = 0, airport_coord = 0, update = 0, confidence = 0, length = [0, 0])
 
         return resp
 

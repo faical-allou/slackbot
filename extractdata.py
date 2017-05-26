@@ -3,6 +3,7 @@ import simplejson
 import collections
 import datetime
 import numpy as np
+import math
 
 class extractdata:
     def getconnection(self):
@@ -250,8 +251,6 @@ class extractdata:
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
-        j = simplejson.dumps(rowarray_list)
-
         connection.close()
         return rowarray_list
 
@@ -277,8 +276,6 @@ class extractdata:
                 rows_to_convert = (row[0], row[1], row[2], row[3], row[4], row[5])
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
-
-        j = simplejson.dumps(rowarray_list)
 
         if len(rowarray_list) == 0 : rowarray_list.append([0,0,0,0,0,0])
         connection.close()
@@ -338,11 +335,20 @@ class extractdata:
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
-        j = simplejson.dumps(rowarray_list)
-
         if len(rowarray_list) == 0 : rowarray_list.append([0,0,0,0,0,0,0])
         connection.close()
-        return rowarray_list
+        peak_catchment = max(row[2] for row in rowarray_list )+1
+        for row in rowarray_list:
+            row[2] = round(row[2]*100/peak_catchment)
+
+        airport_coord = (rowarray_list[0][5], rowarray_list[0][6])
+
+        for row in rowarray_list :
+                del row[6]
+                del row[5]
+
+        resp = (rowarray_list, airport_coord, peak_catchment)
+        return resp
 
     def getleakage(self, airport, rangekm, destinationcity):
         connection = self.getconnection()
@@ -398,11 +404,22 @@ class extractdata:
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
-        j = simplejson.dumps(rowarray_list)
-
         if len(rowarray_list) == 0 : rowarray_list.append([0,0,0])
         connection.close()
-        return rowarray_list
+
+        sum_leakage = sum(row[2] for row in rowarray_list )+1
+        home_size = 0
+        sample_size = 1
+        for row in rowarray_list:
+            if row[0] == airport : sample_size = float(row[2])
+            row[2] = round(row[2]*100/sum_leakage)
+            if row[0] == airport : home_size = row[2]
+
+        airport_share = home_size / (sum(row[2] for row in rowarray_list)+1)
+
+        confidence = 1.96* math.sqrt(airport_share*(1-airport_share)/(sample_size))
+        resp = (rowarray_list,airport_share, confidence)
+        return resp
 
     def getpopularitytablealexa(self, filtertype, city ):
 
@@ -493,7 +510,6 @@ class extractdata:
 
         y.sort(key=lambda k: (k[1]), reverse=False)
 
-
         rows = ('a', 1,1)
         rowarray_list = []
         i=0
@@ -505,7 +521,6 @@ class extractdata:
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
-        j = simplejson.dumps(rowarray_list)
         return rowarray_list
 
 
