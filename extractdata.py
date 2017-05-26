@@ -12,8 +12,6 @@ class extractdata:
         #conn_string = "host='localhost' port='5432' dbname='postgres' user='postgres' password='satf..'"
         #Define our connection string to heroku basic database
         conn_string = "host='ec2-54-235-125-135.compute-1.amazonaws.com' port='5432' dbname='d4sjjjfm3g35dc' user='swobzoejynjhpk' password='aJS-yO6EBUg6DgzVQSFwp3Ac1v'"
-        #Connection string to redshift
-        #conn_string = "host='travelinsights-redshiftcluster-1vmmqnro7byz7.cbkwytfo7n8s.eu-west-1.redshift.amazonaws.com' port='5439' dbname='b2baggrarch' user='awsuser' password='asnou32mvdoQEsd!!24fgs6yhuU'"
      	#connect
         try:
             conn = psycopg2.connect(conn_string)
@@ -337,12 +335,13 @@ class extractdata:
 
         if len(rowarray_list) == 0 : rowarray_list.append([0,0,0,0,0,0,0])
         connection.close()
+        #normalizing the data
         peak_catchment = max(row[2] for row in rowarray_list )+1
         for row in rowarray_list:
             row[2] = round(row[2]*100/peak_catchment)
 
         airport_coord = (rowarray_list[0][5], rowarray_list[0][6])
-
+        #removing the repeat columns
         for row in rowarray_list :
                 del row[6]
                 del row[5]
@@ -407,6 +406,7 @@ class extractdata:
         if len(rowarray_list) == 0 : rowarray_list.append([0,0,0])
         connection.close()
 
+        #normalize data identify the home airport and its share
         sum_leakage = sum(row[2] for row in rowarray_list )+1
         home_size = 0
         sample_size = 1
@@ -416,7 +416,7 @@ class extractdata:
             if row[0] == airport : home_size = row[2]
 
         airport_share = home_size / (sum(row[2] for row in rowarray_list)+1)
-
+        #calculate the confidence factor for 95% of a sample of unknown size
         confidence = 1.96* math.sqrt(airport_share*(1-airport_share)/(sample_size))
         resp = (rowarray_list,airport_share, confidence)
         return resp
@@ -451,6 +451,7 @@ class extractdata:
         return dest_list
 
     def moving_average(self,a, n=3) :
+        #function is used in the get fastest growing
         ret = np.cumsum(a, dtype=float)
         ret[n:] = ret[n:] - ret[:-n]
         return ret[n - 1:] / n
@@ -487,23 +488,22 @@ class extractdata:
         z = []
         y = []
 
+        #ensure we have enough data points <=> meaning no month where rank went below 200
         lastupdate = extractdata.getlasttimeupdate(self,'ptbexits_popular')
         lastupdate_date = datetime.datetime.strptime(lastupdate, '%Y-%m-%d')
         earliest_date = datetime.datetime.strptime('2014-02-02', '%Y-%m-%d')
 
         max_range_data = (lastupdate_date.year - earliest_date.year)*12 + (lastupdate_date.month - earliest_date.month) + 1
 
+        #we calculate the 12 month rolling average of the rank and measure the slope of the curve
         for index, rows_to_smooth in enumerate(result):
             mov_avg_row = self.moving_average(np.asarray(rows_to_smooth[1:], dtype=float),12)
             rows_smoothed.append(mov_avg_row)
-
             x=np.arange(0,len(mov_avg_row))
-
             dest = [str(rows_to_smooth[0])]
 
             if len(x) == max_range_data-11:
                 z.append(list(np.append(dest,np.polyfit (x,mov_avg_row,1))))
-
 
         for t in z:
             y.append( [t[0], t[1].astype(float), t[2].astype(float)] )
