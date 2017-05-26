@@ -67,6 +67,16 @@ class extractdata:
         j = simplejson.dumps(rowarray_list)
 
         connection.close()
+        #normalize the table (adding 1 to the sum to return 0 when empty)
+        if len(rowarray_list) == 10:
+            max_popular = max(max(row[3] for row in rowarray_list),1)
+        else :
+            max_popular = 99999
+
+        for k in range(0,len(rowarray_list)):
+            rowarray_list[k][3] = round(rowarray_list[k][3]*100/max_popular)
+
+
         return rowarray_list
 
 
