@@ -64,8 +64,6 @@ class extractdata:
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
-        j = simplejson.dumps(rowarray_list)
-
         connection.close()
         #normalize the table (adding 1 to the sum to return 0 when empty)
         if len(rowarray_list) == 10:
@@ -76,10 +74,7 @@ class extractdata:
         for k in range(0,len(rowarray_list)):
             rowarray_list[k][3] = round(rowarray_list[k][3]*100/max_popular)
 
-
         return rowarray_list
-
-
 
     def getnewflightstable(self):
 
@@ -103,9 +98,11 @@ class extractdata:
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
-        j = simplejson.dumps(rowarray_list)
-
         connection.close()
+        # formatting the row label
+        for k in range(0,len(rowarray_list)-1):
+            rowarray_list[k][0] = rowarray_list[k][1] + "-" + rowarray_list[k][2]+ "\n" + " by " + rowarray_list[k][3] + " on "+ rowarray_list[k][4]
+
         return rowarray_list
 
     def getitintable(self,fromcity,tocity):

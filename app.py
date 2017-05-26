@@ -38,10 +38,6 @@ def airservice():
 
     newflights = extractdata.getnewflightstable()
     lastupdate = extractdata.getlasttimeupdate('ptbexits_airservice')
-    # formatting the row label
-    for k in range(0,len(newflights)-1):
-        newflights[k][0] = newflights[k][1] + "-" + newflights[k][2]+ "\n" + " by " + newflights[k][3] + " on "+ newflights[k][4]
-
     resp = jsonify(data=newflights, update = lastupdate, length = len(newflights))
 
     return resp
