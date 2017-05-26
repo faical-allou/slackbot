@@ -195,7 +195,7 @@
                   ui.item = ui.content[0].value;
                 };
                 if(ui.content.length==0)
-                {
+                { swal(document.getElementById("origin_input").value+" is not a valid CITY code");
                   $("#origin_input").val('');
                   mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("origin_input").value });
                   $("#origin_input").focus();
@@ -216,7 +216,7 @@
                   ui.item = ui.content[0].value;
                 };
                 if(ui.content.length==0)
-                {
+                { swal(document.getElementById("destination_input").value+" is not a valid CITY code");
                   mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("destination_input").value });
                   $("#destination_input").val('');
                   $("#destination_input").focus();

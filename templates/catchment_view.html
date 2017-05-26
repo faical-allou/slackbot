@@ -210,7 +210,7 @@
                   ui.item = ui.content[0].value;
                 };
                 if(ui.content.length==0)
-                { alert(document.getElementById("originairportinput").value+" is a city code, please use an airport code");
+                { swal(document.getElementById("originairportinput").value+" is not a valid AIRPORT code");
                   mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("originairportinput").value });
                   $("#originairportinput").val('');
                   $("#originairportinput").focus();
@@ -231,7 +231,7 @@
                   ui.item = ui.content[0].value;
                 };
                 if(ui.content.length==0)
-                {  alert(document.getElementById("destinationcityinput").value+" is an airport code, please use a city code");
+                {  swal(document.getElementById("destinationcityinput").value+" is not a valid CITY code");
                   mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("destinationcityinput").value });
                   $("#destinationcityinput").val('');
                   $("#destinationcityinput").focus();

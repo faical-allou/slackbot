@@ -175,7 +175,7 @@
                   ui.item = ui.content[0].value;
                 };
                 if(ui.content.length==0)
-                {
+                {swal(document.getElementById("airportinput").value+" is not a valid AIRPORT code");
                   mixpanel.track("Error reset field", {"Page":viewpage, "input": document.getElementById("airportinput").value });
                   $("#airportinput").val('');
                   $("#airportinput").focus();
