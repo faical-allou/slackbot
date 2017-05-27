@@ -74,7 +74,7 @@
                 // Draw the chart
                 myChart.draw();
                 setTimeout(function(){
-                  console.log(myChart.getChart());
+
                   google.visualization.events.addListener(myChart.getChart(), 'select', function() {
                     var selectedItem = myChart.getChart().getSelection()[0];
                     if (selectedItem) {
