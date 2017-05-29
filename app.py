@@ -106,7 +106,7 @@ def catchment_data(airport, rangekm, destinationcity):
         leakage = extractdata.getleakage(airport, rangekm, destinationcity)
         lastupdate = extractdata.getlasttimeupdate('ptbexits_leakage')
 
-        resp = jsonify(catchment=catchment[0], leakage=leakage[0], airport_share = leakage[1], airport_coord = catchment[1], update = lastupdate, confidence = leakage[2], length = [len(catchment), len(leakage)])
+        resp = jsonify(catchment=catchment[0], leakage=leakage[0], airport_share = leakage[1], airport_coord = catchment[1], update = lastupdate, confidence = leakage[2], length = [len(catchment[0]), len(leakage[0])])
         if catchment[2] == 1 : resp = jsonify(catchment=0, leakage=0, airport_share = 0, airport_coord = 0, update = 0, confidence = 0, length = [0, 0])
 
         return resp
