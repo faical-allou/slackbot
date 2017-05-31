@@ -8,8 +8,6 @@ import math
 class extractdata:
     def getconnection(self):
 
-        #Define our connection string to localhost
-        #conn_string = "host='localhost' port='5432' dbname='postgres' user='postgres' password='satf..'"
         #Define our connection string to heroku basic database
         conn_string = "host='ec2-54-235-125-135.compute-1.amazonaws.com' port='5432' dbname='d4sjjjfm3g35dc' user='swobzoejynjhpk' password='aJS-yO6EBUg6DgzVQSFwp3Ac1v'"
      	#connect
@@ -279,14 +277,16 @@ class extractdata:
         connection.close()
         return rowarray_list[0]
 
-    def getcatchment(self, airport, rangekm, destinationcity):
+    def getcatchment(self, airport, rangekm, destinationcity, crossborder):
         connection = self.getconnection()
         cursor = connection.cursor()
+        crossbordercondition = ""
+        if crossborder != 'Y': crossbordercondition = "and airport_country = usercountry"
 
         query = "SELECT usercountry, usercity, sum(sum_seats) as sum_seats, city_latitude, city_longitude, airport_lat, airport_long\
                 from (\
                     SELECT usercountry, usercity, originairport, destinationcitycode, catchment.latitude as city_latitude, catchment.longitude as city_longitude, airport_lat, airport_long, \
-                    iata1.latitude,iata1.longitude, ground_transport, \
+                    iata1.latitude,iata1.longitude, ground_transport,airport_country, \
                     acos((cos(radians( catchment.latitude )) * cos(radians( iata1.latitude )) * cos(radians( iata1.longitude ) - radians( airport_long )) \
                      + sin(radians( catchment.latitude )) * sin(radians( iata1.latitude ))))*6300 as distance_alternate,  \
                     acos((cos(radians(airport_lat )) * cos(radians(  iata2.latitude )) * cos(radians( airport_long ) - radians( iata2.longitude )) \
@@ -302,19 +302,24 @@ class extractdata:
                         from citypopandlocations \
                         CROSS JOIN \
                           (\
-                          SELECT airport, latitude as airport_lat, longitude as airport_long \
+                          SELECT airport, countrycode as airport_country, latitude as airport_lat, longitude as airport_long \
                           FROM iatatogeo iata0\
                           WHERE airport = '"+airport+"'\
                           ) as airport_coord \
                        ) as interim_table\
                       where ground_transport < "+rangekm+"\
                       ) as catchment \
-                    JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
+                    JOIN ptbexits_leakage on (usercity = accentcity and usercountry = airport_country) \
                     JOIN iatatogeo iata1 on (originairport = iata1.airport)\
                     JOIN iatatogeo iata2 on (destinationcitycode = iata2.airport)\
-                    GROUP BY usercountry, usercity, originairport, destinationcitycode, catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, iata1.latitude,iata1.longitude , ground_transport, distance_od, distance_newod \
+                    GROUP BY usercountry, usercity, originairport, destinationcitycode, \
+                    catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, \
+                    iata1.latitude,iata1.longitude , ground_transport, distance_od, distance_newod,airport_country \
                     ) as fulltable\
-                WHERE destinationcitycode = '"+destinationcity+"' and originairport is not NULL and distance_alternate < distance_od/3 and distance_newod + distance_alternate < 1.5*distance_od\
+                WHERE destinationcitycode = '"+destinationcity+"' and \
+                originairport is not NULL and distance_alternate < distance_od/3 \
+                and distance_newod + distance_alternate < 1.5*distance_od\
+                "+ crossbordercondition +"\
                 GROUP BY usercountry, usercity, city_latitude, city_longitude, airport_lat, airport_long \
                 ORDER BY sum_seats DESC\
                 LIMIT 50"
@@ -349,14 +354,16 @@ class extractdata:
         resp = (rowarray_list, airport_coord, peak_catchment)
         return resp
 
-    def getleakage(self, airport, rangekm, destinationcity):
+    def getleakage(self, airport, rangekm, destinationcity, crossborder):
         connection = self.getconnection()
         cursor = connection.cursor()
+        crossbordercondition = ""
+        if crossborder != 'Y': crossbordercondition = "and airport_country = usercountry"
 
         query = "SELECT originairport, destinationcitycode, sum(sum_seats) as sum_seats\
                 from (\
-                    SELECT usercountry, usercity, originairport, destinationcitycode, catchment.latitude as city_latitude, catchment.longitude as city_longitude, airport_lat, airport_long, \
-                    iata1.latitude,iata1.longitude, ground_transport, \
+                    SELECT usercountry, usercity, originairport, destinationcitycode, catchment.latitude as city_latitude, catchment.longitude as city_longitude, airport_lat, airport_long,\
+                    iata1.latitude,iata1.longitude, ground_transport,airport_country, \
                     acos((cos(radians( catchment.latitude )) * cos(radians( iata1.latitude )) * cos(radians( iata1.longitude ) - radians( airport_long )) \
                      + sin(radians( catchment.latitude )) * sin(radians( iata1.latitude ))))*6300 as distance_alternate,  \
                     acos((cos(radians(airport_lat )) * cos(radians(  iata2.latitude )) * cos(radians( airport_long ) - radians( iata2.longitude )) \
@@ -372,19 +379,24 @@ class extractdata:
                         from citypopandlocations \
                         CROSS JOIN \
                           (\
-                          SELECT airport, latitude as airport_lat, longitude as airport_long \
+                          SELECT airport, countrycode as airport_country, latitude as airport_lat, longitude as airport_long \
                           FROM iatatogeo iata0\
                           WHERE airport = '"+airport+"'\
                           ) as airport_coord \
                        ) as interim_table\
                       where ground_transport < "+rangekm+"\
                       ) as catchment \
-                    JOIN ptbexits_leakage on (usercity = accentcity and usercountry = countrycode) \
+                    JOIN ptbexits_leakage on (usercity = accentcity and usercountry = airport_country) \
                     JOIN iatatogeo iata1 on (originairport = iata1.airport)\
                     JOIN iatatogeo iata2 on (destinationcitycode = iata2.airport)\
-                    GROUP BY usercountry, usercity, originairport, destinationcitycode, catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, iata1.latitude,iata1.longitude , ground_transport, distance_od, distance_newod \
+                    GROUP BY usercountry, usercity, originairport, destinationcitycode, \
+                    catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, \
+                    iata1.latitude,iata1.longitude , ground_transport, distance_od, distance_newod,airport_country \
                     ) as fulltable\
-                WHERE destinationcitycode = '"+destinationcity+"' and originairport is not NULL and distance_alternate < distance_od/3 and distance_newod + distance_alternate < 1.2*distance_od\
+                WHERE destinationcitycode = '"+destinationcity+"' \
+                and originairport is not NULL and distance_alternate < distance_od/3 \
+                and distance_newod + distance_alternate < 1.2*distance_od\
+                "+ crossbordercondition +"\
                 GROUP BY originairport, destinationcitycode\
                 ORDER BY sum_seats DESC\
                 LIMIT 5"

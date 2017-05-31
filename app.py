@@ -100,10 +100,10 @@ def predict_od(in1):
         return resp
 
 
-@app.route('/catchment_data/<airport>/<rangekm>/<destinationcity>', methods=['GET'])
-def catchment_data(airport, rangekm, destinationcity):
-        catchment = extractdata.getcatchment(airport, rangekm, destinationcity)
-        leakage = extractdata.getleakage(airport, rangekm, destinationcity)
+@app.route('/catchment_data/<airport>/<rangekm>/<destinationcity>/<crossborder>', methods=['GET'])
+def catchment_data(airport, rangekm, destinationcity,crossborder):
+        catchment = extractdata.getcatchment(airport, rangekm, destinationcity,crossborder)
+        leakage = extractdata.getleakage(airport, rangekm, destinationcity,crossborder)
         lastupdate = extractdata.getlasttimeupdate('ptbexits_leakage')
 
         resp = jsonify(catchment=catchment[0], leakage=leakage[0], airport_share = leakage[1], airport_coord = catchment[1], update = lastupdate, confidence = leakage[2], length = [len(catchment[0]), len(leakage[0])])
