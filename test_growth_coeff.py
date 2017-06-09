@@ -26,7 +26,7 @@ else:
         print ("Connected to heroku!")
         cursor_heroku = conn_heroku.cursor()
         query = "SELECT * FROM ptbsearches_trending \
-        WHERE  origincitycode = 'DUB' \
+        WHERE  origincitycode = 'YTO' \
         ORDER BY destinationcitycode, search_month ASC"
 
 
