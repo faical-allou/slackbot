@@ -146,6 +146,10 @@
               $('#loading_extra').hide();
               $('#loading_image').hide();
               $('#dashboard_wrapper').show();
+            },
+            error: function() {
+              swal({  title: "Sorry",  text: "Something went wrong, please review your input.",  type: "error",  confirmButtonText: "OK"});
+              mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
             }
       });
     };

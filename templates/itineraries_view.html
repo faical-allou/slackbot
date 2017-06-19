@@ -137,9 +137,10 @@
                       mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call });
                     }
             },
-          error: function (request, status, error) {
-            console.log(error);
-          }
+            error: function() {
+              swal({  title: "Sorry",  text: "Something went wrong, please review your input.",  type: "error",  confirmButtonText: "OK"});
+              mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
+            }
         });
 
             };
