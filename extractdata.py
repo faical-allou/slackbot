@@ -399,7 +399,7 @@ class extractdata:
                 "+ crossbordercondition +"\
                 GROUP BY originairport, destinationcitycode\
                 ORDER BY sum_seats DESC\
-                LIMIT 5"
+                LIMIT 10"
 
         cursor.execute(query)
 
