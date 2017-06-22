@@ -398,6 +398,7 @@ class extractdata:
                 and distance_newod + distance_alternate < 1.2*distance_od\
                 "+ crossbordercondition +"\
                 GROUP BY originairport, destinationcitycode\
+                HAVING sum(sum_seats) > 365 \
                 ORDER BY sum_seats DESC\
                 LIMIT 10"
 
