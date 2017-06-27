@@ -398,7 +398,6 @@ class extractdata:
                 and distance_newod + distance_alternate < 1.2*distance_od\
                 "+ crossbordercondition +"\
                 GROUP BY originairport, destinationcitycode\
-                HAVING sum(sum_seats) > 365 \
                 ORDER BY sum_seats DESC\
                 LIMIT 10"
 
@@ -419,8 +418,13 @@ class extractdata:
         if len(rowarray_list) == 0 : rowarray_list.append([0,0,0])
         connection.close()
 
-        #normalize data identify the home airport and its share
+        #normalize data, removes airports with less than 1%;
         sum_leakage = sum(row[2] for row in rowarray_list )+1
+        rowarray_list = [row for row in rowarray_list if row[2]> sum_leakage/100]
+
+        sum_leakage = sum(row[2] for row in rowarray_list )+1
+
+        #identify the home airport and its share of total
         home_size = 0
         sample_size = 1
         for row in rowarray_list:
