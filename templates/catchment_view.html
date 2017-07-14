@@ -65,7 +65,7 @@
               +"With better service such as non-stop, frequency etc... the traffic could grow <strong>"+ recapture+"%</strong></br>"
               +"<span class='fs-14'>Note: given the sample size the confidence interval for the share of "+window.originairport+" is +-"+ Math.round(data_to_display.confidence*100) +"%</span>"
             } else {
-              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+" is not in the TOP 5 airports</strong> for this catchment area to go to <strong>"+window.destinationcity+"</strong>."
+              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+" serves less than 1% of the traffic</strong> from this catchment area to go to <strong>"+window.destinationcity+"</strong>."
             };
             if (data_to_display.length[0] >= 1 && data_to_display.length[1] >= 1) {
               // Create the data table.
