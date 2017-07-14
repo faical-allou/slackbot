@@ -61,11 +61,16 @@
             document.getElementById("update_time").innerHTML = update_time.toDateString();
             if (data_to_display.airport_share > 0) {
               var recapture = Math.round(100/data_to_display.airport_share)-100;
-              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+ "</strong> serves <strong>" + Math.round(data_to_display.airport_share*100) +"% </strong> of the traffic from the catchment <strong>("+window.rangekm+"km </strong>around the airport) going to <strong>"+window.destinationcity+"</strong> <br/>"
+              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+ "</strong> serves <strong>"
+              + Math.round(data_to_display.airport_share*100)
+              +"% </strong> of the traffic from the catchment <strong>("+window.rangekm+"km </strong>around the airport) going to <strong>"
+              +window.destinationcity+"</strong> <br/>"
               +"With better service such as non-stop, frequency etc... the traffic could grow <strong>"+ recapture+"%</strong></br>"
-              +"<span class='fs-14'>Note: given the sample size the confidence interval for the share of "+window.originairport+" is +-"+ Math.round(data_to_display.confidence*100) +"%</span>"
+              +"<span class='fs-14'>Note: given the sample size the confidence interval for the share of "
+              +window.originairport+" is +-"+ Math.round(data_to_display.confidence*100) +"%</span>"
             } else {
-              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport+" serves less than 1% of the traffic</strong> from this catchment area to go to <strong>"+window.destinationcity+"</strong>."
+              document.getElementById("text_recapture").innerHTML = "<strong>"+window.originairport
+              +" serves less than 1% of the traffic</strong> from this catchment area to go to <strong>"+window.destinationcity+"</strong>."
             };
             if (data_to_display.length[0] >= 1 && data_to_display.length[1] >= 1) {
               // Create the data table.
@@ -101,7 +106,8 @@
                 'showTooltip': true,
                 'mapType': 'normal',
                 'maps': {styledMap : {name: 'Skyscanner', styles: [
-                  {featureType: "administrative.land_parcel", elementType: "labels", stylers: [{"visibility": "off"}]},                    {elementType: 'geometry', stylers: [{color: '#DFDCE3'}]},
+                  {featureType: "administrative.land_parcel", elementType: "labels", stylers: [{"visibility": "off"}]},
+                  {elementType: 'geometry', stylers: [{color: '#DFDCE3'}]},
                   {featureType: 'water', elementType: 'geometry',stylers: [{color: '#272133'}]},
                         ]
                       }
@@ -155,6 +161,7 @@
             });
 
           leakageChart.draw();
+          mixpanel.track("Catchment success", {"originairport": window.originairport, "Rangekm":window.rangekm, "Destinationcity": window.destinationcity, "Crossborder":window.crossborder });
 
             } else {
                   swal({  title: "Sorry",  text: "We don't have enough data for this request, </br> are you entering an <span class='swal-highlight'>IATA airport code, distance, IATA city code</span>?",html:true,  type: "error",  confirmButtonText: "OK"});

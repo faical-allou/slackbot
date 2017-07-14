@@ -99,6 +99,7 @@
 
             // Draw the dashboard.
             myChart.draw();
+            mixpanel.track("Trend success", {"O&D": filter_from.value+'-'+filter_to.value,});
 
               // closing the success clause of the AJAX call
             } else {

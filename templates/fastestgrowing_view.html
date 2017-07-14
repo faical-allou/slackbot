@@ -84,6 +84,7 @@
                     }
                   });
                 },1000);
+                mixpanel.track("Fastest success", {"Origin": filter.value,});
 
                 } else {
                       swal({title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering an IATA <span class='swal-highlight'>city code</span>?", html:true, type: "error",  confirmButtonText: "OK"});
@@ -95,7 +96,6 @@
             $('#loading_image').hide();
             $('#loading_extra').hide();
             $('#dashboard_wrapper').show();
-
           },
           error: function() {
             swal({  title: "Sorry",  text: "Something went wrong, please review your input.",  type: "error",  confirmButtonText: "OK"});

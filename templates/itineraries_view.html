@@ -132,6 +132,8 @@
                       last_zindex = this.zIndex
                     });
                   };
+                mixpanel.track("Itinerary success", {"O&D": od,});
+
                 } else {
                       swal({  title: "Sorry",  text: "We don't have enough data for this request, </br> are you entering IATA <span class='swal-highlight'>city codes</span> 'AAA-BBB'?", html:true, type: "error",  confirmButtonText: "OK"});
                       mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call });
