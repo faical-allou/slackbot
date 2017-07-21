@@ -2,6 +2,59 @@
 {% block content %}
 
 <!-- Load the Javascript -->
+<script type="in/Login"></script>
+<script type="text/javascript" src="//platform.linkedin.com/in.js">
+  api_key: 81dtk3zyepc64m
+  authorize: true
+  onLoad: onLinkedInLoad
+</script>
+
+<script type="text/javascript">
+  // Setup an event listener to make an API call once auth is complete
+    function onLinkedInLoad() {
+
+    }
+
+  // Handle the successful return from the API call
+  function onSuccess(data) {
+    console.log(data);
+  }
+
+  // Handle an error response from the API call
+  function onError(error) {
+    console.log(error);
+  }
+
+  // Use the API call wrapper to share content on LinkedIn
+  function shareContent() {
+    traveltrendsURL = "traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity;
+    traveltrendsURLencoded = encodeURIComponent("traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity);
+    //screenshotURL = "http://api.screenshotmachine.com/?key=54021f&dimension=720x600&format=png&cacheLimit=0&timeout=3000&url=" + traveltrendsURL;
+    screenshotURL = "http://api.screenshotlayer.com/api/capture?access_key=3ea44b15b4158e350c0751b133a84b18&viewport=720x600&url=http://traveltrends.herokuapp.com/catchment_view?originairport=SXB&rangekm=100&destinationcity=NYC"
+
+
+    // Build the JSON payload containing the content to be shared
+    var payload = {
+      "content":{
+        "title": "Catchment Analysis",
+        "description": "based on Skyscanner Travel Insight data",
+        "submitted-url": screenshotURL
+      },
+      "comment": "You can check the true potential of the route "+window.originairport+"-"+window.destinationcity+" here: https://partners.skyscanner.net/travel-insight-lite",
+      "visibility": {
+        "code": "anyone"
+      }
+    };
+
+    IN.API.Raw("/people/~/shares?format=json")
+      .method("POST")
+      .body(JSON.stringify(payload))
+      .result(onSuccess)
+      .error(onError);
+  }
+
+</script>
+
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script type="text/javascript">
@@ -186,7 +239,6 @@
       window.open(screenshotURL);
     };
 
-
     $(document).ready(function () {
         // loading image until the chart is done
         $('#dashboard_wrapper').hide();
@@ -250,6 +302,7 @@
 
                 <input type="button" class="grid_2 button-style" value="check" onClick="drawChart()">
                 <!--<input type="button" class="grid_2 button-style" value="download" onClick="print()"> -->
+                <input type="button" class="grid_2 button-style" value="share on LinkedIn" onClick="shareContent()">
 
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
