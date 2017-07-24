@@ -182,7 +182,10 @@
     }
     );
     document.onkeypress = function (e) {
-        if (e.keyCode == 13 && swal_on == 0) {
+        var focused = document.activeElement;
+        var list_input = [origin_input, destination_input];
+        console.log(list_input.indexOf(focused));
+        if (e.keyCode == 13 && list_input.indexOf(focused) >= 0 ) {
             draw_map();
         }
     };

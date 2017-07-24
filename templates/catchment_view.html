@@ -62,6 +62,7 @@
       closeOnConfirm: false
       },
       function(inputTextPost){
+          if (inputTextPost === false) return false;
           // Build the JSON payload containing the content to be shared
           var payload = {
             "content":{
@@ -73,7 +74,7 @@
             "visibility": {
               "code": "anyone"
             }
-          };
+          }
           IN.API.Raw("/people/~/shares?format=json")
             .method("POST")
             .body(JSON.stringify(payload))
@@ -288,7 +289,10 @@
 
 
     document.onkeypress = function (e) {
-        if (e.keyCode == 13 ) {
+        var focused = document.activeElement;
+        var list_input = [originairportinput, rangekminput,destinationcityinput,crossborderinput];
+        console.log(list_input.indexOf(focused));
+        if (e.keyCode == 13 && list_input.indexOf(focused) >= 0 ) {
             drawChart();
         }
     };
