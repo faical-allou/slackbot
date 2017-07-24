@@ -52,35 +52,35 @@
       screenshotURL = "http://api.screenshotlayer.com/api/capture?access_key=3ea44b15b4158e350c0751b133a84b18&viewport=720x750&url=http://traveltrends.herokuapp.com/catchment_view?originairport=SXB&rangekm=100&destinationcity=NYC"
 
       swal({
-      title: "Post this view to Linkedin",
-      text: "This will be visible publicly on your profile",
-      type: "input",
-      showCancelButton: true,
-      confirmButtonColor: "#5be2ed",
-      confirmButtonText: "Post to my profile",
-      inputPlaceholder: "add a description",
-      closeOnConfirm: false
-      },
-      function(inputTextPost){
-          if (inputTextPost === false) return false;
-          // Build the JSON payload containing the content to be shared
-          var payload = {
-            "content":{
-              "title": "Catchment Analysis for the route " + window.originairport+" to "+window.destinationcity,
-              "description": "check here: https://partners.skyscanner.net/travel-insight-lite",
-              "submitted-url": screenshotURL
-            },
-            "comment": inputTextPost,
-            "visibility": {
-              "code": "anyone"
+        title: "Post this view to Linkedin",
+        text: "This will be visible publicly on your profile",
+        type: "input",
+        showCancelButton: true,
+        confirmButtonColor: "#5be2ed",
+        confirmButtonText: "Post to my profile",
+        inputPlaceholder: "add a comment",
+        closeOnConfirm: false
+        },
+        function(inputTextPost){
+            if (inputTextPost === false) return false;
+            // Build the JSON payload containing the content to be shared
+            var payload = {
+              "content":{
+                "title": "Traffic Analysis for "+window.originairport+"-"+window.destinationcity+". Source: http://partners.skyscanner.net" ,
+                "description": "check here: https://partners.skyscanner.net/travel-insight-lite",
+                "submitted-url": screenshotURL
+              },
+              "comment": inputTextPost,
+              "visibility": {
+                "code": "anyone"
+              }
             }
+            IN.API.Raw("/people/~/shares?format=json")
+              .method("POST")
+              .body(JSON.stringify(payload))
+              .result(onSuccess)
+              .error(onError);
           }
-          IN.API.Raw("/people/~/shares?format=json")
-            .method("POST")
-            .body(JSON.stringify(payload))
-            .result(onSuccess)
-            .error(onError);
-        }
       )
     };
   </script>
@@ -262,12 +262,6 @@
             mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
           }
       })
-    };
-
-    function print() {
-      traveltrendsURL = encodeURIComponent("traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity);
-      screenshotURL = "http://api.screenshotmachine.com/?key=54021f&dimension=1920x1080&format=png&cacheLimit=0&timeout=3000&url=" + traveltrendsURL;
-      window.open(screenshotURL);
     };
 
     $(document).ready(function () {
