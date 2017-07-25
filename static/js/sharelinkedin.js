@@ -42,8 +42,8 @@ function onError(error) {
 // Use the API call wrapper to share content on LinkedIn
 function shareContent(urlToPrint, subtitle) {
   //traveltrendsURLencoded = encodeURIComponent("traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity);
-  screenshotURL = "http://api.screenshotmachine.com/?key=54021f&dimension=720x600&format=png&cacheLimit=0&timeout=3000&url=" + traveltrendsURL;
-  //screenshotURL = "http://api.screenshotlayer.com/api/capture?access_key=3ea44b15b4158e350c0751b133a84b18&viewport=720x750&url="+urlToPrint;
+  //screenshotURL = "http://api.screenshotmachine.com/?key=54021f&dimension=720x600&format=png&cacheLimit=0&timeout=3000&url=" + traveltrendsURL;
+  screenshotURL = "http://api.screenshotlayer.com/api/capture?access_key=3ea44b15b4158e350c0751b133a84b18&viewport=720x750&url="+urlToPrint;
   swal({
     title: "Post this view to Linkedin",
     text: "This will be visible publicly on your profile",
