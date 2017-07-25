@@ -44,6 +44,8 @@
         dataType: "json",
         crossDomain: true,
         success: function (api_results){
+          update_time = new Date(api_results.update);
+          document.getElementById("update_time").innerHTML = update_time.toDateString() ;
           result_table = api_results.data;
           result_length = api_results.length
         },
@@ -198,8 +200,8 @@ autoSuggestInput("destinationCityInput", "city");
                 <input id="destinationCityInput" class='grid_2' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
                 <input type="button" class="grid_2 button-style" value="draw" onClick="drawChart()">
                 <input type="button" class="grid_2 button-style mb-10" value="clear" onClick="initMap()">
-                <!-- <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
- -->
+                <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
+                
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
               <div class="grid_12 update_time_container">

@@ -225,8 +225,7 @@
                 <input id="crossBorderInput" class='grid_2' type="text" value="y/n" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
 
                 <input type="button" class="grid_2 button-style" value="check" onClick="drawChart()">
-                <!--<input type="button" class="grid_2 button-style" value="download" onClick="print()"> -->
-                <!--<input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">-->
+                <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
 
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>

@@ -144,9 +144,7 @@
           crossDomain: true,
           success: function (api_results) {
               data_to_display=api_results;
-              update_time = new Date(api_results.update);
-              document.getElementById("update_time").innerHTML = update_time.toDateString() ;
-              if (api_results.length == api_results.max_length ){
+             if (api_results.length == api_results.max_length ){
 
                 // add the new column.
                 data_formatted.addColumn('number', destination+' from '+origin);
@@ -237,7 +235,7 @@
               <input id="destinationCityInput" class='grid_2' type="text" value="IATA city" onfocus='if (this.value=="IATA city") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
               <input type="button" class="grid_2 button-style" value="add" onClick="addToChart(undefined,undefined)">
               <input type="button" class="grid_2 button-style" value="reset" onClick="drawChart(undefined,undefined)">
-              <!--<input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">-->
+              <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
               <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
             </div>
             <div class="grid_12 update_time_container">
