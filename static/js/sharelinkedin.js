@@ -13,7 +13,7 @@ function onSuccess(data) {
     html: true
     }
   );
-  mixpanel.track("Sharing success", {"Page":viewpage; "Post":data.updateUrl});
+  mixpanel.track("Sharing success", {"Page":viewpage, "Post":data.updateUrl});
 
 }
 
@@ -35,15 +35,15 @@ function onError(error) {
     else
     {
       swal("Error...", "Linkedin refused your post. Please check that you are logged in. We'll do what we can to fix this asap. "+error.message, "error");
-      mixpanel.track("Sharing error", {"Page":viewpage; "Error": error.message});
+      mixpanel.track("Sharing error", {"Page":viewpage, "Error": error.message});
     }
 }
 
 // Use the API call wrapper to share content on LinkedIn
 function shareContent(urlToPrint, subtitle) {
-  traveltrendsURLencoded = encodeURIComponent("traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity);
+  //traveltrendsURLencoded = encodeURIComponent("traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity);
   //screenshotURL = "http://api.screenshotmachine.com/?key=54021f&dimension=720x600&format=png&cacheLimit=0&timeout=3000&url=" + traveltrendsURL;
-  screenshotURL = "http://api.screenshotlayer.com/api/capture?access_key=3ea44b15b4158e350c0751b133a84b18&viewport=720x750&url="+urlToPrint
+  screenshotURL = "http://api.screenshotlayer.com/api/capture?access_key=3ea44b15b4158e350c0751b133a84b18&viewport=720x750&url="+urlToPrint;
   swal({
     title: "Post this view to Linkedin",
     text: "This will be visible publicly on your profile",
@@ -55,6 +55,7 @@ function shareContent(urlToPrint, subtitle) {
     closeOnConfirm: false
     },
     function(inputTextPost){
+        console.log(urlToPrint, subtitle);
         if (inputTextPost === false) return false;
         // Build the JSON payload containing the content to be shared
         var payload = {

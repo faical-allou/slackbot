@@ -1,13 +1,22 @@
 {% extends "header.html" %}
 {% block content %}
+<!-- Load the Javascript for linkedin and google charts-->
+<script type="text/javascript" src="//platform.linkedin.com/in.js">
+  api_key: 81dtk3zyepc64m
+  authorize: true
+  onLoad: onLinkedInLoad
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/sharelinkedin.js') }}"></script>
 
 <!-- Load the Javascript -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script type="text/javascript">
 
-    // Load the Visualization API and the corechart package.
+      // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart', 'controls']});
+      
+      // define options for the charts to be used throughout
       var chartoptions = {
         'height':600,
         'width':700,
@@ -38,10 +47,18 @@
       var filter_to = document.getElementById("destinationCityInput");
       if (typeof destination === "undefined") {
       destination = filter_to.value.toUpperCase();
-      mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
       };
+
       // prepare the URL to call
-      var url_to_call = './trending_data/'+origin+'/'+destination;
+      window.origincity = origin;
+      window.destinationcity = destination;
+
+      var url_to_call = './trending_data/'+window.origincity+'/'+window.destinationcity;
+      mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
+
+      // parameters for sharing on Linkedin
+      window.traveltrendsURL = "http://traveltrends.herokuapp.com/trending_view?origincity="+window.origincity+"&destinationcity="+window.destinationcity;
+      window.subtitle = "Traffic Analysis for "+window.origincity+"-"+window.destinationcity+". Source: http://partners.skyscanner.net"; 
 
       // loading image until the chart is done
       $('#loading_extra').show();
@@ -108,6 +125,10 @@
 
     function addToChart(origin, destination) {
 
+      // prepare the URL to call
+      window.origincity = origin;
+      window.destinationcity = destination;
+
       var filter_from = document.getElementById("originCityInput");
       if (typeof origin === "undefined") {
       origin = filter_from.value.toUpperCase();
@@ -119,7 +140,10 @@
       mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
       };
       // prepare the URL to call
-      var url_to_call = './trending_data/'+origin+'/'+destination;
+      window.origincity = origin;
+      window.destinationcity = destination;
+      
+      var url_to_call = './trending_data/'+window.origincity+'/'+window.destinationcity;
 
       // loading image until the chart is done
       $('#loading_extra').show();
@@ -214,18 +238,18 @@
             <!--Divs that will hold each control and chart-->
             <div id="chart_div"></div>
             <div class='container_12 filter-bar'>
-              <div class='grid_1'> &nbsp </div>
-              <div class='grid_3'> <strong>From city</strong> </div>
-              <div class='grid_3'> <strong>To city</strong> </div>
+              <div class='grid_2'> <strong>From city</strong> </div>
+              <div class='grid_2'> <strong>To city</strong> </div>
+              <div class='grid_2'> &nbsp </div>
               <div class='grid_2'> &nbsp </div>
               <div class='grid_2'> &nbsp </div>
               <div class='grid_1'> &nbsp </div>
 
-              <div class='grid_1'> &nbsp </div>
-              <input id="originCityInput" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
-              <input id="destinationCityInput" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
+              <input id="originCityInput" class='grid_2' type="text" value="IATA city" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
+              <input id="destinationCityInput" class='grid_2' type="text" value="IATA city" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
               <input type="button" class="grid_2 button-style" value="add" onClick="addToChart(undefined,undefined)">
               <input type="button" class="grid_2 button-style" value="reset" onClick="drawChart(undefined,undefined)">
+              <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
               <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
             </div>
             <div class="grid_12 update_time_container">

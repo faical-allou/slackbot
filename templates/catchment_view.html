@@ -8,20 +8,10 @@
     onLoad: onLinkedInLoad
   </script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/sharelinkedin.js') }}"></script>
-  <script type="text/javascript">
-    $( document ).ready(function() {
-    // parameters for sharing on Linkedin
-      window.traveltrendsURL = "http://traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity;
-      window.subtitle = "Traffic Analysis for "+window.originairport+"-"+window.destinationcity+". Source: http://partners.skyscanner.net" 
-    });
-  </script>
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
   <script type="text/javascript">
-    window.traveltrendsURL = "http://traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity;
-    window.subtitle = "Traffic Analysis for "+window.originairport+"-"+window.destinationcity+". Source: http://partners.skyscanner.net"
-
     // Load the Visualization API and the corechart package.
     google.charts.load('current', {'packages':['corechart', 'controls', 'map']});
 
@@ -41,7 +31,7 @@
       var filterdestinationcity = document.getElementById("destinationCityInput");
       var filtercrossborder = document.getElementById("crossBorderInput");
 
-      if (originairport == null || rangekm == null || destinationcity == null || crossborder == null) {
+      if (originairport === undefined || rangekm === undefined || destinationcity === undefined || crossborder === undefined) {
         window.originairport = filteroriginairport.value.toUpperCase();
         window.rangekm = filterrangekm.value.toUpperCase();
         window.destinationcity = filterdestinationcity.value.toUpperCase();
@@ -51,7 +41,11 @@
       var url_to_call = './catchment_data/'+window.originairport+'/'+window.rangekm+'/'+window.destinationcity+'/'+window.crossborder;
       mixpanel.track("Catchment selection", {"originairport": window.originairport, "Rangekm":window.rangekm, "Destinationcity": window.destinationcity, "Crossborder":window.crossborder });
       
-      // loading image until the chart is done
+      // parameters for sharing on Linkedin
+      window.traveltrendsURL = "http://traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity;
+      window.subtitle = "Traffic Analysis for "+window.originairport+"-"+window.destinationcity+". Source: http://partners.skyscanner.net";   
+ 
+     // loading image until the chart is done
       $('#loading_extra').show();
       // call API and pass the data to the drawchart function
       $.ajax({
