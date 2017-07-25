@@ -8,7 +8,7 @@ function onLinkedInLoad() {
 function onSuccess(data) {
   swal({
     title:"Posted!",
-    text: "The post will be visible in few seconds on your profile <strong><a href="+data.updateUrl+">here</a></strong>",
+    text: "The post will be visible in few seconds on your profile <strong><a href="+data.updateUrl+" target='_blank'>here</a></strong>",
     type: "success",
     html: true
     }
@@ -22,7 +22,7 @@ function onError(error) {
     {
       swal({
         title:"Please log in first",
-        text: "It looks like you're not logged in on <strong><a href=http://www.linkedin.com>Linkedin</a></strong>",
+        text: "It looks like you are not logged in on <strong><a href=http://www.linkedin.com target='_blank'>Linkedin</a></strong>",
         type: "error",
         html: true
         }
@@ -35,12 +35,11 @@ function onError(error) {
 }
 
 // Use the API call wrapper to share content on LinkedIn
-function shareContent() {
-  traveltrendsURL = "traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity;
+function shareContent(urlToPrint, subtitle) {
   traveltrendsURLencoded = encodeURIComponent("traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity);
   //screenshotURL = "http://api.screenshotmachine.com/?key=54021f&dimension=720x600&format=png&cacheLimit=0&timeout=3000&url=" + traveltrendsURL;
-  screenshotURL = "http://api.screenshotlayer.com/api/capture?access_key=3ea44b15b4158e350c0751b133a84b18&viewport=720x750&url=http://traveltrends.herokuapp.com/catchment_view?originairport=SXB&rangekm=100&destinationcity=NYC"
-
+  screenshotURL = "http://api.screenshotlayer.com/api/capture?access_key=3ea44b15b4158e350c0751b133a84b18&viewport=720x750&url="+urlToPrint
+  console.log(screenshotURL, window.traveltrendsURL)
   swal({
     title: "Post this view to Linkedin",
     text: "This will be visible publicly on your profile",
@@ -56,7 +55,7 @@ function shareContent() {
         // Build the JSON payload containing the content to be shared
         var payload = {
           "content":{
-            "title": "Traffic Analysis for "+window.originairport+"-"+window.destinationcity+". Source: http://partners.skyscanner.net" ,
+            "title": subtitle ,
             "description": "check here: https://partners.skyscanner.net/travel-insight-lite",
             "submitted-url": screenshotURL
           },
