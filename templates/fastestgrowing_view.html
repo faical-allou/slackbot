@@ -1,17 +1,6 @@
 {% extends "header.html" %}
 {% block content %}
 
-<!-- Load the Javascript for linkedin and google charts-->
-<script type="text/javascript" src="//platform.linkedin.com/in.js">
-  api_key: 81dtk3zyepc64m
-  authorize: true
-  onLoad: onLinkedInLoad
-</script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/sharelinkedin.js') }}"></script>
-
-<!-- Load the Javascript -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
   <script type="text/javascript">
     $('#loading_extra').hide();
     // Load the Visualization API and the corechart package.

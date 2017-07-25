@@ -1,17 +1,6 @@
 {% extends "header.html" %}
 {% block content %}
-<!-- Load the Javascript for linkedin and google charts-->
-<script type="text/javascript" src="//platform.linkedin.com/in.js">
-  api_key: 81dtk3zyepc64m
-  authorize: true
-  onLoad: onLinkedInLoad
-</script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/sharelinkedin.js') }}"></script>
-
-<!-- Load the Javascript -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-    <script type="text/javascript">
+<script type="text/javascript">
 
       // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart', 'controls']});
@@ -52,7 +41,6 @@
       // prepare the URL to call
       window.origincity = origin;
       window.destinationcity = destination;
-
       var url_to_call = './trending_data/'+window.origincity+'/'+window.destinationcity;
       mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
 
@@ -220,11 +208,11 @@
     autoSuggestInput("originCityInput", "city");
     autoSuggestInput("destinationCityInput", "city");
 
-    </script>
+</script>
 
   <!-- HTML -->
         <div class="bg-white container_12 ta-c">
-          <div class="title"> Trending destinations </div>
+          <div class="title"> Trending popularity </div>
           <!--Div that holds the animated gif until the chart loads-->
           <div id="loading_image" class="grid_12 pb-30">
             <img src="{{ url_for('static', filename='loading.gif') }}"></img>
