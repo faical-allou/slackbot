@@ -18,12 +18,11 @@
 
       };
 
-      function draw_map() {
+      function drawChart() {
         $('#loading_extra').show();
 
-        var filter = document.getElementById("origin_input").value+'-'+document.getElementById("destination_input").value;
+        var filter = document.getElementById("originCityInput").value+'-'+document.getElementById("destinationCityInput").value;
         var od = filter;
-        console.log(filter);
         mixpanel.track("Itinerary selection", {"O&D": od,});
 
         var origin = od.substring(0,3);
@@ -181,16 +180,11 @@
         });
     }
     );
-    document.onkeypress = function (e) {
-        var focused = document.activeElement;
-        var list_input = [origin_input, destination_input];
-        console.log(list_input.indexOf(focused));
-        if (e.keyCode == 13 && list_input.indexOf(focused) >= 0 ) {
-            draw_map();
-        }
-    };
-    autoSuggestInput("origin_input", "city");
-    autoSuggestInput("destination_input", "city");
+
+    document.onkeypress = drawOnEnterKey;
+
+    autoSuggestInput("originCityInput", "city");
+    autoSuggestInput("destinationCityInput", "city");
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk&callback=initMap" async defer></script>
@@ -217,9 +211,9 @@
                 <div class='grid_5'> &nbsp </div>
 
                 <div class='grid_1'> &nbsp </div>
-                <input id="origin_input" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
-                <input id="destination_input" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
-                <input type="button" class="grid_2 button-style" value="draw" onClick="draw_map()">
+                <input id="originCityInput" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
+                <input id="destinationCityInput" class='grid_3' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
+                <input type="button" class="grid_2 button-style" value="draw" onClick="drawChart()">
                 <input type="button" class="grid_2 button-style mb-10" value="clear" onClick="initMap()">
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>

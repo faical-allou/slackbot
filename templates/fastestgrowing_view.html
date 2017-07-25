@@ -12,7 +12,7 @@
     // Callback that creates and populates a data table,
     // instantiates the chart, passes in the data and draws it.
     function drawChart(city) {
-      var filter = document.getElementById("origin_input");
+      var filter = document.getElementById("originCityInput");
       if (typeof city === "undefined") {
       city = filter.value.toUpperCase();
       mixpanel.track("Fastest selection", {"Origin": filter.value,});
@@ -111,16 +111,8 @@
         drawChart('TYO');
     });
 
-    document.onkeypress = function (e) {
-        var focused = document.activeElement;
-        var list_input = [origin_input];
-        console.log(list_input.indexOf(focused));
-        if (e.keyCode == 13 && list_input.indexOf(focused) >= 0 ) {
-            drawChart(undefined);
-        }
-    };
-
-    autoSuggestInput("origin_input", "city");
+    document.onkeypress = drawOnEnterKey;
+    autoSuggestInput("originCityInput", "city");
 
     </script>
 
@@ -144,7 +136,7 @@
                    <div class='grid_4'> &nbsp </div>
 
                    <div class='grid_4'> &nbsp </div>
-                   <input id="origin_input" class='grid_4' type="text" value="IATA city code (e.g. TYO)" onfocus='if (this.value=="IATA city code (e.g. TYO)") {this.value="";}' oninput="this.value=this.value.toUpperCase()" onchange="filter_origin = this.value;">
+                   <input id="originCityInput" class='grid_4' type="text" value="IATA city code (e.g. TYO)" onfocus='if (this.value=="IATA city code (e.g. TYO)") {this.value="";}' oninput="this.value=this.value.toUpperCase()" onchange="filter_origin = this.value;">
                    <input type="button" class="grid_2 button-style" value="check" onClick="drawChart(undefined)">
                    <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
                  </div>

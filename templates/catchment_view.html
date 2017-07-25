@@ -15,7 +15,6 @@
 
     // Handle the successful return from the API call
     function onSuccess(data) {
-      console.log(data);
       swal({
         title:"Posted!",
         text: "The post will be visible in few seconds on your profile <strong><a href="+data.updateUrl+">here</a></strong>",
@@ -93,20 +92,7 @@
     // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart', 'controls', 'map']});
 
-    // function to retrieve the city name from the parameters passed in the URL
-    var getUrlParameter = function getUrlParameter(sParam) {
-        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-            sURLVariables = sPageURL.split('&'),
-            sParameterName,
-            i;
 
-        for (i = 0; i < sURLVariables.length; i++) {
-            sParameterName = sURLVariables[i].split('=');
-            if (sParameterName[0] === sParam) {
-                return sParameterName[1] === undefined ? true : sParameterName[1];
-            }
-        }
-    };
     // Callback that creates and populates a data table,
     // instantiates the chart, passes in the data and draws it.
     function drawChart(originairport,rangekm,destinationcity, crossborder) {
@@ -117,10 +103,10 @@
       window.crossborder = crossborder;
 
 
-      var filteroriginairport = document.getElementById("originairportinput");
-      var filterrangekm = document.getElementById("rangekminput");
-      var filterdestinationcity = document.getElementById("destinationcityinput");
-      var filtercrossborder = document.getElementById("crossborderinput");
+      var filteroriginairport = document.getElementById("originAirportInput");
+      var filterrangekm = document.getElementById("rangeKmInput");
+      var filterdestinationcity = document.getElementById("destinationCityInput");
+      var filtercrossborder = document.getElementById("crossBorderInput");
 
       if (originairport == null || rangekm == null || destinationcity == null || crossborder == null) {
         window.originairport = filteroriginairport.value.toUpperCase();
@@ -282,17 +268,10 @@
     });
 
 
-    document.onkeypress = function (e) {
-        var focused = document.activeElement;
-        var list_input = [originairportinput, rangekminput,destinationcityinput,crossborderinput];
-        console.log(list_input.indexOf(focused));
-        if (e.keyCode == 13 && list_input.indexOf(focused) >= 0 ) {
-            drawChart();
-        }
-    };
+    document.onkeypress = drawOnEnterKey;
 
-    autoSuggestInput("originairportinput", "airport");
-    autoSuggestInput("destinationcityinput", "city");
+    autoSuggestInput("originAirportInput", "airport");
+    autoSuggestInput("destinationCityInput", "city");
 
   </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk" async defer></script>
@@ -323,10 +302,10 @@
                 <div class='grid_2'> <strong>Crossborder?</strong> </div>
                 <div class='grid_4'> &nbsp </div>
 
-                <input id="originairportinput" class='grid_2' type="text" value="Airport code" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
-                <input id="rangekminput" class='grid_2' type="text" value="in (km)" onFocus='this.value=""'>
-                <input id="destinationcityinput" class='grid_2' type="text" value="City code" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
-                <input id="crossborderinput" class='grid_2' type="text" value="y/n" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
+                <input id="originAirportInput" class='grid_2' type="text" value="Airport code" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
+                <input id="rangeKmInput" class='grid_2' type="text" value="in (km)" onFocus='this.value=""'>
+                <input id="destinationCityInput" class='grid_2' type="text" value="City code" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
+                <input id="crossBorderInput" class='grid_2' type="text" value="y/n" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
 
                 <input type="button" class="grid_2 button-style" value="check" onClick="drawChart()">
                 <!--<input type="button" class="grid_2 button-style" value="download" onClick="print()"> -->

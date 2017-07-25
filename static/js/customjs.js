@@ -23,4 +23,28 @@ function autoSuggestInput(inputfield, suggesttype){
             }
     });
   });
-};
+}
+
+// function to retrieve the city name from the parameters passed in the URL
+function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+}
+
+// adding a listener for the enter key only when focus is on the input
+function drawOnEnterKey(e) {
+        var focused = document.activeElement.id;
+        var list_input = ['originAirportInput', 'rangeKmInput','originCityInput', 'destinationCityInput','crossBorderInput' ];
+        if (e.keyCode == 13 && list_input.indexOf(focused) >= 0 ) {
+            drawChart();
+        }
+}

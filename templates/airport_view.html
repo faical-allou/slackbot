@@ -4,19 +4,18 @@
 <!-- Load the Javascript -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script type="text/javascript">
+  <script type="text/javascript">
 
     // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart', 'controls']});
+    google.charts.load('current', {'packages':['corechart', 'controls']});
     // Callback that creates and populates a data table,
     // instantiates the chart, passes in the data and draws it.
     function drawChart(airport) {
-      var filter = document.getElementById("airportinput");
-      if (isNaN(airport)) {
+      var filter = document.getElementById("originAirportInput");
+      if (typeof airport === "undefined") {
       airport = filter.value.toUpperCase();
       mixpanel.track("Hub selection", {"Airport": filter.value,});
       };
-
       var url_to_call = './airport_data/'+airport;
 
       // loading image until the chart is done
@@ -163,18 +162,11 @@
         drawChart('MAD');
     });
 
-    document.onkeypress = function (e) {
-        var focused = document.activeElement;
-        var list_input = [airportinput];
-        console.log(list_input.indexOf(focused));
-        if (e.keyCode == 13 && list_input.indexOf(focused) >= 0 ) {
-            drawChart();
-        }
-    };
+  document.onkeypress = drawOnEnterKey;
 
-  autoSuggestInput("airportinput", "airport");
+  autoSuggestInput("originAirportInput", "airport");
 
-    </script>
+  </script>
 
   <!-- HTML -->
         <div class="bg-white container_12 ta-c">
@@ -200,7 +192,7 @@
                 <div class='grid_2'> &nbsp </div>
 
                 <div class='grid_3'> &nbsp </div>
-                <input id="airportinput" class='grid_4' type="text" value="MAD" onFocus='this.value=""'>
+                <input id="originAirportInput" class='grid_4' type="text" value="MAD" onFocus='this.value=""'>
                 <input type="button" class="grid_3 button-style" value="draw hub graph" onClick="drawChart()">
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
