@@ -55,7 +55,8 @@ function shareContent(urlToPrint, subtitle) {
     closeOnConfirm: false
     },
     function(inputTextPost){
-        console.log(urlToPrint, subtitle);
+        mixpanel.track("Sharing open", {"Page":viewpage});
+
         if (inputTextPost === false) return false;
         // Build the JSON payload containing the content to be shared
         var payload = {
