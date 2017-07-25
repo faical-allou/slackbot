@@ -19,7 +19,7 @@
 
       // parameters for sharing on Linkedin
       window.traveltrendsURL = "http://traveltrends.herokuapp.com/fastestgrowing_view?origincity="+city;
-      window.subtitle = "Traffic Analysis for "+city+". Source: http://partners.skyscanner.net"; 
+      window.subtitle = "Traffic Analysis for "+city+". Source: http://partners.skyscanner.net";
 
       // loading image until the chart is done
       $('#loading_extra').show();
@@ -146,7 +146,7 @@
                    <div class='grid_2'> &nbsp </div>
                    <input id="originCityInput" class='grid_4' type="text" value="IATA city code (e.g. TYO)" onfocus='if (this.value=="IATA city code (e.g. TYO)") {this.value="";}' oninput="this.value=this.value.toUpperCase()" onchange="filter_origin = this.value;">
                    <input type="button" class="grid_2 button-style" value="check" onClick="drawChart(undefined)">
-                   <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
+                   <!--<input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">-->
                    <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
                  </div>
               <div class="grid_12 update_time_container">

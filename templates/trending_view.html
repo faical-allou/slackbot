@@ -4,7 +4,7 @@
 
       // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart', 'controls']});
-      
+
       // define options for the charts to be used throughout
       var chartoptions = {
         'height':600,
@@ -46,7 +46,7 @@
 
       // parameters for sharing on Linkedin
       window.traveltrendsURL = "http://traveltrends.herokuapp.com/trending_view?origincity="+window.origincity+"&destinationcity="+window.destinationcity;
-      window.subtitle = "Traffic Analysis for "+window.origincity+"-"+window.destinationcity+". Source: http://partners.skyscanner.net"; 
+      window.subtitle = "Traffic Analysis for "+window.origincity+"-"+window.destinationcity+". Source: http://partners.skyscanner.net";
 
       // loading image until the chart is done
       $('#loading_extra').show();
@@ -130,7 +130,7 @@
       // prepare the URL to call
       window.origincity = origin;
       window.destinationcity = destination;
-      
+
       var url_to_call = './trending_data/'+window.origincity+'/'+window.destinationcity;
 
       // loading image until the chart is done
@@ -202,7 +202,7 @@
         drawChart('TYO','SYD');
         };
     });
-      
+
     document.onkeypress = drawOnEnterKey;
 
     autoSuggestInput("originCityInput", "city");
@@ -233,11 +233,11 @@
               <div class='grid_2'> &nbsp </div>
               <div class='grid_1'> &nbsp </div>
 
-              <input id="originCityInput" class='grid_2' type="text" value="IATA city" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
-              <input id="destinationCityInput" class='grid_2' type="text" value="IATA city" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
+              <input id="originCityInput" class='grid_2' type="text" value="IATA city" onfocus='if (this.value=="IATA city") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
+              <input id="destinationCityInput" class='grid_2' type="text" value="IATA city" onfocus='if (this.value=="IATA city") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
               <input type="button" class="grid_2 button-style" value="add" onClick="addToChart(undefined,undefined)">
               <input type="button" class="grid_2 button-style" value="reset" onClick="drawChart(undefined,undefined)">
-              <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
+              <!--<input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">-->
               <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
             </div>
             <div class="grid_12 update_time_container">
