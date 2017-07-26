@@ -29,12 +29,9 @@
     function drawChart(origin, destination) {
 
       var filter_from = document.getElementById("originCityInput");
-      if (typeof origin === "undefined") {
-      origin = filter_from.value.toUpperCase();
-      };
-
       var filter_to = document.getElementById("destinationCityInput");
-      if (typeof destination === "undefined") {
+      if (typeof origin === "undefined" || typeof destination === "undefined") {
+      origin = filter_from.value.toUpperCase();
       destination = filter_to.value.toUpperCase();
       mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
       };
@@ -111,10 +108,6 @@
 
     function addToChart(origin, destination) {
 
-      // prepare the URL to call
-      origin = origin;
-      destination = destination;
-
       var filter_from = document.getElementById("originCityInput");
       var filter_to = document.getElementById("destinationCityInput");
       if (typeof origin === "undefined" || typeof destination === "undefined") {
@@ -122,10 +115,6 @@
       destination = filter_to.value.toUpperCase();
       mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
       };
-
-      // prepare the URL to call
-      origin = origin;
-      destination = destination;
 
       var url_to_call = './trending_data/'+origin+'/'+destination;
 
