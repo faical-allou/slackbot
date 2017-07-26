@@ -36,17 +36,15 @@
       var filter_to = document.getElementById("destinationCityInput");
       if (typeof destination === "undefined") {
       destination = filter_to.value.toUpperCase();
+      mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
       };
 
       // prepare the URL to call
-      window.origincity = origin;
-      window.destinationcity = destination;
-      var url_to_call = './trending_data/'+window.origincity+'/'+window.destinationcity;
-      mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
+      var url_to_call = './trending_data/'+origin+'/'+destination;
 
       // parameters for sharing on Linkedin
-      window.traveltrendsURL = location.protocol+'//'+location.host+"/trending_view?origincity="+window.origincity+"&destinationcity="+window.destinationcity;
-      window.subtitle = "Traffic Analysis for "+window.origincity+"-"+window.destinationcity+". Source: http://partners.skyscanner.net";
+      window.traveltrendsURL = location.protocol+'//'+location.host+"/trending_view?origincity="+origin+"&destinationcity="+destination;
+      window.subtitle = "Traffic Analysis for "+origin+"-"+destination+". Source: http://partners.skyscanner.net";
 
       // loading image until the chart is done
       $('#loading_extra').show();
@@ -114,24 +112,22 @@
     function addToChart(origin, destination) {
 
       // prepare the URL to call
-      window.origincity = origin;
-      window.destinationcity = destination;
+      origin = origin;
+      destination = destination;
 
       var filter_from = document.getElementById("originCityInput");
-      if (typeof origin === "undefined") {
-      origin = filter_from.value.toUpperCase();
-      };
-
       var filter_to = document.getElementById("destinationCityInput");
-      if (typeof destination === "undefined") {
+      if (typeof origin === "undefined" || typeof destination === "undefined") {
+      origin = filter_from.value.toUpperCase();
       destination = filter_to.value.toUpperCase();
       mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
       };
-      // prepare the URL to call
-      window.origincity = origin;
-      window.destinationcity = destination;
 
-      var url_to_call = './trending_data/'+window.origincity+'/'+window.destinationcity;
+      // prepare the URL to call
+      origin = origin;
+      destination = destination;
+
+      var url_to_call = './trending_data/'+origin+'/'+destination;
 
       // loading image until the chart is done
       $('#loading_extra').show();
