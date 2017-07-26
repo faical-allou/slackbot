@@ -235,7 +235,7 @@
               <input id="destinationCityInput" class='grid_2' type="text" value="City code" onfocus='if (this.value=="City code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
               <input type="button" class="grid_2 button-style" value="add" onClick="addToChart(undefined,undefined)">
               <input type="button" class="grid_2 button-style" value="reset" onClick="drawChart(undefined,undefined)">
-              <!--<input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">-->
+              <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
               <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
             </div>
             <div class="grid_12 update_time_container">
