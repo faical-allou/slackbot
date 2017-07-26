@@ -33,7 +33,7 @@
       mixpanel.track("Catchment selection", {"originairport": window.originairport, "Rangekm":window.rangekm, "Destinationcity": window.destinationcity, "Crossborder":window.crossborder });
 
       // parameters for sharing on Linkedin
-      window.traveltrendsURL = window.location.hostname+"/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity+"&crossborder="+window.crossborder;
+      window.traveltrendsURL = location.protocol+'//'+location.host+"/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity+"&crossborder="+window.crossborder;
       window.subtitle = "Traffic Analysis for "+window.originairport+"-"+window.destinationcity+". Source: http://partners.skyscanner.net";
 
      // loading image until the chart is done
