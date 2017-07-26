@@ -35,7 +35,7 @@
     var url_to_call = './itineraries_data/'+origincity+'/'+destinationcity
 
     // parameters for sharing on Linkedin
-      window.traveltrendsURL = "http://traveltrends.herokuapp.com/itineraries_view?origincity="+origincity+"&destinationcity="+destinationcity;
+      window.traveltrendsURL = location.protocol+'//'+location.host+"/itineraries_view?origincity="+origincity+"&destinationcity="+destinationcity;
       window.subtitle = "Traffic Analysis for "+origincity+"-"+destinationcity+". Source: http://partners.skyscanner.net";
 
     $.ajax({

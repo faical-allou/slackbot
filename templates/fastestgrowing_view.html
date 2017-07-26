@@ -18,7 +18,7 @@
       var url_to_call = './popularity_fastest_data/'+city;
 
       // parameters for sharing on Linkedin
-      window.traveltrendsURL = "http://traveltrends.herokuapp.com/fastestgrowing_view?origincity="+city;
+      window.traveltrendsURL = location.protocol+'//'+location.host+"/fastestgrowing_view?origincity="+city;
       window.subtitle = "Traffic Analysis for "+city+". Source: http://partners.skyscanner.net";
 
       // loading image until the chart is done

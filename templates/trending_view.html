@@ -45,7 +45,7 @@
       mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
 
       // parameters for sharing on Linkedin
-      window.traveltrendsURL = "http://traveltrends.herokuapp.com/trending_view?origincity="+window.origincity+"&destinationcity="+window.destinationcity;
+      window.traveltrendsURL = location.protocol+'//'+location.host+"/trending_view?origincity="+window.origincity+"&destinationcity="+window.destinationcity;
       window.subtitle = "Traffic Analysis for "+window.origincity+"-"+window.destinationcity+". Source: http://partners.skyscanner.net";
 
       // loading image until the chart is done
