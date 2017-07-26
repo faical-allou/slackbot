@@ -334,7 +334,7 @@ class extractdata:
             rows = cursor.fetchall()
             # Convert query to row arrays
             for row in rows:
-                rows_to_convert = (row[0], row[1].decode('UTF-8'), row[2], row[3], row[4],row[5],row[6])
+                rows_to_convert = (row[0], row[1], row[2], row[3], row[4],row[5],row[6])
                 t = list(rows_to_convert)
                 rowarray_list.append(t)
 
