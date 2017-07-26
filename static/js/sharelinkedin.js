@@ -45,8 +45,8 @@ function onError(error) {
 // Use the API call wrapper to share content on LinkedIn
 function shareContent(urlToPrint, subtitle) {
   urlEncoded = encodeURIComponent(urlToPrint);
-  screenshotURL = "http://api.screenshotmachine.com/?key=54021f&dimension=720x600&format=png&cacheLimit=0&timeout=3000&url=" + urlEncoded;
-  //screenshotURL = "http://api.screenshotlayer.com/api/capture?access_key=3ea44b15b4158e350c0751b133a84b18&viewport=720x750&url="+urlEncoded;
+  //screenshotURL = "http://api.screenshotmachine.com/?key=54021f&dimension=720x600&format=png&cacheLimit=0&timeout=3000&url=" + urlEncoded;
+  screenshotURL = "http://api.screenshotlayer.com/api/capture?access_key=3ea44b15b4158e350c0751b133a84b18&viewport=720x750&delay=2&url="+urlToPrint;
   console.log(screenshotURL);
   swal({
     title: "Post this view to Linkedin",
