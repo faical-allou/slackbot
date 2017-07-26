@@ -27,128 +27,129 @@
             update_time = new Date(data_to_display.update);
             document.getElementById("update_time").innerHTML = update_time.toDateString();
             if (data_to_display.length > 70) {
-          // Create the data table.
-          data_formatted = new google.visualization.DataTable();
-          data_formatted.addColumn('string', 'ID');
-          data_formatted.addColumn('string', 'Airport');
-          data_formatted.addColumn('string', 'Time of the day');
-          data_formatted.addColumn('number', 'Index local arrival');
-          data_formatted.addColumn('number', 'Index local departure');
-          data_formatted.addColumn('number', 'Index connecting arrival');
-          data_formatted.addColumn('number', 'Index connecting departure');
-          data_formatted.addColumn('number', 'Local');
-          data_formatted.addColumn('number', 'Connecting');
+              // Create the data table.
+              data_formatted = new google.visualization.DataTable();
+              data_formatted.addColumn('string', 'ID');
+              data_formatted.addColumn('string', 'Airport');
+              data_formatted.addColumn('string', 'Time of the day');
+              data_formatted.addColumn('number', 'Index local arrival');
+              data_formatted.addColumn('number', 'Index local departure');
+              data_formatted.addColumn('number', 'Index connecting arrival');
+              data_formatted.addColumn('number', 'Index connecting departure');
+              data_formatted.addColumn('number', 'Local');
+              data_formatted.addColumn('number', 'Connecting');
 
-          for (i = 0; i < 24; i++) {
+              for (i = 0; i < 24; i++) {
 
-            var timeofday = data_to_display.data[i][2];
-            var timeofdayh = timeofday.concat("h");
+                var timeofday = data_to_display.data[i][2];
+                var timeofdayh = timeofday.concat("h");
 
                   data_formatted.addRows([
-                  [data_to_display.data[i][0],
-                  data_to_display.data[i][1],
-                  timeofdayh,
-                  data_to_display.data[i][3],
-                  data_to_display.data[i][4],
-                  data_to_display.data[i][5],
-                  data_to_display.data[i][6],
-                  data_to_display.data[i][3]-data_to_display.data[i][4],
-                  data_to_display.data[i][5]-data_to_display.data[i][6]
-                ]]);
-              };
+                    [data_to_display.data[i][0],
+                    data_to_display.data[i][1],
+                    timeofdayh,
+                    data_to_display.data[i][3],
+                    data_to_display.data[i][4],
+                    data_to_display.data[i][5],
+                    data_to_display.data[i][6],
+                    data_to_display.data[i][3]-data_to_display.data[i][4],
+                    data_to_display.data[i][5]-data_to_display.data[i][6]
+                  ]]);
+                };
 
               // Create a chart, passing some options
-          myChart = new google.visualization.ChartWrapper({
-                'chartType': 'ColumnChart',
-                'containerId': 'chart_div',
-                'dataTable': data_formatted,
-                // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
-                'view': {'columns': [2,5,6,3,4]},
-                'chartArea' : {width:'600px',height:'100%'},
-                'options': {
-                  'chartArea': {height: '80%', width: '92%'},
-                  'series': {
-                            0 : {color: '#00B2D6' },
-                            1 : {color: '#00B2D6' },
-                            2 : {color: '#272133' },
-                            3 : {color: '#272133' },
-                          },
-                  'height':550,
-                  'width':'100%',
-                  'isStacked': true,
-                  'colors': ['#00b2d6'],
-                  'backgroundColor': { fill:'#FFFFFF' },
-                  'legend': {position: 'none'},
-                  'hAxis': {title: 'Time of the day',
-                            position: 'low',
-                            baselineColor: '#DFDCE3',
-                            maxAlternation: 1,
-                            textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                            titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                            gridlines: {count: 4}},
-                  'vAxis': {viewWindowMode: 'maximized',
-                            textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                            titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                            gridlines: {count: 0}},
-                },
-              });
+              myChart = new google.visualization.ChartWrapper({
+                  'chartType': 'ColumnChart',
+                  'containerId': 'chart_div',
+                  'dataTable': data_formatted,
+                  // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
+                  'view': {'columns': [2,5,6,3,4]},
+                  'chartArea' : {width:'600px',height:'100%'},
+                  'options': {
+                    'chartArea': {height: '80%', width: '92%'},
+                    'series': {
+                              0 : {color: '#00B2D6' },
+                              1 : {color: '#00B2D6' },
+                              2 : {color: '#272133' },
+                              3 : {color: '#272133' },
+                            },
+                    'height':550,
+                    'width':'100%',
+                    'isStacked': true,
+                    'colors': ['#00b2d6'],
+                    'backgroundColor': { fill:'#FFFFFF' },
+                    'legend': {position: 'none'},
+                    'hAxis': {title: 'Time of the day',
+                              position: 'low',
+                              baselineColor: '#DFDCE3',
+                              maxAlternation: 1,
+                              textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
+                              titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
+                              gridlines: {count: 4}},
+                    'vAxis': {viewWindowMode: 'maximized',
+                              textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
+                              titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
+                              gridlines: {count: 0}},
+                  },
+                });
 
               // Establish dependencies, declaring that 'filter' drives 'Chart',
               // so that the  chart will only display entries that are let through
               // given the filter
 
-            var filtered_view = new google.visualization.DataView(data_formatted);
-            var agg_table = google.visualization.data.group(
-                data_formatted,
-                [1],
-                [
-                  {'column': 7, 'aggregation': google.visualization.data.sum, 'type': 'number'},
-                  {'column': 8, 'aggregation': google.visualization.data.sum, 'type': 'number'}
-                ]
-            );
-            var local_value = agg_table.getValue(0, 1);
-            var connect_value = agg_table.getValue(0, 2);
-            var total_value = local_value + connect_value;
-            var data_for_pie = google.visualization.arrayToDataTable(
-                [['Type', 'Index'],['Local', Math.round(local_value*100/total_value)],['Connecting', Math.round(connect_value*100/total_value)]], false
-            );
+              var filtered_view = new google.visualization.DataView(data_formatted);
+              var agg_table = google.visualization.data.group(
+                  data_formatted,
+                  [1],
+                  [
+                    {'column': 7, 'aggregation': google.visualization.data.sum, 'type': 'number'},
+                    {'column': 8, 'aggregation': google.visualization.data.sum, 'type': 'number'}
+                  ]
+              );
+              var local_value = agg_table.getValue(0, 1);
+              var connect_value = agg_table.getValue(0, 2);
+              var total_value = local_value + connect_value;
+              var data_for_pie = google.visualization.arrayToDataTable(
+                  [['Type', 'Index'],['Local', Math.round(local_value*100/total_value)],['Connecting', Math.round(connect_value*100/total_value)]], false
+              );
 
-            myPieChart = new google.visualization.ChartWrapper({
-                'chartType': 'PieChart',
-                'containerId': 'piechart_div',
-                'dataTable' : data_for_pie,
-                'options': {
-                  'chartArea': {height: '80%', width: '80%'},
-                  'fontSize': 14,
-                  'height':200,
-                  'width':200,
-                  'slices': {
-                            0 : {color: '#272133'},
-                            1 : {color: '#00B2D6'},
-                          },
-                  'colors': ['#00b2d6'],
-                  'backgroundColor': { fill:'#FFFFFF' },
-                  'legend': {position: 'none',},
-                },
-              });
-              myChart.draw();
-              myPieChart.draw();
-              mixpanel.track("Hub success", {"Airport": filter.value,});
+              myPieChart = new google.visualization.ChartWrapper({
+                  'chartType': 'PieChart',
+                  'containerId': 'piechart_div',
+                  'dataTable' : data_for_pie,
+                  'options': {
+                    'chartArea': {height: '80%', width: '80%'},
+                    'fontSize': 14,
+                    'height':200,
+                    'width':200,
+                    'slices': {
+                              0 : {color: '#272133'},
+                              1 : {color: '#00B2D6'},
+                            },
+                    'colors': ['#00b2d6'],
+                    'backgroundColor': { fill:'#FFFFFF' },
+                    'legend': {position: 'none',},
+                  },
+                });
+                myChart.draw();
+                myPieChart.draw();
+                mixpanel.track("Hub success", {"Airport": filter.value,});
 
             } else {
-                    swal({  title: "Sorry",  text: "We don't have enough data for this request, </br> are you entering an IATA <span class='swal-highlight'>airport code</span>?",  html: true, type: "error",  confirmButtonText: "OK"});
-                    mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
-                  }
-            },
-            complete: function(){
-              $('#loading_extra').hide();
-              $('#loading_image').hide();
-              $('#dashboard_wrapper').show();
-            },
-            error: function() {
-              swal({  title: "Sorry",  text: "Something went wrong, please review your input.",  type: "error",  confirmButtonText: "OK"});
+              swal({  title: "Sorry",  text: "We don't have enough data for this request, </br> are you entering an IATA <span class='swal-highlight'>airport code</span>?",  html: true, type: "error",  confirmButtonText: "OK"});
               mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
             }
+          // closing the success clause of the AJAX call
+          },
+          complete: function(){
+            $('#loading_extra').hide();
+            $('#loading_image').hide();
+            $('#dashboard_wrapper').show();
+          },
+          error: function() {
+            swal({  title: "Sorry",  text: "Something went wrong, please review your input.",  type: "error",  confirmButtonText: "OK"});
+            mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
+          }
       });
     };
 
