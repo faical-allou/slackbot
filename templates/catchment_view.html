@@ -33,7 +33,7 @@
       mixpanel.track("Catchment selection", {"originairport": window.originairport, "Rangekm":window.rangekm, "Destinationcity": window.destinationcity, "Crossborder":window.crossborder });
 
       // parameters for sharing on Linkedin
-      window.traveltrendsURL = "http://traveltrends.herokuapp.com/catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity+"&crossborder="+window.crossborder;
+      window.traveltrendsURL = "./catchment_view?originairport="+window.originairport+"&rangekm="+window.rangekm+"&destinationcity="+window.destinationcity+"&crossborder="+window.crossborder;
       window.subtitle = "Traffic Analysis for "+window.originairport+"-"+window.destinationcity+". Source: http://partners.skyscanner.net";
 
      // loading image until the chart is done
@@ -225,7 +225,7 @@
                 <input id="crossBorderInput" class='grid_2' type="text" value="y/n" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
 
                 <input type="button" class="grid_2 button-style" value="check" onClick="drawChart()">
-                <!--<input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">-->
+                <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
 
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
               </div>
