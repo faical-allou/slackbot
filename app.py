@@ -102,12 +102,13 @@ def predict_od(in1):
 
 @app.route('/catchment_data/<airport>/<rangekm>/<destinationcity>/<crossborder>', methods=['GET'])
 def catchment_data(airport, rangekm, destinationcity,crossborder):
-        catchment = extractdata.getcatchment(airport, rangekm, destinationcity,crossborder)
-        leakage = extractdata.getleakage(airport, rangekm, destinationcity,crossborder)
+        #catchment = extractdata.getcatchment(airport, rangekm, destinationcity,crossborder)
+        #leakage = extractdata.getleakage(airport, rangekm, destinationcity,crossborder)
         lastupdate = extractdata.getlasttimeupdate('ptbexits_leakage')
-
-        resp = jsonify(catchment=catchment[0], leakage=leakage[0], airport_share = leakage[1], airport_coord = catchment[1], update = lastupdate, confidence = leakage[2], length = [len(catchment[0]), len(leakage[0])])
-        if catchment[2] == 1 : resp = jsonify(catchment=0, leakage=0, airport_share = 0, airport_coord = 0, update = 0, confidence = 0, length = [0, 0])
+        fullcatchment = extractdata.getfullcatchment(airport, rangekm, destinationcity,crossborder)
+        #resp = jsonify(catchment=catchment[0], leakage=leakage[0], airport_share = leakage[1], airport_coord = catchment[1], update = lastupdate, confidence = leakage[2], length = [len(catchment[0]), len(leakage[0])])
+        resp = jsonify (catchment=fullcatchment[0], leakage=fullcatchment[2], airport_share = fullcatchment[3], airport_coord = fullcatchment[1], update = lastupdate, confidence = fullcatchment[4], length = [len(fullcatchment[0]), len(fullcatchment[2])])
+        if fullcatchment[5] == 1 : resp = jsonify(catchment=0, leakage=0, airport_share = 0, airport_coord = 0, update = 0, confidence = 0, length = [0, 0])
 
         return resp
 

@@ -4,6 +4,8 @@ import collections
 import datetime
 import numpy as np
 import math
+from itertools import groupby
+from operator import itemgetter
 
 class extractdata:
     def getconnection(self):
@@ -354,6 +356,9 @@ class extractdata:
         resp = (rowarray_list, airport_coord, peak_catchment)
         return resp
 
+
+
+
     def getleakage(self, airport, rangekm, destinationcity, crossborder):
         connection = self.getconnection()
         cursor = connection.cursor()
@@ -437,6 +442,113 @@ class extractdata:
         confidence = 1.96* math.sqrt(airport_share*(1-airport_share)/(sample_size))
         resp = (rowarray_list,airport_share, confidence)
         return resp
+
+    def getfullcatchment(self, airport, rangekm, destinationcity, crossborder):
+        connection = self.getconnection()
+        cursor = connection.cursor()
+        crossbordercondition = ""
+        if crossborder != 'Y': crossbordercondition = "and airport_country = usercountry"
+
+        query = "SELECT originairport, destinationcitycode, usercountry, usercity, sum(sum_seats) as sum_seats, city_latitude, city_longitude, airport_lat, airport_long\
+                from (\
+                    SELECT usercountry, usercity, originairport, destinationcitycode, catchment.latitude as city_latitude, catchment.longitude as city_longitude, airport_lat, airport_long, \
+                    iata1.latitude,iata1.longitude, ground_transport,airport_country, \
+                    acos((cos(radians( catchment.latitude )) * cos(radians( iata1.latitude )) * cos(radians( iata1.longitude ) - radians( airport_long )) \
+                     + sin(radians( catchment.latitude )) * sin(radians( iata1.latitude ))))*6300 as distance_alternate,  \
+                    acos((cos(radians(airport_lat )) * cos(radians(  iata2.latitude )) * cos(radians( airport_long ) - radians( iata2.longitude )) \
+                     + sin(radians( airport_lat )) * sin(radians(  iata2.latitude ))))*6300 as distance_od, \
+                    acos((cos(radians(iata1.latitude )) * cos(radians(  iata2.latitude )) * cos(radians( iata1.longitude ) - radians( iata2.longitude )) \
+                     + sin(radians( iata1.latitude )) * sin(radians(  iata2.latitude ))))*6300 as distance_newod, \
+                    sum(seats) as sum_seats \
+                      from (\
+                      SELECT *\
+                           from (\
+                        SELECT *, \
+                        acos(cos(radians( latitude )) * cos(radians( airport_lat )) * cos(radians( longitude ) - radians( airport_long )) + sin(radians( latitude )) * sin(radians( airport_lat )))*6380 AS ground_transport\
+                        from citypopandlocations \
+                        CROSS JOIN \
+                          (\
+                          SELECT airport, countrycode as airport_country, latitude as airport_lat, longitude as airport_long \
+                          FROM iatatogeo iata0\
+                          WHERE airport = '"+airport+"'\
+                          ) as airport_coord \
+                       ) as interim_table\
+                      where ground_transport < "+rangekm+"\
+                      ) as catchment \
+                    JOIN ptbexits_leakage on (usercity = accentcity and usercountry = airport_country) \
+                    JOIN iatatogeo iata1 on (originairport = iata1.airport)\
+                    JOIN iatatogeo iata2 on (destinationcitycode = iata2.airport)\
+                    GROUP BY usercountry, usercity, originairport, destinationcitycode, \
+                    catchment.latitude, catchment.longitude, airport_lat, airport_long, distance_alternate, \
+                    iata1.latitude,iata1.longitude , ground_transport, distance_od, distance_newod,airport_country \
+                    ) as fulltable\
+                WHERE destinationcitycode = '"+destinationcity+"' and \
+                originairport is not NULL and distance_alternate < distance_od/3 \
+                and distance_newod + distance_alternate < 1.5*distance_od\
+                "+ crossbordercondition +"\
+                GROUP BY originairport, destinationcitycode, usercountry, usercity, city_latitude, city_longitude, airport_lat, airport_long \
+                ORDER BY sum_seats DESC"
+
+        cursor.execute(query)
+
+        rows = ('a', 'b','c', 'd', 1,2,3,4,5)
+        rowarray_list = []
+
+        while len(rows) > 0:
+
+            rows = cursor.fetchall()
+            # Convert query to row arrays
+            for row in rows:
+                rows_to_convert = (row[0], row[1], row[2], row[3], row[4],row[5],row[6],row[7],row[8] )
+                t = list(rows_to_convert)
+                rowarray_list.append(t)
+
+        if len(rowarray_list) == 0 : rowarray_list.append([0,0,0,0,0,0,0,0,0])
+        connection.close()
+
+        catchment_list = []
+        for i, g in groupby(sorted(rowarray_list, key=lambda x: (x[2],x[3],x[5],x[6]) ), key=lambda x: (x[2],x[3],x[5],x[6])):
+            catchment_list.append([i[0],i[1],i[2],i[3], float(sum(v[4] for v in g))])
+
+        catchment_list.sort(key=itemgetter(4), reverse=True)
+        del catchment_list[30:]
+        
+
+        leakage_list = []
+        for i, g in groupby(sorted(rowarray_list, key=lambda x: (x[0],x[1]) ), key=lambda x: (x[0],x[1])):
+            leakage_list.append([i[0],i[1], float(sum(v[4] for v in g))])
+
+        leakage_list.sort(key=itemgetter(2), reverse=True)
+        del leakage_list[10:]
+
+        #normalizing the data
+        peak_catchment = max(row[4] for row in catchment_list )+1
+        for row in catchment_list:
+            row[4] = round(row[4]*100/peak_catchment)
+
+        airport_coord = (rowarray_list[0][7], rowarray_list[0][8])
+
+        #normalize data, removes airports with less than 1%;
+        sum_leakage = sum(row[2] for row in leakage_list )+1
+        leakage_list = [row for row in leakage_list if row[2]> sum_leakage/100]
+
+        sum_leakage = sum(row[2] for row in leakage_list )+1
+
+        #identify the home airport and its share of total
+        home_size = 0
+        sample_size = 1
+        for row in leakage_list:
+            if row[0] == airport : sample_size = float(row[2])
+            row[2] = round(row[2]*100/sum_leakage)
+            if row[0] == airport : home_size = row[2]
+
+        airport_share = home_size / (sum(row[2] for row in leakage_list)+1)
+        #calculate the confidence factor for 95% of a sample of unknown size
+        confidence = 1.96* math.sqrt(airport_share*(1-airport_share)/(sample_size))
+
+        resp = (catchment_list, airport_coord,leakage_list,airport_share, confidence, peak_catchment)
+        return resp
+
 
     def getpopularitytablealexa(self, filtertype, city ):
 
