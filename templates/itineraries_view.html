@@ -29,9 +29,9 @@
     if (origincity === undefined || destinationcity === undefined) {
     origincity = document.getElementById("originCityInput").value;
     destinationcity = document.getElementById("destinationCityInput").value
+    mixpanel.track("Itinerary selection", {"O&D": origincity+"-"+destinationcity});
     };
 
-    mixpanel.track("Itinerary selection", {"O&D": origincity+"-"+destinationcity});
     var url_to_call = './itineraries_data/'+origincity+'/'+destinationcity
 
     // parameters for sharing on Linkedin
@@ -77,14 +77,14 @@
                     {lat:itintable[i][12],lng:itintable[i][13]},
                     {lat:itintable[i][6],lng:itintable[i][7]}
                   ];
-                flightPath[i] = new google.maps.Polyline({
-                  path: flightPlanCoordinates,
-                  geodesic: true,
-                  strokeColor: '#5be2ed',
-                  strokeOpacity: 1.0,
-                  strokeWeight: 4*itintable[i][14],
-                  zIndex: i,
-                });
+                  flightPath[i] = new google.maps.Polyline({
+                    path: flightPlanCoordinates,
+                    geodesic: true,
+                    strokeColor: '#5be2ed',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 4*itintable[i][14],
+                    zIndex: i,
+                  });
                 flightPath[i].setMap(map);
 
                 var departure = itintable[i][1];
@@ -154,7 +154,7 @@
         }
     });
 
-        };
+  };
 
 
 $(document).ready(function () {
