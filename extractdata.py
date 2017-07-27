@@ -519,7 +519,7 @@ class extractdata:
             leakage_list.append([i[0],i[1], float(sum(v[4] for v in g))])
 
         leakage_list.sort(key=itemgetter(2), reverse=True)
-        del leakage_list[10:]
+        del leakage_list[5:]
 
         #normalizing the data
         peak_catchment = max(row[4] for row in catchment_list )+1
