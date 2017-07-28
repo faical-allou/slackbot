@@ -14,7 +14,7 @@ class extractdata:
 
         #Define our connection string to heroku basic database
         if os.environ.get('ON_HEROKU'):
-            conn_string = DATABASE_URL
+            conn_string = os.environ.get('DATABASE_URL')
         else :
             conn_string = connectionStringDatabase
         #connect
