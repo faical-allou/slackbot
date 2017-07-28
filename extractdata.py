@@ -1,3 +1,4 @@
+import os
 import psycopg2
 import simplejson
 import collections
@@ -6,13 +7,17 @@ import numpy as np
 import math
 from itertools import groupby
 from operator import itemgetter
+from configdatabase import connectionStringDatabase
 
 class extractdata:
     def getconnection(self):
 
         #Define our connection string to heroku basic database
-        conn_string = "host='ec2-54-235-125-135.compute-1.amazonaws.com' port='5432' dbname='d4sjjjfm3g35dc' user='swobzoejynjhpk' password='aJS-yO6EBUg6DgzVQSFwp3Ac1v'"
-     	#connect
+        if os.environ.get('ON_HEROKU'):
+            conn_string = DATABASE_URL
+        else :
+            conn_string = connectionStringDatabase
+        #connect
         try:
             conn = psycopg2.connect(conn_string)
         except psycopg2.Error as e:
