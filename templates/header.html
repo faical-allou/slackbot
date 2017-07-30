@@ -14,21 +14,21 @@
 
   <!-- Load the Javascript -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='sweetalert/sweetalert.min.js') }}"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <script src="{{ url_for('static', filename='js/airportcitylist.js') }}"></script>
   <script src="{{ url_for('static', filename='js/customjs.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/airportcitylist.js') }}"></script>
+  <script async type="text/javascript" src="{{ url_for('static', filename='sweetalert/sweetalert.min.js') }}"></script>
 
   <!-- Load the Javascript for Google Charts-->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
   <!-- Load the Javascript for Linkedin -->
-  <script type="text/javascript" src="//platform.linkedin.com/in.js">
+  <script async type="text/javascript" src="//platform.linkedin.com/in.js">
     api_key: 81dtk3zyepc64m
     authorize: true
     onLoad: onLinkedInLoad
   </script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/sharelinkedin.js') }}"></script>
+  <script async type="text/javascript" src="{{ url_for('static', filename='js/sharelinkedin.js') }}"></script>
 
 
   <!-- start Mixpanel -->

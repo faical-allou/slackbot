@@ -35,7 +35,7 @@ function drawChart(data_to_display) {
           ]]);
     };
     var myView = new google.visualization.DataView(data_formatted);
-    myView.setRows([0,1,2,3,4,5,6,7,8,9]);
+    myView.setRows([0,1,2,3,4,5,6,7,8,9,10,11]);
     var dashboard = new google.visualization.Dashboard(
             document.getElementById('dashboard_div'));
         // Create 2 filters, passing some options
@@ -82,7 +82,7 @@ function drawChart(data_to_display) {
     // Draw the dashboard.
     dashboard.draw(myView);
 
-    //retrieve 10 values every time the filters change
+    //retrieve 12 values every time the filters change
     google.visualization.events.addListener(fromFilter, 'statechange', function() {
       var new_view = new google.visualization.DataView(data_formatted);
       value_filtered = fromFilter.getState();
@@ -90,7 +90,7 @@ function drawChart(data_to_display) {
       new_view.setRows(new_view.getFilteredRows([{column: 1, value: value_filtered.selectedValues[0]}]));
       var filtered_view = new google.visualization.DataView(new_view);
       lastRowIndex = filtered_view.getNumberOfRows()-1
-      if (lastRowIndex > 1) {filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
+      if (lastRowIndex > 1) {filtered_view.hideRows(Math.min(lastRowIndex, 12),lastRowIndex);
       dashboard.draw(filtered_view);};
     });
 
@@ -101,7 +101,7 @@ function drawChart(data_to_display) {
       new_view.setRows(new_view.getFilteredRows([{column: 2, value: value_filtered.selectedValues[0]}]));
       var filtered_view = new google.visualization.DataView(new_view);
       lastRowIndex = filtered_view.getNumberOfRows()-1
-      if (lastRowIndex > 1) {filtered_view.hideRows(Math.min(lastRowIndex, 10),lastRowIndex);
+      if (lastRowIndex > 1) {filtered_view.hideRows(Math.min(lastRowIndex, 12),lastRowIndex);
       dashboard.draw(filtered_view);};
     });
 };

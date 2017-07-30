@@ -48,11 +48,9 @@
               +"% </strong> of the traffic from the catchment <strong>("+rangekm+"km </strong>around the airport) going to <strong>"
               +destinationcity+"</strong> <br/>"
               +"With better service such as non-stop, frequency etc... the traffic could grow <strong>"+ recapture+"%</strong></br>"
-              +"<span class='fs-14'>Note: given the sample size the confidence interval for the share of "
-              +originairport+" is +-"+ Math.round(data_to_display.confidence*100) +"%</span>"
             } else {
               document.getElementById("text_recapture").innerHTML = "<strong>"+originairport
-              +" serves less than 1% of the traffic</strong> from this catchment area to go to <strong>"+destinationcity+"</strong>."
+              +" serves less than 1% of the traffic</strong> from this catchment area going to <strong>"+destinationcity+"</strong>."
             };
             if (data_to_display.length[0] >= 1 && data_to_display.length[1] >= 1) {
               // Create the data table.
