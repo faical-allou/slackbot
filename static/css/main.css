@@ -92,6 +92,8 @@ textarea {
 	resize: vertical;
 }
 
+a { color: black; }
+
 /* ==========================================================================
 Chrome Frame prompt
 ========================================================================== */
@@ -131,15 +133,10 @@ Author's custom styles
 .bg-image{background-size: 100%; background-image: url(img/shibuya.jpg);}
 
 /* =============================================================================
-   link
-   ========================================================================== */
-a.underline:hover{text-decoration:underline;}
-/* =============================================================================
    Padding
    ========================================================================== */
 
 /*padding*/
-.p-2{padding:2px;}
 .pb-30 {padding-bottom: 30px}
 
 /* =============================================================================
@@ -166,8 +163,8 @@ a.underline:hover{text-decoration:underline;}
 
 .menu {
 	width: 100%;
-  float: right;
-  padding-right: 100px;
+  	float: right;
+  	padding-right: 100px;
 	padding-top: 30px;
 	padding-bottom: 30px;
 	text-align: right;
@@ -182,13 +179,13 @@ a.underline:hover{text-decoration:underline;}
 
 .menu li {
 	display: inline;
-  margin-left: 15px;
+  	margin-left: 15px;
 	margin-right: 15px;
 }
 .menu li a {
-  text-decoration: none;
+  	text-decoration: none;
 }
-.menu li a {color:#372f45;}      /* unvisited link */
+.menu li a {color:#000;}      /* unvisited link */
 .menu li a:visited {color:#372f45;}  /* visited link */
 .menu li a:hover {color:#00B2D6;}  /* mouse over link */
 .menu li a:active {color:#372f45;}  /* selected link */
@@ -217,16 +214,16 @@ a.underline:hover{text-decoration:underline;}
 
 .home-link { padding-top: 30px; padding-bottom: 20px; margin: 5px; text-align: center; background-color:rgba(255,255,255,1);}
 .home-link:hover { box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) }
-.home-link a {color:#372f45;}      /* unvisited link */
-.home-link a:visited {color:#372f45;}  /* visited link */
+.home-link a {color:#000;}      /* unvisited link */
+.home-link a:visited {color:#000;}  /* visited link */
 .home-link a:hover {color:#00B2D6;}  /* mouse over link */
-.home-link a:active {color:#372f45;}
+.home-link a:active {color:#000;}
 
 .home-mini-link { padding-top: 10px; padding-bottom: 10px; margin: 2px; text-align: center; background-color:rgba(255,255,255,1);}
-.home-mini-link a {color:#372f45;}      /* unvisited link */
-.home-mini-link a:visited {color:#372f45;}  /* visited link */
+.home-mini-link a {color:#000;}      /* unvisited link */
+.home-mini-link a:visited {color:#000;}  /* visited link */
 .home-mini-link a:hover {color:#00B2D6;}  /* mouse over link */
-.home-mini-linkk a:active {color:#372f45;}
+.home-mini-linkk a:active {color:#000;}
 
 
 
