@@ -81,7 +81,7 @@
               ]]);
 
               var options= {
-                'height':500,
+                'height':550,
                 'width':'100%',
                 'legend': {position: 'none'},
                 'showInfoWindow': true,
@@ -124,22 +124,17 @@
             };
 
             // Create a chart, passing some options
+          vAxisGraph.title = "Most used airport (%)";
+          standardOptions.width = 300;
+          standardOptions.chartArea.width = '60%';
+          
           leakageChart = new google.visualization.ChartWrapper({
               'chartType': 'BarChart',
               'containerId': 'chart2_div',
               'dataTable': data_formatted,
 
               // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
-              'options': {
-                'title': "Most used airport (%)",
-                'titleTextStyle': {fontSize: 16,  bold: true},
-                'legend': {position: 'none'},
-                'chartArea' : {width:'60%',height:'90%'},
-                'width': 300,
-                'height': 500,
-                'colors': ['#00b2d6'],
-                'hAxis': {minValue: 0},
-              },
+              'options': standardOptions,
             });
 
           leakageChart.draw();
@@ -197,7 +192,7 @@
         </div>
 
        <div class="bg-white">
-        <div class="container_12 ta-c fs-16 pb-30 pt-30">
+        <div class="container_12 main-graph-area">
           <div id="dashboard_wrapper">
               <div class="container_12 mb-30">
                 <!--Divs that will hold each control and chart-->

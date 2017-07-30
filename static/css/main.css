@@ -545,3 +545,5 @@ a.underline:hover{text-decoration:underline;}
 .swal-highlight {font-weight:bold; color:#cf3d36 }
 
 .update_time_container {margin-top: 30px; text-align: center }
+
+.main-graph-area {text-align: center; font-size:16px; padding-bottom: 30px}

@@ -46,30 +46,14 @@
                     data_formatted.addRows([data_to_display.data[i]]);
               };
               // Create a chart, passing some options
+              hAxisGraph.title= 'Number of ranks gained per month',
               myChart = new google.visualization.ChartWrapper({
                     'chartType': 'ColumnChart',
                     'containerId': 'chart_div',
                     'dataTable': data_formatted,
-                    // The  chart will use the columns '2' and '3' - note:index start at 0
+                    // The  chart will use the columns '0' and '1'
                     'view': {'columns': [0,1]},
-                    'options': {
-                      'width': 750,
-                      'height':600,
-                      'chartArea': { width: '80%', height: '80%'},
-                      'colors': ['#00b2d6'],
-                      'backgroundColor': { fill:'#FFFFFF' },
-                      'vAxis': {textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                                titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                                gridlines: {count: 0}},
-                      'hAxis': {title: 'Number of ranks gained per month',
-                                minValue: 0,
-                                baselineColor: '#DFDCE3',
-                                textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                                titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                                gridlines: {count: 0}},
-                      'legend': {position: 'none'},
-                      //  animation doesn't work with dataview - bug
-                    }
+                    'options': standardOptions
                 });
 
                 // Draw the chart
@@ -134,7 +118,7 @@
           </div>
 
           <div class="bg-white">
-           <div class="container_12 ta-c fs-18">
+           <div class="container_12 main-graph-area">
              <div id="dashboard_wrapper">
                  <!--Divs that will hold each control and chart-->
                  <div id="chart_div" class="zlow"></div>

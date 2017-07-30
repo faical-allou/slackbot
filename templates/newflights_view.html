@@ -64,19 +64,13 @@ function drawChart(data_to_display) {
           }
         });
         // Create a chart, passing some options
+    hAxisGraph.minValue = undefined;
     var myChart = new google.visualization.ChartWrapper({
           'chartType': 'Timeline',
           'containerId': 'chart_div',
           // The  chart will only use the columns listed - note:index start at 0
           'view': {'columns': [0,3,6,7]},
-          'options': {
-            'height':600,
-            'width':700,
-            'colors': ['#00b2d6'],
-            'backgroundColor': { fill:'#FFFFFF' },
-            'timeline':{rowLabelStyle:{fontName:"Helvetica", color:'#1b1524', fontSize: 16 },
-                        barLabelStyle:{fontSize: 16} },
-          }
+          'options': standardOptions,
     });
     // Establish dependencies, declaring that 'filter' drives 'Chart',
     // so that the  chart will only display entries that are let through
@@ -154,7 +148,7 @@ $(document).ready(function (drawchart) {
         </div>
 
        <div class="bg-white">
-        <div class="container_12 ta-c fs-18 pb-30 pt-30">
+        <div class="container_12 main-graph-area">
           <div id="dashboard_wrapper">
           <!--Div that will hold the dashboard-->
             <div id="dashboard_div" >

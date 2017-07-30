@@ -6,23 +6,14 @@
       google.charts.load('current', {'packages':['corechart', 'controls']});
 
       // define options for the charts to be used throughout
-      var chartoptions = {
-        'height':600,
-        'width':700,
-        'chartArea': {width: '75%', height: '80%'},
-        'curveType': 'function',
-        'lineWidth': 4,
-        'colors': ['#00B2D6', '#272133', '#005567'],
-        'backgroundColor': { fill:'#FFFFFF' },
-        'vAxis': {title: 'Rank (1 is most searched for)',
-                  textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                  titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                  direction: -1,
-                  gridlines: {count: -1},
-                  maxValue: 10,
-                  },
-        'legend': {position: 'bottom'},
-      };
+      vAxisGraph.title='Rank (1 is most searched for)';
+      vAxisGraph.direction = -1;
+      vAxisGraph.gridlines = {count: -1};
+      vAxisGraph.maxValue= 1;
+      hAxisGraph.minValue = undefined;
+      hAxisGraph.gridlines = undefined;
+      
+      var chartoptions = standardOptions;
 
     // Callback that creates and populates a data table,
     // instantiates the chart, passes in the data and draws it.
@@ -203,7 +194,7 @@
         </div>
 
        <div class="bg-white">
-        <div class="container_12 ta-c fs-16 pb-30">
+        <div class="container_12 main-graph-area">
           <!--Div that will hold the dashboard-->
           <div id="dashboard_wrapper" >
             <!--Divs that will hold each control and chart-->

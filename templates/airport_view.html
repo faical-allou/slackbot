@@ -58,81 +58,24 @@
                 };
 
               // Create a chart, passing some options
+              standardOptions.isStacked = true;
+              standardOptions.series= {
+                0 : {color: '#00B2D6' },
+                1 : {color: '#00B2D6' },
+                2 : {color: '#272133' },
+                3 : {color: '#272133' },
+              };
               myChart = new google.visualization.ChartWrapper({
                   'chartType': 'ColumnChart',
                   'containerId': 'chart_div',
                   'dataTable': data_formatted,
                   // The  chart will only use the columns listed - note:index start at 0 - inverted so connecting is at the bottom
                   'view': {'columns': [2,5,6,3,4]},
-                  'chartArea' : {width:'600px',height:'100%'},
-                  'options': {
-                    'chartArea': {height: '80%', width: '92%'},
-                    'series': {
-                              0 : {color: '#00B2D6' },
-                              1 : {color: '#00B2D6' },
-                              2 : {color: '#272133' },
-                              3 : {color: '#272133' },
-                            },
-                    'height':550,
-                    'width':'100%',
-                    'isStacked': true,
-                    'colors': ['#00b2d6'],
-                    'backgroundColor': { fill:'#FFFFFF' },
-                    'legend': {position: 'none'},
-                    'hAxis': {title: 'Time of the day',
-                              position: 'low',
-                              baselineColor: '#DFDCE3',
-                              maxAlternation: 1,
-                              textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                              titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                              gridlines: {count: 4}},
-                    'vAxis': {viewWindowMode: 'maximized',
-                              textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                              titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                              gridlines: {count: 0}},
-                  },
+                  'options': standardOptions,
                 });
 
-              // Establish dependencies, declaring that 'filter' drives 'Chart',
-              // so that the  chart will only display entries that are let through
-              // given the filter
-
-              var filtered_view = new google.visualization.DataView(data_formatted);
-              var agg_table = google.visualization.data.group(
-                  data_formatted,
-                  [1],
-                  [
-                    {'column': 7, 'aggregation': google.visualization.data.sum, 'type': 'number'},
-                    {'column': 8, 'aggregation': google.visualization.data.sum, 'type': 'number'}
-                  ]
-              );
-              var local_value = agg_table.getValue(0, 1);
-              var connect_value = agg_table.getValue(0, 2);
-              var total_value = local_value + connect_value;
-              var data_for_pie = google.visualization.arrayToDataTable(
-                  [['Type', 'Index'],['Local', Math.round(local_value*100/total_value)],['Connecting', Math.round(connect_value*100/total_value)]], false
-              );
-
-              myPieChart = new google.visualization.ChartWrapper({
-                  'chartType': 'PieChart',
-                  'containerId': 'piechart_div',
-                  'dataTable' : data_for_pie,
-                  'options': {
-                    'chartArea': {height: '80%', width: '80%'},
-                    'fontSize': 14,
-                    'height':200,
-                    'width':200,
-                    'slices': {
-                              0 : {color: '#272133'},
-                              1 : {color: '#00B2D6'},
-                            },
-                    'colors': ['#00b2d6'],
-                    'backgroundColor': { fill:'#FFFFFF' },
-                    'legend': {position: 'none',},
-                  },
-                });
                 myChart.draw();
-                myPieChart.draw();
+
                 mixpanel.track("Hub success", {"Airport": filter.value,});
 
             } else {
@@ -176,12 +119,11 @@
         </div>
 
        <div class="bg-white">
-        <div class="container_12 ta-c fs-16 pb-30 pt-30">
+        <div class="container_12 main-graph-area">
           <div id="dashboard_wrapper">
-              <div class="container_12 mb-30">
+              <div class="container_12">
                 <!--Divs that will hold each control and chart-->
-                <div id="piechart_div" class='grid_4'></div>
-                <div id="chart_div" class='grid_8'></div>
+                <div id="chart_div"></div>
               </div>
               <div class='container_12 filter-bar'>
                 <div class='grid_3'> &nbsp </div>

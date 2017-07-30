@@ -43,30 +43,15 @@ function drawChart(filtertype,city) {
                 data_formatted.addRows([data_to_display.data[i]]);
           };
           // Create a chart, passing some options
+          vAxisGraph.title = 'O&D';
+          hAxisGraph.title = 'Popularity Index';
           myChart = new google.visualization.ChartWrapper({
                 'chartType': 'BarChart',
                 'containerId': 'chart_div',
                 'dataTable': data_formatted,
                 // The  chart will use the columns '2' and '3' - note:index start at 0
                 'view': {'columns': [2,3]},
-                'options': {
-                  'width': 700,
-                  'height':600,
-                  'chartArea': {height: '90%'},
-                  'colors': ['#00b2d6'],
-                  'backgroundColor': { fill:'#FFFFFF' },
-                  'vAxis': {title: 'O&D',
-                            textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                            titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18}},
-                  'hAxis': {title: 'Popularity Index',
-                            minValue: 0,
-                            baselineColor: '#DFDCE3',
-                            textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
-                            titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
-                            gridlines: {count: 0}},
-                  'legend': {position: 'none'},
-                  //  animation doesn't work with dataview - bug
-                }
+                'options': standardOptions
             });
 
             // Draw the chart
@@ -127,7 +112,7 @@ autoSuggestInput("originCityInput", "city");
           </div>
 
           <div class="bg-white">
-           <div class="container_12 ta-c fs-18">
+           <div class="container_12 main-graph-area">
              <div id="dashboard_wrapper">
                  <!--Divs that will hold each control and chart-->
                  <div id="chart_div" class="zlow"></div>

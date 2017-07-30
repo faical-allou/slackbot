@@ -1,3 +1,33 @@
+backgroundGraph = { fill: '#FFF' };
+widthGraph = 750;
+heightGraph = 550;
+areaGraph = { width: '70%', height: '80%'};
+colorsGraph = ['#00B2D6', '#272133', '#005567'];
+vAxisGraph= {textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
+            titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
+            gridlines: {count: 0}};
+hAxisGraph= { minValue: 0,
+        baselineColor: '#DFDCE3',
+        textStyle: {color: '#272133', fontName: "Helvetica",fontSize: 16},
+        titleTextStyle: {color: '#272133', fontName: "Helvetica",fontSize: 18},
+        gridlines: {count: 0},
+        };
+legendGraph= {position: 'none'}; 
+curveTypeGraph= 'function';
+lineWidthGraph = 4;
+standardOptions= {'width': widthGraph,
+                  'height':heightGraph,
+                  'chartArea': areaGraph,
+                  'colors': colorsGraph,
+                  'backgroundColor': backgroundGraph,
+                  'vAxis': vAxisGraph,
+                  'hAxis': hAxisGraph,
+                  'legend': legendGraph,
+                  'lineWidth': lineWidthGraph,
+                  'curveType': curveTypeGraph,
+                  };
+
+
 function autoSuggestInput(inputfield, suggesttype){
   swal_on = 0;
     //type can only be airport or city
@@ -47,4 +77,4 @@ function drawOnEnterKey(e) {
         if (e.keyCode == 13 && list_input.indexOf(focused) >= 0 ) {
             drawChart();
         }
-}
+};
