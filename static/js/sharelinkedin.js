@@ -21,8 +21,8 @@ function onError(error) {
   if (error.message == "Invalid arguments: {S_400_BAD_REQUEST=Bad request}")
     {
       swal({
-        title:"Please log in first",
-        text: "It looks like you are not logged in on <strong><a href=http://www.linkedin.com target='_blank'>Linkedin</a></strong>",
+        title:'Please "Sign in with Linkedin" first',
+        text: "use the button at the bottom of the page to authorize posting from this page",
         type: "error",
         html: true
         }
@@ -32,7 +32,7 @@ function onError(error) {
     else
     {
       swal({
-        title: "Error...", 
+        title: "Error...",
         text: "Linkedin refused your post. </br><i>"+error.message+"</i> </br>We'll do what we can to fix this asap.",
         type: "error",
         html: true
