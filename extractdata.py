@@ -41,7 +41,7 @@ class extractdata:
         connection.close()
         return results[0][0]
 
-    def getpopularitytable(self, filtertype, city ):
+    def getpopularitytableredirects(self, filtertype, city ):
 
         connection = self.getconnection()
         cursor = connection.cursor()
@@ -79,6 +79,46 @@ class extractdata:
             rowarray_list[k][3] = round(rowarray_list[k][3]*100/max_popular)
 
         return rowarray_list
+
+    def getpopularitytablesearches(self, filtertype, city ):
+
+        connection = self.getconnection()
+        cursor = connection.cursor()
+        if filtertype == 'o':
+            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbsearches_popular \
+            WHERE origincitycode = '"+city+"' and destinationcitycode > 'AAA' \
+            ORDER BY seats DESC LIMIT 10"
+            cursor.execute(query)
+        else:
+            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbsearches_popular \
+            WHERE origincitycode > 'AAA' and destinationcitycode = '"+city+"' \
+            ORDER BY seats DESC LIMIT 10"
+            cursor.execute(query)
+
+        rows = [('a','b','c', 1)]
+        rowarray_list = []
+
+        while len(rows) > 0:
+
+            rows = cursor.fetchmany(500)
+            # Convert query to row arrays
+            for row in rows:
+                rows_to_convert = (row[0], row[1], row[2], row[3])
+                t = list(rows_to_convert)
+                rowarray_list.append(t)
+
+        connection.close()
+        #normalize the table (adding 1 to the sum to return 0 when empty)
+        if len(rowarray_list) == 10:
+            max_popular = max(max(row[3] for row in rowarray_list),1)
+        else :
+            max_popular = 99999
+
+        for k in range(0,len(rowarray_list)):
+            rowarray_list[k][3] = round(rowarray_list[k][3]*100/max_popular)
+
+        return rowarray_list
+
 
     def getnewflightstable(self):
 
@@ -354,7 +394,7 @@ class extractdata:
 
         catchment_list.sort(key=itemgetter(4), reverse=True)
         del catchment_list[30:]
-        
+
 
         leakage_list = []
         for i, g in groupby(sorted(rowarray_list, key=lambda x: (x[0],x[1]) ), key=lambda x: (x[0],x[1])):

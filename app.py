@@ -27,9 +27,11 @@ alexa_skill = alexa_skill()
 @app.route('/popularity_data/<filtertype>/<city>', methods=['GET'])
 def popularity_data(filtertype,city):
 
-    popular = extractdata.getpopularitytable(filtertype,city)
+    popular_redirects = extractdata.getpopularitytableredirects(filtertype,city)
+    popular_searches = extractdata.getpopularitytablesearches(filtertype,city)
+
     lastupdate = extractdata.getlasttimeupdate('ptbexits_popular')
-    resp = jsonify(data=popular, update = lastupdate, length = len(popular))
+    resp = jsonify(dataredirects=popular_redirects,datasearches=popular_searches, update = lastupdate, length = len(popular_redirects))
 
     return resp
 

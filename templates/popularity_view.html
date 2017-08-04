@@ -28,23 +28,64 @@ function drawChart(filtertype,city) {
       dataType: "json",
       crossDomain: true,
       success: function (api_results) {
-          data_to_display=api_results;
+          data_to_display_redirects=api_results.dataredirects;
+          data_to_display_searches=api_results.datasearches;
 
           if (api_results.length == 10 ) {
           update_time = new Date(api_results.update);
           document.getElementById("update_time").innerHTML = update_time.toDateString() ;
+
+          // Create the data table.
+          var data_formatted2 = new google.visualization.DataTable();
+          data_formatted2.addColumn('string', 'Origin');
+          data_formatted2.addColumn('string', 'Destination');
+          data_formatted2.addColumn('string', 'O&D');
+          data_formatted2.addColumn('number', 'Popularity');
+          for (i = 0; i < data_to_display_searches.length ; i++) {
+                data_formatted2.addRows([data_to_display_searches[i]]);
+          };
+          // Create a chart, passing some options
+          vAxisGraph.title = 'O&D';
+          hAxisGraph.title = 'Most searched (interest)';
+          standardOptions.width = '340';
+          standardOptions.chartArea.width = '35%'
+          myChart2 = new google.visualization.ChartWrapper({
+                'chartType': 'BarChart',
+                'containerId': 'chart_div2',
+                'dataTable': data_formatted2,
+                // The  chart will use the columns '2' and '3' - note:index start at 0
+                'view': {'columns': [2,3]},
+                'options': standardOptions
+            });
+
+            // Draw the chart
+            myChart2.draw();
+            setTimeout(function(){
+
+              google.visualization.events.addListener(myChart2.getChart(), 'select', function() {
+                var selectedItem = myChart2.getChart().getSelection()[0];
+                if (selectedItem) {
+                  var value = data_formatted2.getValue(selectedItem.row, 1);
+                  var url_to_send_to = "../trending_view?origincity="+city+"&destinationcity="+value
+                  mixpanel.track("Clickthrough", {"From_page":viewpage, "To_page": url_to_send_to});
+                  window.open(url_to_send_to);
+                }
+              });
+            },1000);
+
           // Create the data table.
           var data_formatted = new google.visualization.DataTable();
           data_formatted.addColumn('string', 'Origin');
           data_formatted.addColumn('string', 'Destination');
           data_formatted.addColumn('string', 'O&D');
           data_formatted.addColumn('number', 'Popularity');
-          for (i = 0; i < data_to_display.length ; i++) {
-                data_formatted.addRows([data_to_display.data[i]]);
+          for (i = 0; i < data_to_display_redirects.length ; i++) {
+                data_formatted.addRows([data_to_display_redirects[i]]);
           };
           // Create a chart, passing some options
-          vAxisGraph.title = 'O&D';
-          hAxisGraph.title = 'Popularity Index';
+
+          hAxisGraph.title = 'Most clicks (intent)';
+
           myChart = new google.visualization.ChartWrapper({
                 'chartType': 'BarChart',
                 'containerId': 'chart_div',
@@ -68,6 +109,8 @@ function drawChart(filtertype,city) {
                 }
               });
             },1000);
+
+
             mixpanel.track("Popularity success", {"Origin": filter.value,});
 
           } else {
@@ -115,7 +158,8 @@ autoSuggestInput("originCityInput", "city");
            <div class="container_12 main-graph-area">
              <div id="dashboard_wrapper">
                  <!--Divs that will hold each control and chart-->
-                 <div id="chart_div" class="zlow"></div>
+                 <div id="chart_div2" class="zlow grid_6"></div>
+                 <div id="chart_div" class="zlow grid_6"></div>
                  <div class='container_12 filter-bar'>
                    <div class='grid_4'> &nbsp </div>
                    <div class='grid_4'> <strong>Origin city</strong> </div>
