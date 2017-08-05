@@ -1,2 +1,11 @@
 ./static/font-awesome-4.7.0/* linguist-vendored
 ./static/sweetalert/* linguist-vendored
+
+static/font-awesome-4.7.0/* linguist-vendored
+static/sweetalert/* linguist-vendored
+
+font-awesome-4.7.0/* linguist-vendored
+sweetalert/* linguist-vendored
+
+font-awesome-4.7.0 linguist-vendored
+sweetalert linguist-vendored
