@@ -157,9 +157,11 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT * FROM ptbexits_itineraries \
-        WHERE origincitycode ='" + fromcity + "' AND destinationcitycode ='" + tocity + "' \
-        ORDER BY sum_seats DESC"
+        query = "SELECT origincitycode,originairport,origlat,origlong, destinationcitycode, destinationairport,destlat, \
+                destlong, stop1,stop1lat,stop1long,stop2,stop2lat,stop2long,sum_seats, rownumber \
+                FROM ptbexits_itineraries \
+                WHERE origincitycode ='" + fromcity + "' AND destinationcitycode ='" + tocity + "' \
+                ORDER BY sum_seats DESC"
 
         cursor.execute(query)
 
@@ -193,7 +195,7 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
 
-        query = "SELECT * \
+        query = "SELECT originairport, destinationairport, timehh_at_airport,type_of_pax,sum_seats  \
         FROM ptbexits_airport \
         WHERE originairport ='" + airport + "' or destinationairport ='" + airport + "' "
         cursor.execute(query)
@@ -470,7 +472,8 @@ class extractdata:
     def getfastestgrowing(self, city):
         connection = self.getconnection()
         cursor = connection.cursor()
-        query = "SELECT * FROM ptbsearches_trending \
+        query = "SELECT origincitycode, destinationcitycode, search_month, seats, ranking, count_od \
+            FROM ptbsearches_trending \
             WHERE  origincitycode = '"+city+"' \
             ORDER BY destinationcitycode, search_month ASC"
 
