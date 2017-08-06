@@ -23,9 +23,22 @@
     };
   };
 
+  function clearMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 1, lng: 103},
+      zoom: 3,
+      gestureHandling: 'cooperative',
+      scrollwheel: false,
+      styles: [
+        {elementType: 'geometry', stylers: [{color: '#DFDCE3'}]},
+        {featureType: 'water', elementType: 'geometry',stylers: [{color: '#272133'}]},
+      ]
+    });
+  };
+
   function drawChart(origincity, destinationcity) {
     $('#loading_extra').show();
-
+    
     if (origincity === undefined || destinationcity === undefined) {
     origincity = document.getElementById("originCityInput").value;
     destinationcity = document.getElementById("destinationCityInput").value
@@ -52,6 +65,7 @@
         complete:function(){
           $('#loading_extra').hide();
 
+          clearMap();
           if (result_length > 0) {
               var itintable = result_table;
 
@@ -123,6 +137,7 @@
                 bounds.extend(marker_to.position);
                 bounds.extend(marker_stop1.position);
                 bounds.extend(marker_stop2.position);
+
                 //now fit the map to the newly inclusive bounds
                 map.fitBounds(bounds);
 
@@ -190,16 +205,15 @@ autoSuggestInput("destinationCityInput", "city");
            <div id="map_wrapper">
               <div id="map" class="mb-30"></div>
               <div class='container_12 filter-bar'>
-                <div class='grid_1'> &nbsp </div>
+                <div class='grid_2'> &nbsp </div>
                 <div class='grid_2'> Origin </div>
                 <div class='grid_2'> Destination</div>
-                <div class='grid_7'> &nbsp </div>
+                <div class='grid_6'> &nbsp </div>
 
-                <div class='grid_1'> &nbsp </div>
+                <div class='grid_2'> &nbsp </div>
                 <input id="originCityInput" class='grid_2' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
                 <input id="destinationCityInput" class='grid_2' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
                 <input type="button" class="grid_2 button-style" value="draw" onClick="drawChart()">
-                <input type="button" class="grid_2 button-style mb-10" value="clear" onClick="initMap()">
                 <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
 
                 <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
