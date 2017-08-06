@@ -1,3 +1,4 @@
+//definition of standard options for googlecharts
 backgroundGraph = { fill: '#FFF' };
 widthGraph = 750;
 heightGraph = 550;
@@ -15,6 +16,7 @@ hAxisGraph= { minValue: 0,
 legendGraph= {position: 'none'}; 
 curveTypeGraph= 'function';
 lineWidthGraph = 4;
+
 standardOptions= {'width': widthGraph,
                   'height':heightGraph,
                   'chartArea': areaGraph,
@@ -27,7 +29,7 @@ standardOptions= {'width': widthGraph,
                   'curveType': curveTypeGraph,
                   };
 
-
+// function to autosuggest city or airport codes with validation and message
 function autoSuggestInput(inputfield, suggesttype){
   swal_on = 0;
     //type can only be airport or city
