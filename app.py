@@ -159,10 +159,6 @@ def render_trends():
     #Renders the passenger chart page
         return render_template("trending_view.html", title="What are they searching for" )
 
-@app.route('/neural_view', methods=['GET'])
-def render_neuralnetwork():
-    #Renders the passenger chart page
-        return render_template("neural_view.html", title="What are they searching for" )
 
 @app.route('/extract_view', methods=['GET'])
 def render_extract():
@@ -182,12 +178,24 @@ def render_fastest():
 
 @app.route('/')
 def render_home():
-    return render_template("home.html", title="What are they searching for" )
+    return render_template("_home.html", title="What are they searching for" )
 
 @app.route('/home')
 def render_homepage():
-    return render_template("home.html", title="What are they searching for" )
+    return render_template("_home.html", title="What are they searching for" )
 
+@app.route('/labs')
+def render_labs():
+    return render_template("x__labs.html", title="Artificial Intelligence" )
+
+@app.route('/price_elasticity')
+def render_price_elasticity():
+    return render_template("x_price_elasticity.html", title="Price Elasticity" )
+
+@app.route('/neural_view', methods=['GET'])
+def render_neuralnetwork():
+    #Renders the passenger chart page
+        return render_template("x_neural_view.html", title="What are they searching for" )
 
 @app.route('/<path:filename>', methods=['GET'])
 def display_static():
