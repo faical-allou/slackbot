@@ -168,7 +168,7 @@
 
             <!--Div that holds the animated gif until the chart loads-->
             <div id="loading_image" class="grid_12 pb-30">
-              <img src="{{ url_for('static', filename='loading.gif') }}"></img>
+              <img src="{{ url_for('static', filename='img/loading.gif') }}"></img>
             </div>
 
             <div id='phase2_wrapper'>
@@ -178,7 +178,7 @@
                 <input id="dest7" class='grid_3' type="text" value="To city (e.g. LAX)" onfocus='if (this.value=="To city (e.g. LAX)") {this.value="";}'>
                 <input id="submit_predict" type="button" class="grid_3 button-style" value="What do you think?" onClick="predict_od()">
                 <div id="loading_extra" class="grid_3">
-                  <img src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
+                  <img src="{{ url_for('static', filename='img/loading_extra.gif') }}"></img>
                 </div>
               </div>
 

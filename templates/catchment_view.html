@@ -94,12 +94,12 @@
                 },
                 'icons': {
                   _city_: { //change to city to use a custom icon
-                    normal:   "{{ url_for('static', filename='citylogo.png') }}",
-                    selected: "{{ url_for('static', filename='citylogo.png') }}"
+                    normal:   "{{ url_for('static', filename='img/citylogo.png') }}",
+                    selected: "{{ url_for('static', filename='img/citylogo.png') }}"
                   },
                   airport: {
-                    normal:   "{{ url_for('static', filename='airportlogo.png') }}",
-                    selected: "{{ url_for('static', filename='airportlogo.png') }}"
+                    normal:   "{{ url_for('static', filename='img/airportlogo.png') }}",
+                    selected: "{{ url_for('static', filename='img/airportlogo.png') }}"
                   },
                 }
             };
@@ -186,7 +186,7 @@
           <div class="title"> Catchment Area and Traffic Leakage </div>
           <!--Div that holds the animated gif until the chart loads-->
           <div id="loading_image" class="grid_12 pb-30">
-            <img src="{{ url_for('static', filename='loading.gif') }}"></img>
+            <img src="{{ url_for('static', filename='img/loading.gif') }}"></img>
           </div>
         </div>
 
@@ -215,7 +215,7 @@
                 <input type="button" class="grid_2 button-style" value="check" onClick="drawChart()">
                 <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
 
-                <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
+                <img id="loading_extra" src="{{ url_for('static', filename='img/loading_extra.gif') }}"></img>
               </div>
 
               <div class="grid_12 update_time_container">

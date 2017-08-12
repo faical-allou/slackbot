@@ -15,6 +15,7 @@ from extractdata import *
 from neural import *
 from alexa import *
 import gc
+from extractopendata import *
 app = Flask(__name__, static_folder='static')
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
@@ -23,6 +24,8 @@ app.config['JSON_AS_ASCII'] = False
 extractdata = extractdata()
 neural_network = neural_network()
 alexa_skill = alexa_skill()
+
+extractopendata = extractopendata()
 
 @app.route('/popularity_data/<filtertype>/<city>', methods=['GET'])
 def popularity_data(filtertype,city):
@@ -133,6 +136,15 @@ def popularity_data_alexa():
     resp = jsonify(alexa_skill.speak_populardestinations(popular))
     return resp
 
+@app.route('/geo_data', methods=['GET'])
+def geodata():
+    airport_coords = extractopendata.getopenairportdata()
+    resp = jsonify(data=airport_coords, length=len(airport_coords))
+    return resp
+
+
+
+
 
 @app.route('/popularity_view', methods=['GET'])
 def render_pax():
@@ -159,7 +171,6 @@ def render_trends():
     #Renders the passenger chart page
         return render_template("trending_view.html", title="What are they searching for" )
 
-
 @app.route('/extract_view', methods=['GET'])
 def render_extract():
     #Renders the passenger chart page
@@ -174,6 +185,13 @@ def render_catchment():
 def render_fastest():
     #Renders the passenger chart page
         return render_template("fastestgrowing_view.html", title="What are they searching for" )
+
+@app.route('/airport_map', methods=['GET'])
+def render_airport_map():
+        return render_template("airport_map.html", title="What are they searching for" )
+
+
+
 
 
 @app.route('/')
@@ -196,6 +214,8 @@ def render_price_elasticity():
 def render_neuralnetwork():
     #Renders the passenger chart page
         return render_template("x_neural_view.html", title="What are they searching for" )
+
+        
 
 @app.route('/<path:filename>', methods=['GET'])
 def display_static():

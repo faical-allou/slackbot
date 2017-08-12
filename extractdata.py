@@ -537,6 +537,5 @@ class extractdata:
 
         return rowarray_list
 
-
 def __init__(self):
         print ("in init")

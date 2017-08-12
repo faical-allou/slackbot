@@ -1,0 +1,118 @@
+{% extends "_header.html" %}
+{% block content %}
+
+<script src="{{ url_for('static', filename='js/markerclusterer.js') }}"></script>
+
+<script>
+  function initMap() {
+
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 1, lng: 103},
+      zoom: 3,
+      gestureHandling: 'cooperative',
+      scrollwheel: false,
+      styles: [
+        {elementType: 'geometry', stylers: [{color: '#DFDCE3'}]},
+        {featureType: 'water', elementType: 'geometry',stylers: [{color: '#272133'}]},
+        {featureType: "administrative",elementType: "geometry",stylers: [{visibility: "off"}]},
+        {featureType: "poi", "stylers": [{ visibility: "off"} ] }, 
+        {featureType: "road", elementType: "labels.icon", stylers: [{visibility: "off"}]},
+        {featureType: "transit", stylers: [{ visibility: "off" } ]}
+      ]     
+    });
+    $.ajax({
+      type: 'GET',
+      url: './geo_data',
+      dataType: "json",
+      crossDomain: true,
+      success: function (data_to_display) {
+        var markers = [];
+          for (i = 0; i < data_to_display.length; i++) { 
+              markers[i] = new google.maps.Marker({
+                position: {lat:data_to_display.data[i][1],lng:data_to_display.data[i][2]},
+                label: data_to_display.data[i][0]
+              });
+              // To add the marker to the map, call setMap();
+              //markers[i].setMap(map);             
+          };
+          var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: "{{ url_for('static', filename='img/m') }}",
+            minimumClusterSize: 4});
+      },
+      complete: function(){
+        $('#loading_extra').hide();
+        $('#loading_image').hide();
+        $('#dashboard_wrapper').show();
+      }
+    });
+  };
+
+
+$(document).ready(function () {
+
+    // hiding image when the chart is done
+    $('#loading_image').hide();
+    $('#loading_extra').hide();
+
+}
+);
+
+document.onkeypress = drawOnEnterKey;
+
+autoSuggestInput("originCityInput", "city");
+autoSuggestInput("destinationCityInput", "city");
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk&callback=initMap" async defer></script>
+
+  <!-- HTML -->
+
+        <div class="bg-white container_12 ta-c">
+          <div class="title"> Connections </div>
+          <!--Div that holds the animated gif until the chart loads-->
+          <div id="loading_image" class="grid_12 pb-30">
+            <img src="{{ url_for('static', filename='img/loading.gif') }}"></img>
+          </div>
+	      </div>
+
+
+        <div class="bg-white">
+         <div class="container_12 main-graph-area">
+           <div id="map_wrapper">
+              <div id="map" class="mb-30"></div>
+              <div class='container_12 filter-bar'>
+                <div class='grid_2'> &nbsp </div>
+                <div class='grid_2'> Origin </div>
+                <div class='grid_2'> Destination</div>
+                <div class='grid_6'> &nbsp </div>
+
+                <div class='grid_2'> &nbsp </div>
+                <input id="originCityInput" class='grid_2' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_origin = this.value;">
+                <input id="destinationCityInput" class='grid_2' type="text" value="IATA city code" onfocus='if (this.value=="IATA city code") {this.value="";}' oninput='this.value=this.value.toUpperCase()' onchange="filter_destination = this.value;">
+                <input type="button" class="grid_2 button-style" value="draw" onClick="drawChart()">
+                <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
+
+                <img id="loading_extra" src="{{ url_for('static', filename='img/loading_extra.gif') }}"></img>
+              </div>
+              <div class="grid_12 update_time_container">
+               <span class="text-icon"> Last updated on: </span>
+               <span id="update_time" class=" text-icon"> - </span>
+              </div>
+         </div>
+         </div>
+         <div class="container_12 info-section">
+           <div class="dib">
+             <div class="grid_2">
+                 <i class="fa fa-info-circle fa-5x "></i>
+             </div>
+             <div class="grid_10">
+                 <span>
+                   Our Connections map visually plots how people get from A to B and where they might stop over on the way.
+                   Airline planners need to know the stop over to think about ways to improve the route offering.
+                 </span>
+             </div>
+           </div>
+         </div>
+
+        </div>
+{% endblock %}

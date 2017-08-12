@@ -190,7 +190,7 @@
           <div class="title"> Trending popularity </div>
           <!--Div that holds the animated gif until the chart loads-->
           <div id="loading_image" class="grid_12 pb-30">
-            <img src="{{ url_for('static', filename='loading.gif') }}"></img>
+            <img src="{{ url_for('static', filename='img/loading.gif') }}"></img>
           </div>
         </div>
 
@@ -213,7 +213,7 @@
               <input type="button" class="grid_2 button-style" value="add" onClick="addToChart(undefined,undefined)">
               <input type="button" class="grid_2 button-style" value="reset" onClick="drawChart(undefined,undefined)">
               <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
-              <img id="loading_extra" src="{{ url_for('static', filename='loading_extra.gif') }}"></img>
+              <img id="loading_extra" src="{{ url_for('static', filename='img/loading_extra.gif') }}"></img>
             </div>
             <div class="grid_12 update_time_container">
               <span class="text-icon"> Last updated on: </span>
