@@ -5,9 +5,8 @@
 
 <script>
   function initMap() {
-
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 1, lng: 103},
+      center: {lat: 0, lng: 0},
       zoom: 3,
       gestureHandling: 'cooperative',
       scrollwheel: false,
@@ -47,14 +46,12 @@
       complete: function(){
         $('#loading_extra').hide();
         $('#loading_image').hide();
-        $('#dashboard_wrapper').show();
       }
     });
   };
 
   function search() {
-    var airport = document.getElementById("searchAirport").value;
-    
+    var airport = document.getElementById("searchAirport").value;    
     for (i= 0; i<= airportgeo.length; i++) {
       if (airportgeo.data[i][0] == airport) {      
         var airport_data = airportgeo.data[i];
@@ -110,7 +107,7 @@ autoSuggestInput("searchAirport", "airport");
                 <div id="infoHolder" class='grid_12'>  </div>
               </div>
             </div>
-         </div>
+           </div>
          <div class="container_12 info-section">
            <div class="dib">
              <div class="grid_2">
