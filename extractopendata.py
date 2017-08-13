@@ -14,7 +14,7 @@ class extractopendata:
             for line in f1:
                 x = line.split(',')
                 if len(x[4]) == 5:
-                    data.append([x[4][1]+x[4][2]+x[4][3],float(x[6]),float(x[7])])      
+                    data.append([x[4][1]+x[4][2]+x[4][3],float(x[6]),float(x[7]), x[1],x[2],x[3]])      
         return data
 
 
