@@ -11,11 +11,11 @@
       gestureHandling: 'cooperative',
       scrollwheel: false,
       styles: [
-        {elementType: 'geometry', stylers: [{color: '#DFDCE3'}]},
-        {featureType: 'water', elementType: 'geometry',stylers: [{color: '#272133'}]},
+        //{elementType: 'geometry', stylers: [{color: '#DFDCE3'}]},
+        //{featureType: 'water', elementType: 'geometry',stylers: [{color: '#272133'}]},
         {featureType: "administrative",elementType: "geometry",stylers: [{visibility: "off"}]},
         {featureType: "poi", "stylers": [{ visibility: "off"} ] },
-        {featureType: "road", elementType: "labels.icon", stylers: [{visibility: "off"}]},
+        {featureType: "road", stylers: [{visibility: "off"}]},
         {featureType: "transit", stylers: [{ visibility: "off" } ]}
       ]
     });
@@ -65,12 +65,30 @@
     for (i= 0; i<= airportgeo.length; i++) {
       if (airportgeo.data[i][0] == airport) {
         var airport_data = airportgeo.data[i];
-        var myLatlng = new google.maps.LatLng(airportgeo.data[i][1],airportgeo.data[i][2]);
-        map.setCenter(myLatlng);
+        var myLatLng = new google.maps.LatLng(airportgeo.data[i][1],airportgeo.data[i][2]);
+        map.setCenter(myLatLng);
         map.setZoom(8);
+        //drop a marker where the airport is
+        marker = new google.maps.Marker({
+          map: map,
+          animation: google.maps.Animation.DROP,
+          position: {lat:airportgeo.data[i][1],lng:airportgeo.data[i][2]},
+          zIndex : 100000,
+          icon : "{{ url_for('static', filename='img/airportlogo.png') }}"
+          });
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        marker.addListener('click', toggleBounce);
         document.getElementById("infoHolder").innerHTML = window.infoContent[i];
         break;
+        }
       };
+  };
+  //make the marker jump when clicked, for fun
+  function toggleBounce() {
+  if (marker.getAnimation() !== null) {
+      marker.setAnimation(null);
+    } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
     }
   };
 
@@ -114,7 +132,7 @@ autoSuggestInput("searchAirport", "airport");
                 <input id="searchAirport" class='grid_4' type="text" value="airport code" onFocus='this.value=""'>
                 <input type="button" class="grid_3 button-style" value="search airport" onClick="search()">
                 <img id="loading_extra" src="{{ url_for('static', filename='img/loading_extra.gif') }}"></img>
-                <div id="infoHolder" class='grid_12'>  </div>
+                <div id="infoHolder" class='grid_12 ' style="font-weight:bold">  </div>
               </div>
             </div>
            </div>
