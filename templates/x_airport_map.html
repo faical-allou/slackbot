@@ -14,10 +14,10 @@
         {elementType: 'geometry', stylers: [{color: '#DFDCE3'}]},
         {featureType: 'water', elementType: 'geometry',stylers: [{color: '#272133'}]},
         {featureType: "administrative",elementType: "geometry",stylers: [{visibility: "off"}]},
-        {featureType: "poi", "stylers": [{ visibility: "off"} ] }, 
+        {featureType: "poi", "stylers": [{ visibility: "off"} ] },
         {featureType: "road", elementType: "labels.icon", stylers: [{visibility: "off"}]},
         {featureType: "transit", stylers: [{ visibility: "off" } ]}
-      ]     
+      ]
     });
     $.ajax({
       type: 'GET',
@@ -27,17 +27,27 @@
       success: function (data_to_display) {
         airportgeo = data_to_display;
         var markers = [];
+        window.info = [];
         window.infoContent = [];
-          for (i = 0; i < data_to_display.length; i++) { 
+          for (i = 0; i < data_to_display.length; i++) {
               markers[i] = new google.maps.Marker({
                 position: {lat:data_to_display.data[i][1],lng:data_to_display.data[i][2]},
-                label: data_to_display.data[i][0]
+                label: data_to_display.data[i][0],
+                zIndex : i
               });
+
+              window.info[i] = new google.maps.InfoWindow();
 
               window.infoContent[i] = data_to_display.data[i][3]+", "+data_to_display.data[i][4]+", "+data_to_display.data[i][5];
               window.infoContent[i] = infoContent[i].replace(/\//g, '').replace(/"/g, '');
-              
-              markers[i].setMap(map);
+
+              window.info[i].setContent(window.infoContent[i]);
+              var last_zindex = 0;
+              markers[i].addListener('click', function(event){
+                window.info[last_zindex].close();
+                window.info[this.zIndex].open(map,this);
+                last_zindex = this.zIndex
+              });
           };
           var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: "{{ url_for('static', filename='img/m') }}",
@@ -51,9 +61,9 @@
   };
 
   function search() {
-    var airport = document.getElementById("searchAirport").value;    
+    var airport = document.getElementById("searchAirport").value;
     for (i= 0; i<= airportgeo.length; i++) {
-      if (airportgeo.data[i][0] == airport) {      
+      if (airportgeo.data[i][0] == airport) {
         var airport_data = airportgeo.data[i];
         var myLatlng = new google.maps.LatLng(airportgeo.data[i][1],airportgeo.data[i][2]);
         map.setCenter(myLatlng);
@@ -61,7 +71,7 @@
         document.getElementById("infoHolder").innerHTML = window.infoContent[i];
         break;
       };
-    } 
+    }
   };
 
 

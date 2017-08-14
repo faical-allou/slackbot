@@ -188,7 +188,7 @@ def render_fastest():
 
 @app.route('/airport_map', methods=['GET'])
 def render_airport_map():
-        return render_template("airport_map.html", title="What are they searching for" )
+        return render_template("x_airport_map.html", title="What are they searching for" )
 
 
 
@@ -215,7 +215,7 @@ def render_neuralnetwork():
     #Renders the passenger chart page
         return render_template("x_neural_view.html", title="What are they searching for" )
 
-        
+
 
 @app.route('/<path:filename>', methods=['GET'])
 def display_static():
