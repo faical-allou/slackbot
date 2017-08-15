@@ -129,9 +129,7 @@ def popularity_data_alexa():
     gc.collect()
     json_request = request.get_json(force=True, silent=False, cache=True)
     request_city = json_request['request']['intent']['slots']['origin']['value']
-    print("resquest_city= ", request_city)
     popular = extractdata.getpopularitytablealexa('o',request_city)
-    print(popular)
 
     resp = jsonify(alexa_skill.speak_populardestinations(popular))
     return resp
@@ -151,15 +149,15 @@ def render_pax(page_name):
 
 @app.route('/')
 def render_home():
-    return render_template("_home.html", title="What are they searching for" )
+    return render_template("_home.html", title="Travel Insight Lite" )
 
 @app.route('/home')
 def render_homepage():
-    return render_template("_home.html", title="What are they searching for" )
+    return render_template("_home.html", title="Travel Insight Lite" )
 
 @app.route('/labs')
 def render_labs():
-    return render_template("x__labs.html", title="Artificial Intelligence" )
+    return render_template("x__labs.html", title="The Labs" )
 
 
 
