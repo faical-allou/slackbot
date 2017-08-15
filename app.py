@@ -1,8 +1,3 @@
-"""
-This script runs the application using a development server.
-It contains the definition of routes and views for the application.
-"""
-
 from flask import Flask, jsonify, render_template, request, send_from_directory
 import psycopg2
 import os
