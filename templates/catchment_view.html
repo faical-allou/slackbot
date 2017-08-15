@@ -24,7 +24,7 @@
         mixpanel.track("Catchment selection", {"originairport": originairport, "Rangekm":rangekm, "Destinationcity": destinationcity, "Crossborder":crossborder });
       };
 
-      var url_to_call = './catchment_data/'+originairport+'/'+rangekm+'/'+destinationcity+'/'+crossborder;
+      var url_to_call = '/catchment_data/'+originairport+'/'+rangekm+'/'+destinationcity+'/'+crossborder;
 
       // parameters for sharing on Linkedin
       window.traveltrendsURL = location.protocol+'//'+location.host+"/catchment_view?originairport="+originairport+"&rangekm="+rangekm+"&destinationcity="+destinationcity+"&crossborder="+crossborder;

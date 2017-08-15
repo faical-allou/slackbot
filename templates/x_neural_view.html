@@ -21,7 +21,7 @@
       list_of_od = orig1.value+'-'+dest1.value+'/'+orig1.value+'-'+dest2.value+'/'+orig1.value+'-'+dest3.value+
       '/'+orig1.value+'-'+dest4.value+'/'+orig1.value+'-'+dest5.value+'/'+orig1.value+'-'+dest6.value+'/'+
       scor1.value+'/'+scor2.value+'/'+scor3.value+'/'+scor4.value+'/'+scor5.value+'/'+scor6.value;
-      url_to_call = './neural_data/'+list_of_od.toUpperCase();
+      url_to_call = '/neural_data/'+list_of_od.toUpperCase();
 
       test = Number(scor1.value) +Number(scor2.value) +Number(scor3.value) +Number(scor4.value) +Number(scor5.value) + Number(scor6.value);
 
@@ -70,7 +70,7 @@
       mixpanel.track("Predict Network");
       $('#loading_extra').show();
       od_to_predict = orig1.value+'-'+dest7.value
-      url_to_post = './neural_predict/'+od_to_predict.toUpperCase()+'/';
+      url_to_post = '/neural_predict/'+od_to_predict.toUpperCase()+'/';
       $.ajax({
           type: 'POST',
           url: url_to_post,

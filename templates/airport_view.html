@@ -13,7 +13,7 @@
       airport = filter.value.toUpperCase();
       mixpanel.track("Hub selection", {"Airport": filter.value,});
       };
-      var url_to_call = './airport_data/'+airport;
+      var url_to_call = '/airport_data/'+airport;
 
       // loading image until the chart is done
       $('#loading_extra').show();
