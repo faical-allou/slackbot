@@ -11,11 +11,11 @@ import collections
 import datetime
 import sys
 import math
-from extractdata import *
-from neural import *
-from alexa import *
 import gc
-from extractopendata import *
+from models.extractdata import *
+from models.neural import *
+from models.alexa import *
+from models.extractopendata import *
 app = Flask(__name__, static_folder='static')
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.

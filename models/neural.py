@@ -6,7 +6,7 @@ import sys
 import numpy as np
 import ast
 
-from extractdata import *
+from models.extractdata import *
 
 extractdatahere = extractdata()
 
