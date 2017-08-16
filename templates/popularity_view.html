@@ -16,7 +16,7 @@ function drawChart(filtertype,city) {
   mixpanel.track("Popularity selection", {"Origin": filter.value,});
   };
   // prepare the URL to call
-  var url_to_call = './popularity_data/'+filtertype+'/'+city;
+  var url_to_call = '/popularity_data/'+filtertype+'/'+city;
 
   // loading image until the chart is done
   $('#loading_extra').show();
