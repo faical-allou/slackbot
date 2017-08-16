@@ -7,7 +7,7 @@ import numpy as np
 import math
 from itertools import groupby
 from operator import itemgetter
-from models.configdatabase import connectionStringDatabase
+from configdatabase import connectionStringDatabase
 
 class extractdata:
     def getconnection(self):
