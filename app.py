@@ -19,7 +19,6 @@ app.config['JSON_AS_ASCII'] = False
 extractdata = extractdata()
 neural_network = neural_network()
 alexa_skill = alexa_skill()
-
 extractopendata = extractopendata()
 
 @app.route('/popularity_data/<filtertype>/<city>', methods=['GET'])

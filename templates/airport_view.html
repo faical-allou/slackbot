@@ -78,10 +78,7 @@
 
                 mixpanel.track("Hub success", {"Airport": filter.value,});
 
-            } else {
-              swal({  title: "Sorry",  text: "We don't have enough data for this request, </br> are you entering an IATA <span class='swal-highlight'>airport code</span>?",  html: true, type: "error",  confirmButtonText: "OK"});
-              mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
-            }
+            } else { notEnoughData(url_to_call) }
           // closing the success clause of the AJAX call
           },
           complete: function(){
@@ -89,10 +86,7 @@
             $('#loading_image').hide();
             $('#dashboard_wrapper').show();
           },
-          error: function() {
-            swal({  title: "Sorry",  text: "Something went wrong, please review your input.",  type: "error",  confirmButtonText: "OK"});
-            mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
-          }
+          error: function(){internalError(url_to_call)}
       });
     };
 
@@ -101,11 +95,10 @@
         $('#dashboard_wrapper').hide();
         $('#loading_image').show();
         drawChart('MAD');
+        document.onkeypress = drawOnEnterKey;
+        autoSuggestInput("originAirportInput", "airport");
     });
 
-  document.onkeypress = drawOnEnterKey;
-
-  autoSuggestInput("originAirportInput", "airport");
 
   </script>
 

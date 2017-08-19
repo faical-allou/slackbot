@@ -56,7 +56,8 @@
       complete: function(){
         $('#loading_extra').hide();
         $('#loading_image').hide();
-      }
+      },
+      error: function(){internalError(url_to_call)}
     });
   };
 
@@ -98,11 +99,10 @@ $(document).ready(function () {
     // hiding image when the chart is done
     $('#loading_image').hide();
     $('#loading_extra').hide();
-
+    autoSuggestInput("searchAirport", "airport");
 }
 );
 
-autoSuggestInput("searchAirport", "airport");
 
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk&callback=initMap" async defer></script>

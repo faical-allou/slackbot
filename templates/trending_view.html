@@ -91,10 +91,7 @@
             $('#loading_extra').hide();
             $('#dashboard_wrapper').show();
           },
-          error: function() {
-            swal({  title: "Sorry",  text: "Something went wrong, please review your input.",  type: "error",  confirmButtonText: "OK"});
-            mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
-          }
+          error: function(){internalError(url_to_call)}
         });
     };
 
@@ -146,20 +143,15 @@
                 myChart.draw();
                 mixpanel.track("Trend success", {"O&D": filter_from.value+'-'+filter_to.value,});
 
-                // closing the success clause of the AJAX call
-              } else {
-                      swal({  title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering IATA <span class='swal-highlight'>city codes</span>?", html:true , type: "error",  confirmButtonText: "OK"});
-                      mixpanel.track("Error pop up", {"Page":viewpage,"Step":"Add", "URL": url_to_call});
-                    }
+                } else {notEnoughData(url_to_call) }
+          // closing the success clause of the AJAX call
           },
           complete: function(){
             $('#loading_image').hide();
             $('#loading_extra').hide();
             $('#dashboard_wrapper').show();
           },
-          error: function (request, status, error) {
-            console.log(error);
-          }
+          error: function(){internalError(url_to_call)}
         });
     };
 
@@ -176,12 +168,12 @@
         } else {
         drawChart('TYO','SYD');
         };
+        document.onkeypress = drawOnEnterKey;
+
+        autoSuggestInput("originCityInput", "city");
+        autoSuggestInput("destinationCityInput", "city");
     });
 
-    document.onkeypress = drawOnEnterKey;
-
-    autoSuggestInput("originCityInput", "city");
-    autoSuggestInput("destinationCityInput", "city");
 
 </script>
 

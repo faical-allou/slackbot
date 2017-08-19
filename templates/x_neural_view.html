@@ -48,15 +48,10 @@
               $('#phase2_wrapper').show();
               mixpanel.track("Training Success");
 
-            } else {
-                    swal({title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering IATA <span class='swal-highlight'>city codes</span>?", html:true, type: "error",  confirmButtonText: "OK"});
-                    mixpanel.track("Error pop up", {"Page":viewpage,"Step":"training results", "URL": url_to_call});
-              }
+              } else {notEnoughData(url_to_call) }
+              // closing the success clause of the AJAX call
             },
-            error: function() {
-              swal({  title: "Sorry",  text: "Something went wrong, please review your input.",  type: "error",  confirmButtonText: "OK"});
-              mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
-            }
+            error: function(){internalError(url_to_call)}
         });
       }
     }
@@ -101,26 +96,25 @@
             $('#chart_wrapper').show();
             mixpanel.track("Predict Success");
 
-          } else {
-                  swal({title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering an IATA <span class='swal-highlight'>city codes</span>?", html:true,  type: "error",  confirmButtonText: "OK"});
-                  mixpanel.track("Error pop up", {"Page":viewpage, "Step":"Predict", "URL": url_to_post});
-                };
+          } else {notEnoughData(url_to_call) }
+          // closing the success clause of the AJAX call
           },
           complete: function(){
             $('#loading_extra').hide();
             },
+          error: function(){internalError(url_to_call)}
         });
     };
-
-    autoSuggestInput("orig1", "city");
-    autoSuggestInput("dest1", "city");
-    autoSuggestInput("dest2", "city");
-    autoSuggestInput("dest3", "city");
-    autoSuggestInput("dest4", "city");
-    autoSuggestInput("dest5", "city");
-    autoSuggestInput("dest6", "city");
-    autoSuggestInput("dest7", "city");
-
+$(document).ready(function () {
+        autoSuggestInput("orig1", "city");
+        autoSuggestInput("dest1", "city");
+        autoSuggestInput("dest2", "city");
+        autoSuggestInput("dest3", "city");
+        autoSuggestInput("dest4", "city");
+        autoSuggestInput("dest5", "city");
+        autoSuggestInput("dest6", "city");
+        autoSuggestInput("dest7", "city");
+});
     </script>
 
   <!-- HTML -->

@@ -158,15 +158,10 @@
               };
             mixpanel.track("Itinerary success", {"O&D": origincity+"-"+destinationcity});
 
-            } else {
-                  swal({  title: "Sorry",  text: "We don't have enough data for this request, </br> are you entering IATA <span class='swal-highlight'>city codes</span> 'AAA-BBB'?", html:true, type: "error",  confirmButtonText: "OK"});
-                  mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call });
-                }
+            } else {notEnoughData(url_to_call) }
+          // closing the success clause of the AJAX call
         },
-        error: function() {
-          swal({  title: "Sorry",  text: "Something went wrong, please review your input.",  type: "error",  confirmButtonText: "OK"});
-          mixpanel.track("Error pop up", {"Page":viewpage, "URL": url_to_call});
-        }
+        error: function(){internalError(url_to_call)}
     });
 
   };
@@ -177,14 +172,13 @@ $(document).ready(function () {
     // hiding image when the chart is done
     $('#loading_image').hide();
     $('#loading_extra').hide();
+    document.onkeypress = drawOnEnterKey;
 
+    autoSuggestInput("originCityInput", "city");
+    autoSuggestInput("destinationCityInput", "city");
 }
 );
 
-document.onkeypress = drawOnEnterKey;
-
-autoSuggestInput("originCityInput", "city");
-autoSuggestInput("destinationCityInput", "city");
 
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwiGK11X_sFYhiNgVllolmQLTe02YFdSk&callback=initMap" async defer></script>

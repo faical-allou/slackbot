@@ -27,7 +27,7 @@ standardOptions= {'width': widthGraph,
                   'legend': legendGraph,
                   'lineWidth': lineWidthGraph,
                   'curveType': curveTypeGraph,
-                  };
+};
 
 // function to autosuggest city or airport codes with validation and message
 function autoSuggestInput(inputfield, suggesttype){
@@ -79,7 +79,14 @@ function drawOnEnterKey(e) {
         if (e.keyCode == 13 && list_input.indexOf(focused) >= 0 ) {
             drawChart();
         }
-};
+}
 
+function internalError(url_to_call) {
+            swal({  title: "Sorry",  text: "Something went wrong, we'll fix it soon",  type: "error",  confirmButtonText: "OK"});
+            mixpanel.track("Error internal", {"Page":viewpage, "URL": url_to_call});
+}
 
-
+function notEnoughData(url_to_call){
+              swal({  title: "Sorry",  text: "We don't have enough data for this request",  html: true, type: "error",  confirmButtonText: "OK"});
+              mixpanel.track("Error data", {"Page":viewpage, "URL": url_to_call});
+}
