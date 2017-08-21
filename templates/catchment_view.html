@@ -162,9 +162,9 @@
         var crossborderURL =  getUrlParameter('crossborder');
 
         if (originairportURL != undefined && rangekmURL != undefined && destinationcityURL != undefined && crossborderURL != undefined) {
-        drawChart(originairportURL,rangekmURL,destinationcityURL, crossborderURL);
+          drawChart(originairportURL,rangekmURL,destinationcityURL, crossborderURL);
         } else {
-        drawChart('SXB','100','NYC', 'N');
+         drawChart('SXB','100','NYC', 'N');
         };
         document.onkeypress = drawOnEnterKey;
         autoSuggestInput("originAirportInput", "airport");

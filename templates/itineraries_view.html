@@ -40,9 +40,9 @@
     $('#loading_extra').show();
 
     if (origincity === undefined || destinationcity === undefined) {
-    origincity = document.getElementById("originCityInput").value;
-    destinationcity = document.getElementById("destinationCityInput").value
-    mixpanel.track("Itinerary selection", {"O&D": origincity+"-"+destinationcity});
+      origincity = document.getElementById("originCityInput").value;
+      destinationcity = document.getElementById("destinationCityInput").value
+      mixpanel.track("Itinerary selection", {"O&D": origincity+"-"+destinationcity});
     };
 
     var url_to_call = '/itineraries_data/'+origincity+'/'+destinationcity

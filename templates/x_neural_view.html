@@ -1,19 +1,10 @@
 {% extends "_header.html" %}
 {% block content %}
 
-    <script type="text/javascript">
+<script type="text/javascript">
     // Load the Visualization API and the corechart package.
     google.charts.load('current', {'packages':['gauge']});
 
-    $(document).ready(function () {
-      $('#loading_image').hide();
-      $('#loading_extra').hide();
-
-      $('#phase2_wrapper').hide();
-      $('#phase3_wrapper').hide();
-
-      $('#chart_wrapper').hide();
-    });
 
     function train_network() {
       mixpanel.track("Training Network");
@@ -105,17 +96,26 @@
           error: function(){internalError(url_to_call)}
         });
     };
+
 $(document).ready(function () {
-        autoSuggestInput("orig1", "city");
-        autoSuggestInput("dest1", "city");
-        autoSuggestInput("dest2", "city");
-        autoSuggestInput("dest3", "city");
-        autoSuggestInput("dest4", "city");
-        autoSuggestInput("dest5", "city");
-        autoSuggestInput("dest6", "city");
-        autoSuggestInput("dest7", "city");
+  $('#loading_image').hide();
+  $('#loading_extra').hide();
+
+  $('#phase2_wrapper').hide();
+  $('#phase3_wrapper').hide();
+
+  $('#chart_wrapper').hide();
+  autoSuggestInput("orig1", "city");
+  autoSuggestInput("dest1", "city");
+  autoSuggestInput("dest2", "city");
+  autoSuggestInput("dest3", "city");
+  autoSuggestInput("dest4", "city");
+  autoSuggestInput("dest5", "city");
+  autoSuggestInput("dest6", "city");
+  autoSuggestInput("dest7", "city");
 });
-    </script>
+
+</script>
 
   <!-- HTML -->
        <div class="bg-white">

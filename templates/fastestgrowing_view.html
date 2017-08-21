@@ -11,8 +11,8 @@
     function drawChart(city) {
       var filter = document.getElementById("originCityInput");
       if (typeof city === "undefined") {
-      city = filter.value.toUpperCase();
-      mixpanel.track("Fastest selection", {"Origin": filter.value,});
+        city = filter.value.toUpperCase();
+        mixpanel.track("Fastest selection", {"Origin": filter.value,});
       };
       // prepare the URL to call
       var url_to_call = '/popularity_fastest_data/'+city;

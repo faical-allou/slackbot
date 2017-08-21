@@ -12,8 +12,8 @@ function drawChart(filtertype,city) {
   var filter = document.getElementById("originCityInput");
   if (typeof filtertype === "undefined") {filtertype='o'};
   if (typeof city === "undefined") {
-  city = filter.value.toUpperCase();
-  mixpanel.track("Popularity selection", {"Origin": filter.value,});
+    city = filter.value.toUpperCase();
+    mixpanel.track("Popularity selection", {"Origin": filter.value,});
   };
   // prepare the URL to call
   var url_to_call = '/popularity_data/'+filtertype+'/'+city;
@@ -109,7 +109,6 @@ function drawChart(filtertype,city) {
                 }
               });
             },1000);
-
 
             mixpanel.track("Popularity success", {"Origin": filter.value,});
 

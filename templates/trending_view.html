@@ -164,9 +164,9 @@
         var destinationcityURL =  getUrlParameter('destinationcity');
 
         if (origincityURL != undefined && destinationcityURL != undefined) {
-        drawChart(origincityURL,destinationcityURL);
+          drawChart(origincityURL,destinationcityURL);
         } else {
-        drawChart('TYO','SYD');
+          drawChart('TYO','SYD');
         };
         document.onkeypress = drawOnEnterKey;
 
