@@ -81,10 +81,7 @@
             mixpanel.track("Trend success", {"O&D": filter_from.value+'-'+filter_to.value,});
 
               // closing the success clause of the AJAX call
-            } else {
-                    swal({  title: "Sorry",  text: "We don't have enough data for this request,</br> are you entering IATA <span class='swal-highlight'>city codes</span>?", html:true , type: "error",  confirmButtonText: "OK"});
-                    mixpanel.track("Error pop up", {"Page":viewpage,"Step":"Reset", "URL": url_to_call});
-                    }
+            } else { notEnoughData()}
           },
           complete: function(){
             $('#loading_image').hide();
@@ -105,7 +102,7 @@
       mixpanel.track("Trend selection", {"O&D": filter_from.value+'-'+filter_to.value,});
       };
 
-      var url_to_call = './trending_data/'+origin+'/'+destination;
+      var url_to_call = '/trending_data/'+origin+'/'+destination;
 
       // loading image until the chart is done
       $('#loading_extra').show();
