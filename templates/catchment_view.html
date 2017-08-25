@@ -23,7 +23,7 @@
         crossborder  = filtercrossborder.value.toUpperCase();
         mixpanel.track("Catchment selection", {"originairport": originairport, "Rangekm":rangekm, "Destinationcity": destinationcity, "Crossborder":crossborder });
       };
-
+      rangekm = (rangekm > 0) ? rangekm : 50 ;
       var url_to_call = '/catchment_data/'+originairport+'/'+rangekm+'/'+destinationcity+'/'+crossborder;
 
       // parameters for sharing on Linkedin
