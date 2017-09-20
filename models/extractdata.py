@@ -46,14 +46,14 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
         if filtertype == 'o':
-            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
+            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), sum_seats FROM ptbexits_popular \
             WHERE origincitycode = '"+city+"' and destinationcitycode > 'AAA' \
-            ORDER BY seats DESC LIMIT 10"
+            ORDER BY sum_seats DESC LIMIT 10"
             cursor.execute(query)
         else:
-            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
+            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), sum_seats FROM ptbexits_popular \
             WHERE origincitycode > 'AAA' and destinationcitycode = '"+city+"' \
-            ORDER BY seats DESC LIMIT 10"
+            ORDER BY sum_seats DESC LIMIT 10"
             cursor.execute(query)
 
         rows = [('a','b','c', 1)]
@@ -85,14 +85,14 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
         if filtertype == 'o':
-            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbsearches_popular \
+            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), sum_seats FROM ptbsearches_popular \
             WHERE origincitycode = '"+city+"' and destinationcitycode > 'AAA' \
-            ORDER BY seats DESC LIMIT 10"
+            ORDER BY sum_seats DESC LIMIT 10"
             cursor.execute(query)
         else:
-            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbsearches_popular \
+            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), sum_seats FROM ptbsearches_popular \
             WHERE origincitycode > 'AAA' and destinationcitycode = '"+city+"' \
-            ORDER BY seats DESC LIMIT 10"
+            ORDER BY sum_seats DESC LIMIT 10"
             cursor.execute(query)
 
         rows = [('a','b','c', 1)]
@@ -343,7 +343,7 @@ class extractdata:
                      + sin(radians( airport_lat )) * sin(radians(  iata2.latitude ))))*6300 as distance_od, \
                     acos((cos(radians(iata1.latitude )) * cos(radians(  iata2.latitude )) * cos(radians( iata1.longitude ) - radians( iata2.longitude )) \
                      + sin(radians( iata1.latitude )) * sin(radians(  iata2.latitude ))))*6300 as distance_newod, \
-                    sum(seats) as sum_seats \
+                    sum(sum_seats) as sum_seats \
                       from (\
                       SELECT *\
                            from (\
@@ -472,7 +472,7 @@ class extractdata:
     def getfastestgrowing(self, city):
         connection = self.getconnection()
         cursor = connection.cursor()
-        query = "SELECT origincitycode, destinationcitycode, search_month, seats, ranking, count_od \
+        query = "SELECT origincitycode, destinationcitycode, search_month, sum_seats, ranking, count_items \
             FROM ptbsearches_trending \
             WHERE  origincitycode = '"+city+"' \
             ORDER BY destinationcitycode, search_month ASC"
