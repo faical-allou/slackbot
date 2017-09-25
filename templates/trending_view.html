@@ -13,7 +13,7 @@
       hAxisGraph.minValue = undefined;
       hAxisGraph.gridlines = undefined;
       standardOptions.legend.position = 'top';
-      
+
       var chartoptions = standardOptions;
 
     // Callback that creates and populates a data table,
@@ -54,18 +54,18 @@
               data_formatted = new google.visualization.DataTable();
               data_formatted.addColumn('string', 'Origin');
               data_formatted.addColumn('string', 'Destination');
-              data_formatted.addColumn('date', 'Search Month');
+              data_formatted.addColumn('string', 'Search Month');
               data_formatted.addColumn('number', destination+' from '+origin);
-
+              console.log(data_formatted);
               for (i = 0; i < data_to_display.length -1; i++) {
                     data_formatted.addRows([
                       [data_to_display.data[i][0],
                       data_to_display.data[i][1],
-                      new Date(data_to_display.data[i][2]),
+                      data_to_display.data[i][2],
                       data_to_display.data[i][3],
                     ]]);
               };
-
+              console.log(data_formatted);
                   // Create a chart, passing some options
               var myChart = new google.visualization.ChartWrapper({
                     'chartType': 'LineChart',
