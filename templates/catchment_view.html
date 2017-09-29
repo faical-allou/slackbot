@@ -20,7 +20,7 @@
         originairport = filteroriginairport.value.toUpperCase();
         rangekm = filterrangekm.value.toUpperCase();
         destinationcity = filterdestinationcity.value.toUpperCase();
-        crossborder  = filtercrossborder.value.toUpperCase();
+        crossborder  = filtercrossborder.value.replace(/[^a-zA-Z0-9-_]/g, '').toUpperCase();
         mixpanel.track("Catchment selection", {"originairport": originairport, "Rangekm":rangekm, "Destinationcity": destinationcity, "Crossborder":crossborder });
       };
       rangekm = (rangekm > 0) ? rangekm : 50 ;
@@ -198,13 +198,13 @@
                 <div class='grid_2'> <strong>Airport</strong> </div>
                 <div class='grid_2'> <strong>Distance</strong> </div>
                 <div class='grid_2'> <strong>Dest. city</strong> </div>
-                <div class='grid_2'> <strong>Crossborder?</strong> </div>
-                <div class='grid_4'> &nbsp </div>
+                <div class='grid_3 ta-l'> <strong>Crossborder Y/N</strong> </div>
+                <div class='grid_3'> &nbsp </div>
 
                 <input id="originAirportInput" class='grid_2' type="text" value="Airport code" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
                 <input id="rangeKmInput" class='grid_2' type="text" value="in (km)" onFocus='this.value=""'>
                 <input id="destinationCityInput" class='grid_2' type="text" value="City code" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
-                <input id="crossBorderInput" class='grid_2' type="text" value="y/n" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
+                <input id="crossBorderInput" class='grid_2' type="text" value="Y" oninput="this.value=this.value.toUpperCase()" onFocus='this.value=""'>
 
                 <input type="button" class="grid_2 button-style" value="check" onClick="drawChart()">
                 <input type="button" class="grid_2 button-style" value="share" onClick="shareContent(window.traveltrendsURL, window.subtitle)">
