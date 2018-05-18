@@ -21,102 +21,6 @@ neural_network = neural_network()
 alexa_skill = alexa_skill()
 extractopendata = extractopendata()
 
-@app.route('/popularity_data/<filtertype>/<city>', methods=['GET'])
-def popularity_data(filtertype,city):
-
-    popular_redirects = extractdata.getpopularitytableredirects(filtertype,city)
-    popular_searches = extractdata.getpopularitytablesearches(filtertype,city)
-
-    lastupdate = extractdata.getlasttimeupdate('ptbexits_popular')
-    resp = jsonify(dataredirects=popular_redirects,datasearches=popular_searches, update = lastupdate, length = len(popular_redirects))
-
-    return resp
-
-@app.route('/newflights_data', methods=['GET'])
-def airservice():
-
-    newflights = extractdata.getnewflightstable()
-    lastupdate = extractdata.getlasttimeupdate('ptbexits_airservice')
-    resp = jsonify(data=newflights, update = lastupdate, length = len(newflights))
-
-    return resp
-
-@app.route('/itineraries_data/<fromcity>/<tocity>', methods=['GET'])
-def itineraries_data(fromcity, tocity):
-    itin = extractdata.getitintable(fromcity, tocity)
-    lastupdate = extractdata.getlasttimeupdate('ptbexits_itineraries')
-    resp = jsonify(data=itin, update = lastupdate, length = len(itin))
-
-    return resp
-
-@app.route('/airport_data/<airport>', methods=['GET'])
-def airport_data(airport):
-    if len(airport) < 3: airport = 'xxx'
-    airports = extractdata.getairporttable(airport)
-
-    lastupdate = extractdata.getlasttimeupdate('ptbexits_airport')
-    hub= airports[0]
-    datasize = airports[1]
-    resp = jsonify(data=hub, update = lastupdate, length = datasize)
-
-    return resp
-
-@app.route('/trending_data/<cityfrom>/<cityto>', methods=['GET'])
-def trending_data(cityfrom, cityto):
-    trend = extractdata.gettrendingtable(cityfrom, cityto)
-    lastupdate = extractdata.getlasttimeupdate('ptbsearches_trending')
-
-    lastupdate_date = datetime.datetime.strptime(lastupdate, '%Y-%m-%d')
-    earliest_date = datetime.datetime.strptime('2014-02-02', '%Y-%m-%d')
-
-    max_range_data = (lastupdate_date.year - earliest_date.year)*12 + (lastupdate_date.month - earliest_date.month) + 1
-
-    resp = jsonify(data=trend, update = lastupdate, length = len(trend), max_length = max_range_data)
-
-    return resp
-
-@app.route('/neural_data/<in1>/<in2>/<in3>/<in4>/<in5>/<in6>/<out1>/<out2>/<out3>/<out4>/<out5>/<out6>', methods=['GET'])
-def trainednetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6):
-
-    neural = neural_network.trainneuralnetwork(in1,in2,in3,in4,in5,in6, out1,out2,out3,out4,out5,out6)
-    lastupdate = extractdata.getlasttimeupdate('ptbexits_neural')
-    resp = jsonify(syn0=neural[0], syn1=neural[1], normalizer=neural[2], end_result= neural[3],update = lastupdate, length = len(neural), validity = neural[4])
-
-    return resp
-
-@app.route('/neural_predict/<in1>/', methods=['GET', 'POST'])
-
-def predict_od(in1):
-    gc.collect()
-    syn0received = request.form['syn0']
-    syn1received = request.form['syn1']
-    normalizer_received = request.form['normalizer']
-
-    prediction = neural_network.predict(in1,syn0received,syn1received, normalizer_received)
-
-    resp = jsonify(data=prediction[0], validity = prediction[1],  length = 1)
-
-    return resp
-
-
-@app.route('/catchment_data/<airport>/<rangekm>/<destinationcity>/<crossborder>', methods=['GET'])
-def catchment_data(airport, rangekm, destinationcity,crossborder):
-    lastupdate = extractdata.getlasttimeupdate('ptbexits_leakage')
-    fullcatchment = extractdata.getfullcatchment(airport, rangekm, destinationcity,crossborder)
-    resp = jsonify (catchment=fullcatchment[0], leakage=fullcatchment[2], airport_share = fullcatchment[3], airport_coord = fullcatchment[1], update = lastupdate, confidence = fullcatchment[4], length = [len(fullcatchment[0]), len(fullcatchment[2])])
-    if fullcatchment[5] == 1 : resp = jsonify(catchment=0, leakage=0, airport_share = 0, airport_coord = 0, update = 0, confidence = 0, length = [0, 0])
-
-    return resp
-
-@app.route('/popularity_fastest_data/<city>', methods=['GET'])
-def popularity_fastest_data(city):
-    gc.collect()
-
-    fastest = extractdata.getfastestgrowing(city)
-    lastupdate = extractdata.getlasttimeupdate('ptbexits_popular')
-
-    resp = jsonify(data=fastest, update = lastupdate, length=len(fastest))
-    return resp
 
 @app.route('/popularity_data_alexa/', methods=['GET', 'POST'])
 def popularity_data_alexa():
@@ -128,30 +32,14 @@ def popularity_data_alexa():
     resp = jsonify(alexa_skill.speak_populardestinations(popular))
     return resp
 
-@app.route('/geo_data', methods=['GET'])
-def geodata():
-    airport_coords = extractopendata.getopenairportdata()
-    resp = jsonify(data=airport_coords, length=len(airport_coords))
-    return resp
-
-
-@app.route('/views/<string:page_name>', methods=['GET'])
-def render_pax(page_name):
-    print(page_name)
-    return render_template('%s.html' % page_name )
-
 
 @app.route('/')
 def render_home():
-    return render_template("_home.html", title="Travel Insight Lite" )
+    return render_template("_home.html", title="Alexa4trivago" )
 
 @app.route('/home')
 def render_homepage():
-    return render_template("_home.html", title="Travel Insight Lite" )
-
-@app.route('/labs')
-def render_labs():
-    return render_template("x__labs.html", title="The Labs" )
+    return render_template("_home.html", title="Alexa4trivago" )
 
 
 
