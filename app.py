@@ -8,29 +8,41 @@ import sys
 import math
 import gc
 from models.extractdata import *
-from models.neural import *
 from models.alexa import *
-from models.extractopendata import *
+
 app = Flask(__name__, static_folder='static')
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 app.config['JSON_AS_ASCII'] = False
 extractdata = extractdata()
-neural_network = neural_network()
 alexa_skill = alexa_skill()
-extractopendata = extractopendata()
 
 
-@app.route('/popularity_data_alexa/', methods=['GET', 'POST'])
+@app.route('/popularity_flight_alexa/', methods=['GET', 'POST'])
 def popularity_data_alexa():
     gc.collect()
     json_request = request.get_json(force=True, silent=False, cache=True)
-    request_city = json_request['interactionModel']['languageModel']['intents'][3]['slots'][0]['samples'][0]
+    print(json_request)
+    request_city = json_request['request']['intent']['slots']['origin']['value']
     popular = extractdata.getpopularitytablealexa('o',request_city)
 
     resp = jsonify(alexa_skill.speak_populardestinations(popular))
     return resp
+
+@app.route('/popularity_hotel_alexa/', methods=['GET', 'POST'])
+def popularity_hotel_data_alexa():
+    gc.collect()
+    json_request = request.get_json(force=True, silent=False, cache=True)
+    print(json_request)
+    request_city = json_request['request']['intent']['slots']['destination']['value']
+    popular = extractdata.getpopularitytablealexa_hotels('o',request_city)
+
+    resp = jsonify(alexa_skill.speak_popularhotels(popular))
+    return resp
+
+
+
 
 
 @app.route('/')

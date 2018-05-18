@@ -60,6 +60,31 @@ class extractdata:
 
         return dest_list
 
+    def getpopularitytablealexa_hotels(self, filtertype, city ):
+
+        connection = self.getconnection()
+        cursor = connection.cursor()
+        query = "SELECT name from popular_hotels_alexa where city ='"+city+"'\
+            ORDER BY clicks DESC LIMIT 3"
+        print(city)
+        cursor.execute(query)
+
+        rows = ['a']
+        rowarray_list = []
+
+        dest_list = []
+
+        rows = cursor.fetchall()
+
+        for row in rows:
+            dest_list.extend(row)
+        print(dest_list)
+
+        connection.close()
+
+        return dest_list
+
+
 
 def __init__(self):
         print ("in init")

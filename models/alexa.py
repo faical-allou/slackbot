@@ -23,6 +23,21 @@ class alexa_skill:
         return self.build_response(session_attributes, self.build_speechlet_response(
             card_title, speech_output, reprompt_text, should_end_session))
 
+    def speak_popularhotels(self,list_destinations):
+        session_attributes = {}
+        card_title = "Popular Hotels"
+        reprompt_text = ""
+        should_end_session = True
+
+        dest_String = ",".join(list_destinations)
+
+        speech_output = "The most popular hotels are " + dest_String
+
+        return self.build_response(session_attributes, self.build_speechlet_response(
+            card_title, speech_output, reprompt_text, should_end_session))
+
+
+
     def build_speechlet_response(self,title, output, reprompt_text, should_end_session):
         return {
         "outputSpeech": {
