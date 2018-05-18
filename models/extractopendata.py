@@ -1,6 +1,6 @@
 import os
 import psycopg2
-import simplejson
+import json as simplejson
 import collections
 import datetime
 import numpy as np

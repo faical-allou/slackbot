@@ -122,7 +122,7 @@ def popularity_fastest_data(city):
 def popularity_data_alexa():
     gc.collect()
     json_request = request.get_json(force=True, silent=False, cache=True)
-    request_city = json_request['request']['intent']['slots']['origin']['value']
+    request_city = json_request['interactionModel']['languageModel']['intents'][3]['slots'][0]['samples'][0]
     popular = extractdata.getpopularitytablealexa('o',request_city)
 
     resp = jsonify(alexa_skill.speak_populardestinations(popular))

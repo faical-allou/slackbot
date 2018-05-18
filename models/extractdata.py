@@ -1,6 +1,6 @@
 import os
 import psycopg2
-import simplejson
+import json as simplejson
 import collections
 import datetime
 import numpy as np
@@ -445,7 +445,8 @@ class extractdata:
             JOIN iatatogeo iata2\
             ON iata2.airport = destinationcitycode\
             WHERE iata1.city = '"+city+"' and destinationcitycode > 'AAA' \
-            ORDER BY seats DESC LIMIT 3"
+            ORDER BY sum_seats DESC LIMIT 3"
+        print(city)
         cursor.execute(query)
 
         rows = ['a']

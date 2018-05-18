@@ -1,14 +1,15 @@
+numpy==1.5
 altgraph==0.10.2
 bdist-mpkg==0.5.0
-click==6.6
+click==6.7
 Flask==0.11.1
 gunicorn==19.6.0
 itsdangerous==0.24
-Jinja2==2.8
+Jinja2==2.10
 macholib==1.5.1
-MarkupSafe==0.23
+MarkupSafe==1.0
 modulegraph==0.10.4
-psycopg2==2.6.2
+psycopg2==2.7.4
 py2app==0.7.3
 pyparsing==2.0.1
 python-dateutil==1.5
@@ -18,4 +19,4 @@ virtualenv==15.0.3
 Werkzeug==0.11.11
 simplejson==3.10.0
 jsonify==0.5
-numpy==1.12.0
+
