@@ -64,7 +64,7 @@ class extractdata:
 
         connection = self.getconnection()
         cursor = connection.cursor()
-        query = "SELECT name from popular_hotels_alexa where city ='"+city+"'\
+        query = "SELECT name from traveltrends.popular_hotels_alexa where city ='"+city+"'\
             ORDER BY clicks DESC LIMIT 3"
         print(city)
         cursor.execute(query)
