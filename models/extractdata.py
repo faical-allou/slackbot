@@ -30,59 +30,28 @@ class extractdata:
         return conn
 
 
-    def getpopularitytablealexa(self, filtertype, city ):
+    def getpartnername(self, partner_id ):
 
         connection = self.getconnection()
         cursor = connection.cursor()
-        query = "SELECT iata2.city \
-            FROM ptbexits_popular \
-            join iatatogeo iata1 \
-            ON iata1.airport = origincitycode\
-            JOIN iatatogeo iata2\
-            ON iata2.airport = destinationcitycode\
-            WHERE iata1.city = '"+city+"' and destinationcitycode > 'AAA' \
-            ORDER BY sum_seats DESC LIMIT 3"
-        print(city)
+        query = "SELECT name from partners where partner_id ='"+partner_id
+        print(partner_id)
         cursor.execute(query)
 
         rows = ['a']
         rowarray_list = []
 
-        dest_list = []
+        partner_list = []
 
         rows = cursor.fetchall()
 
         for row in rows:
-            dest_list.extend(row)
-        print(dest_list)
+            partner_list.extend(row)
+        print(partner_list)
 
         connection.close()
 
-        return dest_list
-
-    def getpopularitytablealexa_hotels(self, filtertype, city ):
-
-        connection = self.getconnection()
-        cursor = connection.cursor()
-        query = "SELECT name from popular_hotels_alexa where city ='"+city+"'\
-            ORDER BY clicks DESC LIMIT 3"
-        print(city)
-        cursor.execute(query)
-
-        rows = ['a']
-        rowarray_list = []
-
-        dest_list = []
-
-        rows = cursor.fetchall()
-
-        for row in rows:
-            dest_list.extend(row)
-        print(dest_list)
-
-        connection.close()
-
-        return dest_list
+        return partner_list
 
 
 

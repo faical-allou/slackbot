@@ -13,10 +13,10 @@ from models.extractdata import *
 
 extractdata = extractdata()
 
-names_id = "ID, name, city,clicks"
-my_data = np.genfromtxt('x_hotels_popular.txt', delimiter='\t',dtype=None, invalid_raise=False, names= names_id)
+names_id = "partner_id, name"
+my_data = np.genfromtxt('partners.csv', delimiter=',',dtype=None, invalid_raise=False, names= names_id)
 
-print(my_data[1]['ID'],my_data[1]['name'],my_data[1]['city'],my_data[1]['clicks'] )
+print(my_data[1]['partner_id'],my_data[1]['name'] )
 
 
 conn = extractdata.getconnection()
@@ -25,13 +25,11 @@ cursor = conn.cursor()
 my_data = np.delete(my_data, (0), axis=0)
 
 for data in my_data:
-    ID = data['ID']
+    partner_id = data['partner_id']
     name = unicode(data['name'], "utf-8", errors='ignore')
-    city = unicode(data['city'], "utf-8", errors='ignore')
-    clicks = data['clicks']
 
-    query =  "INSERT INTO popular_hotels_alexa (ID, name, city, clicks) VALUES (%s, %s, %s, %s);"
-    data = (ID, name, city, clicks)
+    query =  "INSERT INTO partners (partner_id, name) VALUES (%s, %s);"
+    data = (partner_id, name)
 
     cursor.execute(query, data)
     

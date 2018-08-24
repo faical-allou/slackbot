@@ -16,27 +16,14 @@ app = Flask(__name__, static_folder='static')
 wsgi_app = app.wsgi_app
 app.config['JSON_AS_ASCII'] = False
 extractdata = extractdata()
-alexa_skill = alexa_skill()
 
-
-@app.route('/popularity_flight_alexa/', methods=['GET', 'POST'])
-def popularity_data_alexa():
-    gc.collect()
-    json_request = request.get_json(force=True, silent=False, cache=True)
-    print(json_request)
-    request_city = json_request['request']['intent']['slots']['origin']['value']
-    popular = extractdata.getpopularitytablealexa('o',request_city)
-
-    resp = jsonify(alexa_skill.speak_populardestinations(popular))
-    return resp
-
-@app.route('/popularity_hotel_alexa/', methods=['GET', 'POST'])
+@app.route('/slackbot', methods=['GET', 'POST'])
 def popularity_hotel_data_alexa():
     gc.collect()
     json_request = request.get_json(force=True, silent=False, cache=True)
     print(json_request)
-    request_city = json_request['request']['intent']['slots']['destination']['value']
-    popular = extractdata.getpopularitytablealexa_hotels('o',request_city)
+    partner_id = request.form.get('text', None)
+    popular = extractdata.getpartnername(partner_id)
 
     resp = jsonify(alexa_skill.speak_popularhotels(popular))
     return resp
@@ -47,12 +34,7 @@ def popularity_hotel_data_alexa():
 
 @app.route('/')
 def render_home():
-    return render_template("_home.html", title="Alexa4trivago" )
-
-@app.route('/home')
-def render_homepage():
-    return render_template("_home.html", title="Alexa4trivago" )
-
+    return "it works"
 
 
 
