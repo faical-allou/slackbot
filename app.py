@@ -18,15 +18,16 @@ app.config['JSON_AS_ASCII'] = False
 extractdata = extractdata()
 
 @app.route('/slackbot', methods=['GET', 'POST'])
-def popularity_hotel_data_alexa():
-    gc.collect()
-    json_request = request.get_json(force=True, silent=False, cache=True)
-    print(json_request)
+def partner_info():
+    print("slackbot started")
+    slack_request = request.form.keys()
+    print(slack_request)
     partner_id = request.form.get('text', None)
-    popular = extractdata.getpartnername(partner_id)
+    print(partner_id)
+    
+    partner_name = extractdata.getpartnername(partner_id)
 
-    resp = jsonify(alexa_skill.speak_popularhotels(popular))
-    return resp
+    return partner_name
 
 
 

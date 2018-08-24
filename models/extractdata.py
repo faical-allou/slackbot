@@ -19,7 +19,10 @@ class extractdata:
             conn_string = connectionStringDatabase
         #connect
         try:
-            conn = psycopg2.connect(conn_string)
+            print(conn_string)
+            conn = psycopg2.connect(conn_string, sslmode='require')
+            #conn = psycopg2.connect(conn_string, sslmode='require')
+            
         except psycopg2.Error as e:
             print ("Unable to connect!")
             print (e.pgerror)
@@ -35,7 +38,7 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor()
         query = "SELECT name from partners where partner_id ='"+partner_id
-        print(partner_id)
+        print(query)
         cursor.execute(query)
 
         rows = ['a']
