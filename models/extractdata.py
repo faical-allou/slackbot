@@ -37,7 +37,7 @@ class extractdata:
 
         connection = self.getconnection()
         cursor = connection.cursor()
-        query = "SELECT name from partners where partner_id ='"+partner_id
+        query = "SELECT name from partners where partner_id ="+partner_id
         print(query)
         cursor.execute(query)
 
