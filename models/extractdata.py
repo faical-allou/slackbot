@@ -54,7 +54,7 @@ class extractdata:
 
         connection.close()
 
-        return partner_list
+        return partner_list[0]
 
 
 

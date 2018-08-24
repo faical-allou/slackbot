@@ -54,11 +54,11 @@ def favicon():
 
 @app.errorhandler(404)
 def pageNotFound(error):
-    return render_template("500.html", title="Sorry!" )
+    return "sorry problem"
 
 @app.errorhandler(500)
 def erroronpage(error):
-    return render_template("500.html", title="Sorry!" )
+    return "sorry problem"
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 80.
