@@ -8,7 +8,6 @@ import sys
 import math
 import gc
 from models.extractdata import *
-from models.alexa import *
 
 app = Flask(__name__, static_folder='static')
 
@@ -21,16 +20,14 @@ extractdata = extractdata()
 def partner_info():
     print("slackbot started")
     slack_request = request.form.keys()
-    print(slack_request)
-    partner_id = request.form.get('text', None)
-    print(partner_id)
-    
-    partner_name = extractdata.getpartnername(partner_id)
-
-    return partner_name
-
-
-
+    text = request.form.get('text', None).strip()
+    print(text)
+    print(text.isdigit())
+    if text.isdigit():
+        output = extractdata.getpartnername(text)
+    else:
+        output = extractdata.getpartnerid(text)
+    return output
 
 
 @app.route('/')

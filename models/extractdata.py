@@ -5,6 +5,7 @@ import collections
 import datetime
 import numpy as np
 import math
+import re
 from itertools import groupby
 from operator import itemgetter
 from configdatabase import connectionStringDatabase
@@ -56,7 +57,29 @@ class extractdata:
 
         return partner_list[0]
 
+    def getpartnerid(self, partner_name ):
 
+        connection = self.getconnection()
+        cursor = connection.cursor()
+        query = "SELECT partner_id, name from partners where name like '%"+partner_name+"%'"
+        print(query)
+        cursor.execute(query)
+
+        rows = ['a']
+        rowarray_list = []
+
+        partner_list = []
+
+        rows = cursor.fetchall()
+
+        for row in rows:
+            partner_list.append(row)
+        print(partner_list)
+
+        connection.close()
+        output = '\n'.join(str(a) for a in partner_list)
+        output = re.sub("['(!@#$)]", '', output)
+        return output
 
 def __init__(self):
         print ("in init")
