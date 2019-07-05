@@ -77,8 +77,8 @@ class extractdata:
         print(partner_list)
 
         connection.close()
-        output = '\n'.join(str(a) for a in partner_list)
-        output = re.sub("['(!@#$)]", '', output)
+        output = '\n'.join(str(a[0])+","+a[1] for a in partner_list)
+        #output = re.sub("['(!@#$)]", '', output)
         return output
 
 def __init__(self):
