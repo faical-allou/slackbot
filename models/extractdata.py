@@ -61,7 +61,7 @@ class extractdata:
 
         connection = self.getconnection()
         cursor = connection.cursor()
-        query = "SELECT partner_id, name from partners where name like '%"+partner_name+"%'"
+        query = "SELECT partner_id, name from partners where lower(name) like lower('%"+partner_name+"%') ORDER BY name"
         print(query)
         cursor.execute(query)
 
@@ -77,8 +77,7 @@ class extractdata:
         print(partner_list)
 
         connection.close()
-        output = '\n'.join(str(a[0])+","+a[1] for a in partner_list)
-        #output = re.sub("['(!@#$)]", '', output)
+        output = '\n'.join(a[1]+" , "+str(a[0]) for a in partner_list)
         return output
 
 def __init__(self):
